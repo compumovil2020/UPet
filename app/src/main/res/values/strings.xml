@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">ProyectoUpet</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="registro">Registrarse</string>
+
+    //Pantalla Inicial_
+    <string name="titulo_ingresa">Ingresa</string>
+    <string name="nombre_usuario_ingreso">Nombre de Usuario</string>
+    <string name="contrasena_ingreso">Contraseña</string>
+    <string name="login">Log in</string>
+    <string name="mensaje_registro">No tienes cuenta? Regístrate!</string>
+    <string name="olvidar_contrasena">Olvidó su contraseña?</string>
+
+    //Pantalla de registro
+    <string name="titulo_registro">Registro</string>
+    <string name="nombre_usuario_registro">Nombre de Usuario</string>
+    <string name="nombre_registro">Nombres</string>
+    <string name="apellidos_registro">Apellidos</string>
+    <string name="email_registro">E-mail</string>
+    <string name="contrasena_registro">Contraseña</string>
+    <string name="tipo_usuario_registro">Tipo de Usuario</string>
+    <string-array name="lista_tipo_usuario_registro">
+        <item>Normal</item>
+        <item>Paseador</item>
+    </string-array>
+
+    //Pantalla de Información Adicional
+    <string name="titulo_inf">Información Adicional</string>
+    <string name="celular_registro">Celular</string>
+    <string name="direccion_registro">Dirección</string>
+    <string name="ciudad_registro">Ciudad</string>
+    <string name="barrio_registro">Barrio</string>
+
+    //Parte David
+    <string name="calendario">Calendario</string>
+    <string name="ver_solicitantes">Ver solicitantes</string>
+    <string name="confirmar_seleccionados">Confirmar \nseleccionados</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar_seleccionados">Cancelar \nseleccionados</string>
+    <string name="nombre_mascota">Nombre\nmascota</string>
+    <string name="tipo_mascota">Tipo de\nmascota</string>
+    <string name="dueno">Dueño</string>
+    <string name="direccion">Dirección</string>
+
+</resources>
