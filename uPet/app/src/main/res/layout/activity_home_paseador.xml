@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E04149"
+    tools:context=".HomePaseador">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_upet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/boton_adminPaseo"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:background="#EEEAE3"
+        android:text="@string/home_manage_walk"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boton_perfil" />
+
+    <Button
+        android:id="@+id/boton_adminMascota"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="50dp"
+        android:background="#EEEAE3"
+        android:text="@string/home_manage_pet"
+        app:layout_constraintBottom_toBottomOf="@+id/boton_perfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/boton_perfil" />
+
+    <Button
+        android:id="@+id/boton_perfil"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="80dp"
+        android:background="#EEEAE3"
+        android:text="@string/home_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/boton_sitInteres"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="50dp"
+        android:background="#EEEAE3"
+        android:text="@string/home_place_interest"
+        app:layout_constraintBottom_toBottomOf="@+id/boton_adminPaseo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/boton_adminPaseo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/home_profile"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/boton_perfil"
+        app:layout_constraintStart_toStartOf="@+id/boton_perfil"
+        app:layout_constraintTop_toBottomOf="@+id/boton_perfil" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/home_manage_pet"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/boton_adminMascota"
+        app:layout_constraintStart_toStartOf="@+id/boton_adminMascota"
+        app:layout_constraintTop_toBottomOf="@+id/boton_adminMascota" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/home_manage_walk"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/boton_adminPaseo"
+        app:layout_constraintStart_toStartOf="@+id/boton_adminPaseo"
+        app:layout_constraintTop_toBottomOf="@+id/boton_adminPaseo" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/home_place_interest"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/boton_sitInteres"
+        app:layout_constraintStart_toStartOf="@+id/boton_sitInteres"
+        app:layout_constraintTop_toBottomOf="@+id/boton_sitInteres" />
+
+    <Button
+        android:id="@+id/boton_agPaseo"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:background="#EEEAE3"
+        android:text="@string/home_schedule_walk"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boton_adminPaseo" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/home_schedule_walk"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/boton_agPaseo"
+        app:layout_constraintStart_toStartOf="@+id/boton_agPaseo"
+        app:layout_constraintTop_toBottomOf="@+id/boton_agPaseo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

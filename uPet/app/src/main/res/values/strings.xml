@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">ProyectoUpet</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="registro">Registrarse</string>
+
+    //Pantalla Inicial_
+    <string name="titulo_ingresa">Ingresa</string>
+    <string name="nombre_usuario_ingreso">Nombre de Usuario</string>
+    <string name="contrasena_ingreso">Contraseña</string>
+    <string name="login">Log in</string>
+    <string name="mensaje_registro">No tienes cuenta? Regístrate!</string>
+    <string name="olvidar_contrasena">Olvidó su contraseña?</string>
+
+    //Pantalla de registro
+    <string name="titulo_registro">Registro</string>
+    <string name="nombre_usuario_registro">Nombre de Usuario</string>
+    <string name="nombre_registro">Nombres</string>
+    <string name="apellidos_registro">Apellidos</string>
+    <string name="email_registro">E-mail</string>
+    <string name="contrasena_registro">Contraseña</string>
+    <string name="tipo_usuario_registro">Tipo de Usuario</string>
+    <string-array name="lista_tipo_usuario_registro">
+        <item>Normal</item>
+        <item>Paseador</item>
+    </string-array>
+
+    //Pantalla de Información Adicional
+    <string name="titulo_inf">Información Adicional</string>
+    <string name="celular_registro">Celular</string>
+    <string name="direccion_registro">Dirección</string>
+    <string name="ciudad_registro">Ciudad</string>
+    <string name="barrio_registro">Barrio</string>
+
+    //Parte David
+    <string name="calendario">Calendario</string>
+    <string name="ver_solicitantes">Ver solicitantes</string>
+    <string name="confirmar_seleccionados">Confirmar \nseleccionados</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar_seleccionados">Cancelar \nseleccionados</string>
+    <string name="nombre_mascota">Nombre\nmascota</string>
+    <string name="tipo_mascota">Tipo de\nmascota</string>
+    <string name="dueno">Dueño</string>
+    <string name="direccion">Dirección</string>
+    <string name="imagen_mapa">Imagen Mapa</string>
+
+    //Parte Randy
+    <string name="general_create">Crear</string>
+    <string name="general_guardar">Guardar</string>
+    <string name="general_delete">Eliminar</string>
+    <string name="general_cancel">Cancelar</string>
+    <string name="home_profile">Perfil</string>
+    <string name="home_manage_pet">Administrar Mascota</string>
+    <string name="home_manage_walk">Administrar Paseo</string>
+    <string name="home_place_interest">Sitios De Interes</string>
+    <string name="home_schedule_walk">Agendar Paseo</string>
+
+    <string name="ce_walk_date">Fecha</string>
+    <string name="ce_walk_hbeg">Hora de inicio</string>
+    <string name="ce_walk_hend">Hora de fin</string>
+    <string name="ce_walk_maxcap">Capacidad</string>
+    <string name="ce_walk_pbeg">Inicio recorrido</string>
+    <string name="ce_walk_pend">Final recorrido</string>
+    <string name="ce_walk_desc">Descripcion</string>
+
+    //Parte Steven
+    <string name="perfil_usuario">Perfil usuario</string>
+    <string name="nombre_usuario">Nombre usuario</string>
+    <string name="nombres">Nombres</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="e_mail">E-mail</string>
+    <string name="celular">Celular</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="barrio">Barrio</string>
+    <string name="actualizar_informacion">Actualizar información</string>
+    <string name="crear_editar_mascota">Crear/Editar Mascota</string>
+    <string name="especie">Especie</string>
+    <string name="edad">Edad</string>
+    <string name="raza">Raza</string>
+    <string name="nombre_mascota_crear">Nombre mascota</string>
+
+    //Parte Daniel
+    <string-array name="tiposdelugar">
+        <item>Tipos de Lugar1</item>
+        <item>Tipos de Lugar2</item>
+        <item>Tipos de Lugar3</item>
+    </string-array>
+    <string name="ver_mapa">Ver en Mapa</string>
+    <string name="detalle_paseo">Detalle Paseo</string>
+    <string name="paseos_confirmados">Paseos Confirmados</string>
+    <string name="img_prueba">Imagen de Perfil</string>
+    <string name="direccion_del_paseador">Direccion del Paseador:</string>
+    <string name="nombre_del_paseador">Nombre del Paseador:</string>
+    <string name="solicitar_paseo">Solicitar Paseo</string>
+</resources>
