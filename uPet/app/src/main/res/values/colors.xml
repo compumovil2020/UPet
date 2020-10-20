@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="rojoPet">#E04149</color>
-    <color name="blancoPet">#EEEAE3</color>
-    <color name="colorUpetBlack">#000000</color>
+    <color name="greenPet">#00B8A9</color>
+    <color name="beigePet">#F8F3D4</color>
+    <color name="blackPet">#000000</color>
 </resources>
