@@ -92,4 +92,14 @@
     <string name="direccion_del_paseador">Direccion del Paseador:</string>
     <string name="nombre_del_paseador">Nombre del Paseador:</string>
     <string name="solicitar_paseo">Solicitar Paseo</string>
+    <string name="title_activity_seleccion_ruta_paseo">Map</string>
+
+
+
+    //permisos
+    <string name="permissions_needed">Se necesita que de acceso a los permisos</string>
+    <string name="permission_denied">Permiso denegado</string>
+    <string name="permission_denied_explanation">Sin ese permiso no puede usar esta funcionalidad</string>
+    <string name="permission_sure">Estoy seguro</string>
+    <string name="permission_retry">Reintentar</string>
 </resources>
