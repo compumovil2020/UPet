@@ -92,7 +92,7 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id==R.id.perfil)
         {
-            Toast.makeText(getApplicationContext(),"Click Perfil",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Click perfil",Toast.LENGTH_SHORT).show();
         }
         else if(id==R.id.mascotas)
         {
