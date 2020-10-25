@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beigePet"
+    tools:context=".HomeUsuarioActivity">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_upet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/playfair_display_black"
+            android:gravity="center"
+            android:text="Administrar\nMascotas"
+            android:textColor="@color/blackPet"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/constraintHor"
+            app:layout_constraintEnd_toEndOf="@+id/btnAdminMascotas"
+            app:layout_constraintStart_toStartOf="@+id/btnAdminMascotas"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdminMascotas" />
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="98dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/playfair_display_black"
+            android:gravity="center"
+            android:text="Administrar\nPaseos"
+            android:textColor="@color/blackPet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnAdminPaseos"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/btnAdminPaseos"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdminPaseos"
+            app:layout_constraintVertical_bias="0.027" />
+
+        <ImageButton
+            android:id="@+id/btnAdminPaseos"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/circle_button"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/constraintVer"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintHor"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/admin_paseos" />
+
+        <ImageButton
+            android:id="@+id/btnSitiosInteres"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/circle_button"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/constraintVer"
+            app:layout_constraintTop_toBottomOf="@+id/constraintHor"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/sitios_interes" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/playfair_display_black"
+            android:gravity="center"
+            android:text="Sitios\nde Interés"
+            android:textColor="@color/blackPet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnSitiosInteres"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="@+id/btnSitiosInteres"
+            app:layout_constraintTop_toBottomOf="@+id/btnSitiosInteres"
+            app:layout_constraintVertical_bias="0.027" />
+
+        <ImageButton
+            android:id="@+id/btnPerfil"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/circle_button"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/constraintHor"
+            app:layout_constraintEnd_toEndOf="@+id/constraintVer"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/Perfil" />
+
+        <ImageButton
+            android:id="@+id/btnAdminMascotas"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/circle_button"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/constraintHor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/constraintVer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/admin_mascotas" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="31dp"
+            android:fontFamily="@font/playfair_display_black"
+            android:text="Perfil"
+            android:textColor="@color/blackPet"
+            app:layout_constraintBottom_toTopOf="@+id/constraintHor"
+            app:layout_constraintEnd_toEndOf="@+id/btnPerfil"
+            app:layout_constraintStart_toStartOf="@+id/btnPerfil"
+            app:layout_constraintTop_toBottomOf="@+id/btnPerfil" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintVer"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintHor"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
