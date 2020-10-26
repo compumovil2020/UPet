@@ -36,9 +36,9 @@
             android:textColor="@color/blackPet"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@+id/constraintHor"
-            app:layout_constraintEnd_toEndOf="@+id/btnAdminMascotas"
-            app:layout_constraintStart_toStartOf="@+id/btnAdminMascotas"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdminMascotas" />
+            app:layout_constraintEnd_toEndOf="@+id/btnAdminMascotasUsuario"
+            app:layout_constraintStart_toStartOf="@+id/btnAdminMascotasUsuario"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdminMascotasUsuario" />
 
         <TextView
             android:id="@+id/textView29"
@@ -51,14 +51,14 @@
             android:text="Administrar\nPaseos"
             android:textColor="@color/blackPet"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnAdminPaseos"
+            app:layout_constraintEnd_toEndOf="@+id/btnAdminPaseosUsuario"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/btnAdminPaseos"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdminPaseos"
+            app:layout_constraintStart_toStartOf="@+id/btnAdminPaseosUsuario"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdminPaseosUsuario"
             app:layout_constraintVertical_bias="0.027" />
 
         <ImageButton
-            android:id="@+id/btnAdminPaseos"
+            android:id="@+id/btnAdminPaseosUsuario"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="15dp"
@@ -74,7 +74,7 @@
             app:srcCompat="@drawable/admin_paseos" />
 
         <ImageButton
-            android:id="@+id/btnSitiosInteres"
+            android:id="@+id/btnSitiosInteresUsuario"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="15dp"
@@ -100,14 +100,14 @@
             android:text="Sitios\nde Interés"
             android:textColor="@color/blackPet"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnSitiosInteres"
+            app:layout_constraintEnd_toEndOf="@+id/btnSitiosInteresUsuario"
             app:layout_constraintHorizontal_bias="0.484"
-            app:layout_constraintStart_toStartOf="@+id/btnSitiosInteres"
-            app:layout_constraintTop_toBottomOf="@+id/btnSitiosInteres"
+            app:layout_constraintStart_toStartOf="@+id/btnSitiosInteresUsuario"
+            app:layout_constraintTop_toBottomOf="@+id/btnSitiosInteresUsuario"
             app:layout_constraintVertical_bias="0.027" />
 
         <ImageButton
-            android:id="@+id/btnPerfil"
+            android:id="@+id/btnPerfilUsuario"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
@@ -123,10 +123,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/Perfil" />
+            app:srcCompat="@drawable/perfil" />
 
         <ImageButton
-            android:id="@+id/btnAdminMascotas"
+            android:id="@+id/btnAdminMascotasUsuario"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="15dp"
@@ -152,9 +152,9 @@
             android:text="Perfil"
             android:textColor="@color/blackPet"
             app:layout_constraintBottom_toTopOf="@+id/constraintHor"
-            app:layout_constraintEnd_toEndOf="@+id/btnPerfil"
-            app:layout_constraintStart_toStartOf="@+id/btnPerfil"
-            app:layout_constraintTop_toBottomOf="@+id/btnPerfil" />
+            app:layout_constraintEnd_toEndOf="@+id/btnPerfilUsuario"
+            app:layout_constraintStart_toStartOf="@+id/btnPerfilUsuario"
+            app:layout_constraintTop_toBottomOf="@+id/btnPerfilUsuario" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintVer"

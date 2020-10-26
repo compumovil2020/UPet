@@ -95,7 +95,6 @@
     <string name="title_activity_seleccion_ruta_paseo">Map</string>
 
 
-
     //permisos
     <string name="permissions_needed">Se necesita que de acceso a los permisos</string>
     <string name="permission_denied">Permiso denegado</string>

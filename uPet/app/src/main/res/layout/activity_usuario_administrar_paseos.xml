@@ -21,15 +21,16 @@
         android:layout_height="0dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@id/btnVerDetallesAP"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <ListView
-            android:id="@+id/listaMascotas"
+            android:id="@+id/listaUPaseos"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:listSelector="@color/greenPet"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,20 +38,20 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnVerDetallesAP"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/roundedbutton"
         android:fontFamily="@font/playfair_display_bold"
-        android:textAllCaps="false"
         android:text="Ver Detalles"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/btnBuscarPaseoAP"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnBuscarPaseoAP"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_marginBottom="20dp"
@@ -58,12 +59,13 @@
         android:fontFamily="@font/playfair_display_bold"
         android:text="Buscar Paseo"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button" />
+        app:layout_constraintBottom_toTopOf="@id/btnVolverAP"
+        app:layout_constraintEnd_toEndOf="@id/btnVerDetallesAP"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/btnVerDetallesAP" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnVolverAP"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_marginBottom="20dp"
@@ -72,9 +74,9 @@
         android:text="Volver"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="@id/btnBuscarPaseoAP"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/button2" />
+        app:layout_constraintStart_toStartOf="@id/btnBuscarPaseoAP" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

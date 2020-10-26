@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/beigePet"
     android:fontFamily = "@font/playfair_display_bold"
-    tools:context=".UsuarioBuscarPaseoActivity">
+    tools:context=".UsuarioVerDetallesPaseo">
 
     <include
         android:id="@+id/toolbar"
@@ -25,12 +25,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <FrameLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10"/>
+            android:layout_weight="10"
+            android:padding="0dp">
+
+
+            <fragment
+                android:id="@+id/mapUDetallesPaseo"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MapsActivity" />
+
+            <Spinner
+                android:id="@+id/spinnerUDetallesPaseo"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="35dp"
+                android:background="@drawable/roundedbutton"
+                android:ems="10"
+                android:imeOptions="actionSend"
+                android:inputType="text"
+                android:textColor="@color/beigePet"
+                android:textColorHint="@color/beigePet"
+                android:textStyle="bold" />
+        </FrameLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -104,21 +127,37 @@
             android:layout_weight="3">
 
             <Button
-                android:id="@+id/btnSeleccionarBP"
+                android:id="@+id/btnRealizarSeguimientoDetallesPaseo"
                 android:layout_width="150dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/roundedbutton"
                 android:fontFamily="@font/playfair_display_bold"
-                android:text="Seleccionar"
+                android:text="Realizar Seguimiento"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@id/btnSiguienteBP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnVolverDetallesPaseo"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnAnteriorDetallesPaseo"
+                app:layout_constraintVertical_bias="0.171" />
+
+            <Button
+                android:id="@+id/btnAnteriorDetallesPaseo"
+                android:layout_width="150dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundedbutton"
+                android:fontFamily="@font/playfair_display_bold"
+                android:text="Anterior"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toStartOf="@id/btnSiguienteDetallesPaseo"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/btnSiguienteBP"
+                android:id="@+id/btnSiguienteDetallesPaseo"
                 android:layout_width="150dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="10dp"
@@ -128,23 +167,25 @@
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@id/btnSeleccionarBP"
+                app:layout_constraintStart_toEndOf="@id/btnAnteriorDetallesPaseo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/btnVolverBP"
+                android:id="@+id/btnVolverDetallesPaseo"
                 android:layout_width="150dp"
                 android:layout_height="25dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/roundedbutton"
                 android:fontFamily="@font/playfair_display_bold"
                 android:text="Volver"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnSeleccionarBP" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/btnRealizarSeguimientoDetallesPaseo"
+                app:layout_constraintTop_toBottomOf="@id/btnSiguienteDetallesPaseo"
+                app:layout_constraintVertical_bias="0.171" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
