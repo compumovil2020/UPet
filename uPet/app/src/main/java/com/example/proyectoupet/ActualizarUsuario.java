@@ -93,7 +93,9 @@ public class ActualizarUsuario extends AppCompatActivity {
         actualizarInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(view.getContext(),"Actualizacion de perfil",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getBaseContext(), VerPerfil.class));
+
             }
         });
 
