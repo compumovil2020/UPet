@@ -92,4 +92,6 @@
     <string name="direccion_del_paseador">Direccion del Paseador:</string>
     <string name="nombre_del_paseador">Nombre del Paseador:</string>
     <string name="solicitar_paseo">Solicitar Paseo</string>
+    <string name="seleccionar_galeria">Seleccionar de Galeria</string>
+    <string name="usar_camara">Usar la Camara</string>
 </resources>
