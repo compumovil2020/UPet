@@ -3,18 +3,19 @@
     <string name="siguiente">Siguiente</string>
     <string name="cancelar">Cancelar</string>
     <string name="registro">Registrarse</string>
+    <string name="atras">Atrás</string>
 
     //Pantalla Inicial_
     <string name="titulo_ingresa">Ingresa</string>
-    <string name="nombre_usuario_ingreso">Nombre de Usuario</string>
-    <string name="contrasena_ingreso">Contraseña</string>
+    <string name="nombre_usuario_ingreso">usuario</string>
+    <string name="contrasena_ingreso">contraseña</string>
     <string name="login">Log in</string>
-    <string name="mensaje_registro">No tienes cuenta? Regístrate!</string>
+    <string name="mensaje_registro">Regístrate</string>
     <string name="olvidar_contrasena">Olvidó su contraseña?</string>
 
     //Pantalla de registro
     <string name="titulo_registro">Registro</string>
-    <string name="nombre_usuario_registro">Nombre de Usuario</string>
+    <string name="nombre_usuario_registro">Nombre Usuario</string>
     <string name="nombre_registro">Nombres</string>
     <string name="apellidos_registro">Apellidos</string>
     <string name="email_registro">E-mail</string>
