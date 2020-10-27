@@ -47,12 +47,12 @@ public class ListaMascotas extends AppCompatActivity {
 
     }
     private void initArray() {
-        arreglo = new String[30];
+        arreglo = new String[2];
         for (int i = 0; i < arreglo.length; i++)
             if (i % 2 == 0)
-                arreglo[i] = "hola";
+                arreglo[i] = "Manchas";
             else
-                arreglo[i] = "mascotas";
+                arreglo[i] = "Pecas";
     }
 
 }

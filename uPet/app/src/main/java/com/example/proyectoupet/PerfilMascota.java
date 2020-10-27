@@ -25,7 +25,7 @@ public class PerfilMascota extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_mascota);
 
-        /*nombreMascota = findViewById(R.id.showTextNombreMascota);
+        nombreMascota = findViewById(R.id.showTextNombreMascota);
         edad = findViewById(R.id.showTextEdadMascota);
         especie = findViewById(R.id.showTextEspecie);
         raza = findViewById(R.id.showTextRaza);
@@ -46,6 +46,5 @@ public class PerfilMascota extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Borrado", Toast.LENGTH_SHORT).show();
             }
         });
-*/
     }
 }
