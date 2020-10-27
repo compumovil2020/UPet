@@ -80,19 +80,19 @@ public class SeleccionarDetalleSolicitanteActivity extends FragmentActivity impl
         mMap = googleMap;
         mapService = new MapService(mMap);
         walkStops = new ArrayList<>();
-        walkStops.add(new LatLng(4.711930995014736,-74.22606725245716));
-        walkStops.add(new LatLng(4.714638216287915,-74.22221392393112));
-        walkStops.add(new LatLng(4.710979355113475,-74.2234155535698));
-        walkStops.add(new LatLng( 4.70588665611004,-74.22185853123665));
-        walkStops.add(new LatLng( 4.706317035894434,-74.2253990471363));
-        walkStops.add(new LatLng( 4.708188917543524,-74.22723267227411));
-        walkStops.add(new LatLng( 4.710117264471713,-74.2250020802021));
+        walkStops.add(new LatLng(4.711930995014736, -74.22606725245716));
+        walkStops.add(new LatLng(4.714638216287915, -74.22221392393112));
+        walkStops.add(new LatLng(4.710979355113475, -74.2234155535698));
+        walkStops.add(new LatLng(4.70588665611004, -74.22185853123665));
+        walkStops.add(new LatLng(4.706317035894434, -74.2253990471363));
+        walkStops.add(new LatLng(4.708188917543524, -74.22723267227411));
+        walkStops.add(new LatLng(4.710117264471713, -74.2250020802021));
         LatLng randomPoint = walkStops.get(new Random().nextInt(walkStops.size()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(randomPoint));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
 
-        mapService.makeRoute(SeleccionarDetalleSolicitanteActivity.this,walkStops,MapService.Order.FIFO);
-        mapService.addMarker(randomPoint,mapService.getLatLngName(this,randomPoint));
+        mapService.makeRoute(SeleccionarDetalleSolicitanteActivity.this, walkStops, MapService.Order.FIFO);
+        mapService.addMarker(randomPoint, mapService.getLatLngName(this, randomPoint));
     }
 
     public void openConfirmarSolicitante(View v)
@@ -102,6 +102,10 @@ public class SeleccionarDetalleSolicitanteActivity extends FragmentActivity impl
 
     public void openCancelarSolicitante(View v)
     {
+        finish();
+    }
+
+    public void volverDetalle(View v){
         finish();
     }
 

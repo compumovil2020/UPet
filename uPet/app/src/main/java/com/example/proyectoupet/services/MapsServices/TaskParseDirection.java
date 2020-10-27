@@ -21,15 +21,11 @@ import java.util.Map;
 public class TaskParseDirection extends AsyncTask<String, Void, List<List<HashMap<String, String>>>> {
 
     protected GoogleMap mMap;
-    protected LatLng origin;
-    protected LatLng destination;
     Map<String, Polyline> polylines;
     String polylineKey;
 
-    public TaskParseDirection(GoogleMap mMap, LatLng origin, LatLng destination, Map<String, Polyline> polylines, String polylineKey){
+    public TaskParseDirection(GoogleMap mMap, Map<String, Polyline> polylines, String polylineKey){
         this.mMap = mMap;
-        this.origin = origin;
-        this.destination = destination;
         this.polylines = polylines;
         this.polylineKey = polylineKey;
     }

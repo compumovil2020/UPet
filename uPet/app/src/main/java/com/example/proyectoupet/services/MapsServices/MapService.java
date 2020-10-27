@@ -24,12 +24,14 @@ public class MapService {
 
     private GoogleMap mMap;
     private RouteService routeService;
+    private PlacesService placesService;
     Map<String, Polyline> polylines;
 
     public MapService(GoogleMap mMap){
         this.mMap = mMap;
         this.polylines = new HashMap<>();
         this.routeService = new RouteService();
+        this.placesService = new PlacesService();
     }
 
     public Marker addMarker(LatLng latLng, String title){
@@ -115,6 +117,10 @@ public class MapService {
     public void makeRoute(Activity activeActivity, LatLng startPoint, LatLng endingPoint, String polylineKey){
 
         this.routeService.makeRoute(activeActivity,this.mMap,startPoint,endingPoint,this.polylines, polylineKey);
+    }
+
+    public void findPlaces(Activity activeActivity, LatLng origin,List<String> types, List<Marker> markers){
+        this.placesService.findPlaces(activeActivity,this.mMap,origin,types,markers);
     }
 
     public Polyline getPolyline(LatLng startPoint, LatLng endingPoint){
