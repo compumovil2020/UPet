@@ -128,7 +128,7 @@ public class UsuarioSeleccionarPuntoActivity extends AppCompatActivity implement
                         for (LatLng puntoRuta: puntosRuta) {
                             puntos.add(mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta)));
                         }
-                        mapService.makeRoute(UsuarioSeleccionarPuntoActivity.this, puntosRuta , "CLOSEST");
+                        mapService.makeRoute(UsuarioSeleccionarPuntoActivity.this, puntosRuta , MapService.Order.CLOSEST);
                         actualizarRuta = true;
                     }
                 }

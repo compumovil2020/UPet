@@ -155,7 +155,7 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
                         for (LatLng puntoRuta: puntosRuta) {
                             mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta));
                         }
-                        mapService.makeRoute(UsuarioBuscarPaseoActivity.this, puntosRuta , "CLOSEST");
+                        mapService.makeRoute(UsuarioBuscarPaseoActivity.this, puntosRuta , MapService.Order.CLOSEST);
                         actualizarRuta = true;
                     }
                 }

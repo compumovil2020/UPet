@@ -114,7 +114,7 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
                         for (LatLng puntoRuta: puntosRuta) {
                             mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta));
                         }
-                        mapService.makeRoute(UsuarioSeguimientoPaseadorActivity.this, puntosRuta , "CLOSEST");
+                        mapService.makeRoute(UsuarioSeguimientoPaseadorActivity.this, puntosRuta , MapService.Order.CLOSEST);
                         actualizarRuta = true;
                     }
                 }

@@ -190,7 +190,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                         for (LatLng puntoRuta: puntosRuta) {
                             mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta));
                         }
-                        mapService.makeRoute(UsuarioVerDetallesPaseo.this, puntosRuta , "CLOSEST");
+                        mapService.makeRoute(UsuarioVerDetallesPaseo.this, puntosRuta , MapService.Order.CLOSEST);
                         actualizarRuta = true;
                     }
                 }
