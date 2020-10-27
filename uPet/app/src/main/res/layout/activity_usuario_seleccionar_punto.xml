@@ -26,19 +26,33 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
 
-        <FrameLayout xmlns:map="http://schemas.android.com/apk/res-auto"
+        <FrameLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
             android:padding="0dp">
 
-        <fragment
-            android:id="@+id/mapUsuarioSeleccionarPunto"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MapsActivity" />
+            <fragment
+                android:id="@+id/mapUsuarioSeleccionarPunto"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MapsActivity" />
+
+            <TextView
+                android:id="@+id/textUSeleccionarPunto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="35dp"
+                android:background="@drawable/roundedbutton"
+                android:ems="10"
+                android:textColor="@color/beigePet"
+                android:textColorHint="@color/beigePet"
+                android:textStyle="bold" />
+
+
         </FrameLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

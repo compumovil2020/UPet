@@ -66,7 +66,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtNombrePaseador"
+                    android:id="@+id/txtNombrePaseadorDetallesPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -75,7 +75,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtFecha"
+                    android:id="@+id/txtFechaDetallesPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -84,7 +84,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtHora"
+                    android:id="@+id/txtHoraDetallesPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -93,7 +93,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtNumeroMascotas"
+                    android:id="@+id/txtNumeroMascotasDetallesPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -102,7 +102,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtRanking"
+                    android:id="@+id/txtRankingDetallesPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -111,7 +111,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtCosto"
+                    android:id="@+id/txtCostoDetallesPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"

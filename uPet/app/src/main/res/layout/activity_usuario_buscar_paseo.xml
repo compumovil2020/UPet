@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <fragment
-            android:id="@+id/map"
+            android:id="@+id/mapUBuscarPaseo"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -43,7 +43,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtNombrePaseador"
+                    android:id="@+id/txtNombrePaseadorBuscarPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -52,7 +52,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtFecha"
+                    android:id="@+id/txtFechaBuscarPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -61,7 +61,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtHora"
+                    android:id="@+id/txtHoraBuscarPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -70,7 +70,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtNumeroMascotas"
+                    android:id="@+id/txtNumeroMascotasBuscarPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -79,7 +79,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtRanking"
+                    android:id="@+id/txtRankingBuscarPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"
@@ -88,7 +88,7 @@
                     android:textColor="@color/blackPet" />
 
                 <TextView
-                    android:id="@+id/txtCosto"
+                    android:id="@+id/txtCostoBuscarPaseo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display_bold"

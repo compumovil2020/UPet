@@ -41,7 +41,7 @@ public class HomeUsuarioActivity extends AppCompatActivity {
         btnAdminPaseos.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                startActivity(new Intent(getBaseContext(),UsuarioBuscarPaseoActivity.class));
+                startActivity(new Intent(getBaseContext(),UsuarioAdministrarPaseosActivity.class));
             }
         });
 

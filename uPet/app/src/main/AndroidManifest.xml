@@ -37,15 +37,16 @@
         <activity android:name=".UsuarioSeleccionarMascotasActivity" />
         <activity android:name=".UsuarioBuscarPaseoActivity" />
         <activity android:name=".UsuarioAdministrarPaseosActivity" />
-        <activity android:name=".HomeUsuarioActivity" />
-        <activity android:name=".RegistroExt" />
-        <activity android:name=".Registro" />
-        <activity android:name=".InicioSesion">
+        <activity android:name=".HomeUsuarioActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".RegistroExt" />
+        <activity android:name=".Registro" />
+        <activity android:name=".InicioSesion">
         </activity>
         <activity android:name=".MapView" />
         <activity
