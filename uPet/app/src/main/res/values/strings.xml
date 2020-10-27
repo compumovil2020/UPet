@@ -49,6 +49,7 @@
     <string name="general_guardar">Guardar</string>
     <string name="general_delete">Eliminar</string>
     <string name="general_cancel">Cancelar</string>
+
     <string name="home_profile">Perfil</string>
     <string name="home_manage_pet">Administrar Mascota</string>
     <string name="home_manage_walk">Administrar Paseo</string>
@@ -59,6 +60,8 @@
     <string name="ce_walk_hbeg">Hora de inicio</string>
     <string name="ce_walk_hend">Hora de fin</string>
     <string name="ce_walk_maxcap">Capacidad</string>
+    <string name="ce_walk_price">Precio</string>
+    <string name="ce_walk_genrute">Definir Ruta</string>
     <string name="ce_walk_pbeg">Inicio recorrido</string>
     <string name="ce_walk_pend">Final recorrido</string>
     <string name="ce_walk_desc">Descripcion</string>
@@ -93,7 +96,6 @@
     <string name="nombre_del_paseador">Nombre del Paseador:</string>
     <string name="solicitar_paseo">Solicitar Paseo</string>
     <string name="title_activity_seleccion_ruta_paseo">Map</string>
-
 
 
     //permisos

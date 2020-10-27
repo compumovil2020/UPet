@@ -24,12 +24,14 @@ public class TaskParseDirection extends AsyncTask<String, Void, List<List<HashMa
     protected LatLng origin;
     protected LatLng destination;
     Map<String, Polyline> polylines;
+    String polylineKey;
 
-    public TaskParseDirection(GoogleMap mMap, LatLng origin, LatLng destination, Map<String, Polyline> polylines){
+    public TaskParseDirection(GoogleMap mMap, LatLng origin, LatLng destination, Map<String, Polyline> polylines, String polylineKey){
         this.mMap = mMap;
         this.origin = origin;
         this.destination = destination;
         this.polylines = polylines;
+        this.polylineKey = polylineKey;
     }
 
     @Override
@@ -69,8 +71,9 @@ public class TaskParseDirection extends AsyncTask<String, Void, List<List<HashMa
             polylineOptions.geodesic(true);
         }
         if (polylineOptions != null) {
-            String key = this.origin.latitude+"-"+this.origin.longitude+"-"+this.destination.latitude+"-"+this.destination.longitude;
-            this.polylines.put(key,mMap.addPolyline(polylineOptions));
+            Polyline polyline = mMap.addPolyline(polylineOptions);
+            if(this.polylineKey != null)
+                this.polylines.put(this.polylineKey,polyline);
         }
     }
 }

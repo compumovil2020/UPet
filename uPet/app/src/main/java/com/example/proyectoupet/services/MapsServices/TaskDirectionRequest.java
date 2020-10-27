@@ -21,12 +21,14 @@ public class TaskDirectionRequest extends AsyncTask<String, Void, String> {
     protected LatLng origin;
     protected LatLng destination;
     Map<String, Polyline> polylines;
+    String polylineKey;
 
-    public TaskDirectionRequest(GoogleMap map, LatLng origin, LatLng destination, Map<String, Polyline> polylines){
+    public TaskDirectionRequest(GoogleMap map, LatLng origin, LatLng destination, Map<String, Polyline> polylines, String polylineKey){
         this.mMap = map;
         this.origin = origin;
         this.destination = destination;
         this.polylines = polylines;
+        this.polylineKey = polylineKey;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class TaskDirectionRequest extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String responseString) {
         super.onPostExecute(responseString);
         System.out.println("si llega");
-        TaskParseDirection parseResult = new TaskParseDirection(mMap, origin,destination,polylines);
+        TaskParseDirection parseResult = new TaskParseDirection(mMap, origin,destination,polylines, polylineKey);
         parseResult.execute(responseString);
     }
 

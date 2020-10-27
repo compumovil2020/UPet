@@ -20,7 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MapService {
-    enum Order {CLOSEST , FIFO}
+    public enum Order {CLOSEST , FIFO}
 
     private GoogleMap mMap;
     private RouteService routeService;
@@ -57,16 +57,17 @@ public class MapService {
         return results[0];
     }
 
-    public void makeRoute(Activity activeActivity, List<LatLng> points, String order){
+    public List<LatLng> makeRoute(Activity activeActivity, List<LatLng> points, Order order){
         if(points.size() < 2){
-            return;
+            return points;
         }
         List<LatLng> auxPoints = order.equals(Order.CLOSEST) ? sortPoints(points) : points;
 
         for(int i = 1 ; i < points.size() ; i++){
-            this.routeService.makeRoute(activeActivity,this.mMap,points.get(i-1),points.get(i),this.polylines);
+            this.routeService.makeRoute(activeActivity,this.mMap,points.get(i-1),points.get(i),this.polylines, (i-1)+"-"+i);
         }
-        this.routeService.makeRoute(activeActivity,this.mMap,points.get(points.size()-1),points.get(0),this.polylines);
+
+        return auxPoints;
     }
 
     private List<LatLng> sortPoints(List<LatLng> points){
@@ -95,8 +96,9 @@ public class MapService {
         return closest;
     }
 
-    public void makeRoute(Activity activeActivity, LatLng startPoint, LatLng endingPoint){
-        this.routeService.makeRoute(activeActivity,this.mMap,startPoint,endingPoint,this.polylines);
+    public void makeRoute(Activity activeActivity, LatLng startPoint, LatLng endingPoint, String polylineKey){
+
+        this.routeService.makeRoute(activeActivity,this.mMap,startPoint,endingPoint,this.polylines, polylineKey);
     }
 
     public Polyline getPolyline(LatLng startPoint, LatLng endingPoint){
@@ -104,11 +106,16 @@ public class MapService {
         return this.polylines.get(key);
     }
 
-    public void removePolylineFromMap(LatLng startPoint, LatLng endingPoint){
-        String key = startPoint.latitude+"-"+startPoint.longitude+"-"+endingPoint.latitude+"-"+endingPoint.longitude;
+    public void removePolylineFromMap(String key){
         Polyline polyline = this.polylines.get(key);
+        System.out.println(polyline);
         if(polyline != null){
             polyline.remove();
         }
+    }
+
+    public void removePolylines(){
+        polylines.values().stream().forEach(x -> x.remove());
+        polylines.clear();
     }
 }
