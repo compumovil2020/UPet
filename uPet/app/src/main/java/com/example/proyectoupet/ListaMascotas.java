@@ -23,7 +23,7 @@ public class ListaMascotas extends AppCompatActivity {
         setContentView(R.layout.activity_lista_mascotas);
         initArray();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, arreglo);
+                R.layout.item_list_fuente, arreglo);
         listaMascotas = (ListView) findViewById(R.id.listaMascotas);
         listaMascotas.setAdapter(adapter);
 
