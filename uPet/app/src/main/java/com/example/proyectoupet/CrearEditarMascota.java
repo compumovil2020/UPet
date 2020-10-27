@@ -12,8 +12,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -34,7 +31,7 @@ public class CrearEditarMascota extends AppCompatActivity {
     EditText edad;
     EditText especie;
     EditText raza;
-    Button crear;
+    Button botonGuardarMascota;
     ImageButton seleccion_imagen;
     ImageView imagen_mascota;
 
@@ -47,11 +44,11 @@ public class CrearEditarMascota extends AppCompatActivity {
         edad = findViewById(R.id.editTextEdadMascota);
         especie = findViewById(R.id.editTextEspecie);
         raza = findViewById(R.id.editTextRaza);
-        crear = findViewById(R.id.buttonCrearMascota);
-        seleccion_imagen =  findViewById(R.id.boton_seleccion_imagen);
-        imagen_mascota = findViewById(R.id.imagen_mascota);
+        botonGuardarMascota = findViewById(R.id.botonGuardarMascota);
+        seleccion_imagen =  findViewById(R.id.botonSeleccionImagen);
+        imagen_mascota = findViewById(R.id.editImagenMascota);
 
-        crear.setOnClickListener(new View.OnClickListener() {
+        botonGuardarMascota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

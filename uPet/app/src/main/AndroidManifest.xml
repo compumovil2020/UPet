@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VerPerfil"></activity>
+        <activity android:name=".PerfilMascota"></activity>
+        <activity android:name=".VerPerfil" />
         <activity android:name=".RegistroExt" />
         <activity android:name=".Registro" />
         <activity android:name=".InicioSesion">
