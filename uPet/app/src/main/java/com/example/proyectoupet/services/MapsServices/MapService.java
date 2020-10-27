@@ -70,6 +70,22 @@ public class MapService {
         return auxPoints;
     }
 
+    public LatLng getFromLocationName(Activity activity, String addressString){
+        Geocoder mGeocoder = new Geocoder(activity);
+        try{
+            List<Address> addresses = mGeocoder.getFromLocationName(addressString, 2);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address addressResult = addresses.get(0);
+                LatLng position = new LatLng(addressResult.getLatitude(), addressResult.getLongitude());
+                return position;
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private List<LatLng> sortPoints(List<LatLng> points){
         List<LatLng> pointsCopy = new ArrayList<>(points);
         List<LatLng> sortedList = new ArrayList<>();

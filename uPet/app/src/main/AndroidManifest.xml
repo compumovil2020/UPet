@@ -43,9 +43,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MapView" />
-        <activity
-            android:name=".AgendarPaseo"
-            android:exported="true" />
         <activity android:name=".HomePaseador" />
         <activity android:name=".ActualizarUsuario" />
         <activity android:name=".ListaMascotas" />

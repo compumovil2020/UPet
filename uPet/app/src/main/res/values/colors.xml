@@ -3,4 +3,6 @@
     <color name="greenPet">#00B8A9</color>
     <color name="beigePet">#F8F3D4</color>
     <color name="blackPet">#000000</color>
+    <color name="success">#22bb33</color>
+    <color name="danger">#bb2124</color>
 </resources>

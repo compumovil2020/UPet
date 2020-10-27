@@ -24,44 +24,26 @@ public class HomePaseador extends AppCompatActivity {
         setContentView(R.layout.activity_home_paseador);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        botAgendarPaseo = findViewById(R.id.boton_agPaseo);
-        botSitiosInteres = findViewById(R.id.boton_sitInteres);
-        botPerfil = findViewById(R.id.boton_perfil);
-        botAdminMascota = findViewById(R.id.boton_adminMascota);
-        botAdminPaseo = findViewById(R.id.boton_adminPaseo);
-
-        botSitiosInteres.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), LugaresdeInteres.class));
-            }
-        });
-
-        botPerfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), VerPerfil.class));
-            }
-        });
-
-        botAdminMascota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), ListaMascotas.class));
-                //SI ESPERO UN RESULTADO DE LA OTRA ACTIVIDAD, COLOCAR START ACTIVITY FOR RESULT
-            }
-        });
-
-        botAdminPaseo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), PaseosAgendadosActivity.class));
-            }
-        });
     }
 
     public void toCrearPaseo(View v){
         startActivity(new Intent(this, CrearPaseo.class));
+    }
+
+    public void toPaseosAgendados(View v){
+        startActivity(new Intent(getBaseContext(), PaseosAgendadosActivity.class));
+    }
+
+    public void toListarMascotas(View v){
+        startActivity(new Intent(getBaseContext(), ListaMascotas.class));
+        //SI ESPERO UN RESULTADO DE LA OTRA ACTIVIDAD, COLOCAR START ACTIVITY FOR RESULT
+    }
+
+    public void toPerfil(View v){
+        startActivity(new Intent(getBaseContext(), VerPerfil.class));
+    }
+
+    public void toSitiosInteres(View v){
+        startActivity(new Intent(getBaseContext(), LugaresdeInteres.class));
     }
 }

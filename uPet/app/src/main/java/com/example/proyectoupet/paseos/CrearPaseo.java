@@ -8,43 +8,49 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.proyectoupet.AgendarPaseo;
 import com.example.proyectoupet.R;
+import com.example.proyectoupet.model.Parada;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 
 public class CrearPaseo extends AppCompatActivity implements Validator.ValidationListener {
 
+    static final int REQUEST_POINTS = 234;
+
     Calendar cr;
 
     @NotEmpty
     EditText crearPaseoDate;
 
-//    @NotEmpty
+    @NotEmpty
     EditText crearPaseoHora;
 
-//    @NotEmpty
+    @NotEmpty
     EditText crearPaseoHoraFin;
 
-//    @NotEmpty
-//    @Pattern(regex = "[0-9]+")
+    @NotEmpty
+    @Pattern(regex = "[0-9]+")
     EditText crearPaseoCapacidad;
 
-//    @NotEmpty
-//    @Pattern(regex = "[0-9]+")
+    @NotEmpty
+    @Pattern(regex = "[0-9]+")
     EditText crearPaseoTarifa;
+
+    Button createButton ;
+    ArrayList<Parada> stops;
 
 
     private Validator validator;
@@ -59,6 +65,8 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
         init();
         validator = new Validator(this);
         validator.setValidationListener(this);
+        createButton = findViewById(R.id.scp_button4);
+        createButton.setVisibility(View.INVISIBLE);
     }
 
     private void init(){
@@ -100,7 +108,11 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
 
     @Override
     public void onValidationSucceeded() {
-        startActivity(new Intent(this,SeleccionRutaPaseo.class));
+        Intent i = new Intent(this,SeleccionRutaPaseo.class);
+        if(stops != null){
+            i.putParcelableArrayListExtra("stops",this.stops);
+        }
+        startActivityForResult(i,REQUEST_POINTS);
     }
 
     @Override
@@ -115,5 +127,24 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
+        Bundle extras = intent.getExtras();
+        if(extras != null) {
+            stops = extras.getParcelableArrayList("stops");
+            stops.forEach(x-> {
+                System.out.println("!----- "+x.getLatitude()+"----"+x.getLongitude());
+            });
+            createButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void createWalk(View v){
+
+        Toast.makeText(this,R.string.ce_walk_creado,Toast.LENGTH_SHORT);
+        finish();
     }
 }
