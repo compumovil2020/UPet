@@ -24,12 +24,14 @@ public class MapService {
 
     private GoogleMap mMap;
     private RouteService routeService;
+    private PlacesService placesService;
     Map<String, Polyline> polylines;
 
     public MapService(GoogleMap mMap){
         this.mMap = mMap;
         this.polylines = new HashMap<>();
         this.routeService = new RouteService();
+        this.placesService = new PlacesService();
     }
 
     public Marker addMarker(LatLng latLng, String title){
@@ -70,6 +72,22 @@ public class MapService {
         return auxPoints;
     }
 
+    public LatLng getFromLocationName(Activity activity, String addressString){
+        Geocoder mGeocoder = new Geocoder(activity);
+        try{
+            List<Address> addresses = mGeocoder.getFromLocationName(addressString, 2);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address addressResult = addresses.get(0);
+                LatLng position = new LatLng(addressResult.getLatitude(), addressResult.getLongitude());
+                return position;
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private List<LatLng> sortPoints(List<LatLng> points){
         List<LatLng> pointsCopy = new ArrayList<>(points);
         List<LatLng> sortedList = new ArrayList<>();
@@ -99,6 +117,10 @@ public class MapService {
     public void makeRoute(Activity activeActivity, LatLng startPoint, LatLng endingPoint, String polylineKey){
 
         this.routeService.makeRoute(activeActivity,this.mMap,startPoint,endingPoint,this.polylines, polylineKey);
+    }
+
+    public void findPlaces(Activity activeActivity, LatLng origin,List<String> types, List<Marker> markers){
+        this.placesService.findPlaces(activeActivity,this.mMap,origin,types,markers);
     }
 
     public Polyline getPolyline(LatLng startPoint, LatLng endingPoint){

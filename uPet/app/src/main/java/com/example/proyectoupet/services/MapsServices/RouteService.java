@@ -14,7 +14,7 @@ public class RouteService {
 
     public void makeRoute(Activity activeActivity, GoogleMap mMap, LatLng origin, LatLng destination, Map<String, Polyline> polylines, String polilyneKey){
         String uri = getRequestedUrl(activeActivity,origin,destination);
-        new TaskDirectionRequest(mMap,origin,destination,polylines, polilyneKey).execute(uri);
+        new TaskDirectionRequest(mMap,polylines, polilyneKey).execute(uri);
     }
 
     private String getRequestedUrl(Activity activeActivity, LatLng origin, LatLng destination) {

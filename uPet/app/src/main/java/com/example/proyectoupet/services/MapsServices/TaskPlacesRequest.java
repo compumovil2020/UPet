@@ -3,7 +3,6 @@ package com.example.proyectoupet.services.MapsServices;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 
@@ -13,18 +12,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
-public class TaskDirectionRequest extends AsyncTask<String, Void, String> {
+public class TaskPlacesRequest extends AsyncTask<String, Void, String> {
+
 
     protected GoogleMap mMap;
-    Map<String, Polyline> polylines;
-    String polylineKey;
+    List<Marker> markers;
 
-    public TaskDirectionRequest(GoogleMap map,  Map<String, Polyline> polylines, String polylineKey){
+    public TaskPlacesRequest(GoogleMap map,  List<Marker> markers){
         this.mMap = map;
-        this.polylines = polylines;
-        this.polylineKey = polylineKey;
+        this.markers = markers;
     }
 
     @Override
@@ -42,7 +41,7 @@ public class TaskDirectionRequest extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String responseString) {
         super.onPostExecute(responseString);
         System.out.println("si llega");
-        TaskParseDirection parseResult = new TaskParseDirection(mMap,polylines, polylineKey);
+        TaskParsePlaces parseResult = new TaskParsePlaces(mMap, markers);
         parseResult.execute(responseString);
     }
 
