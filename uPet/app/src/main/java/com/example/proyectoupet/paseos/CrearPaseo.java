@@ -147,4 +147,9 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
         Toast.makeText(this,R.string.ce_walk_creado,Toast.LENGTH_SHORT);
         finish();
     }
+
+    public void toCancelar(View v)
+    {
+        finish();
+    }
 }

@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_weight="8"
-        android:fontFamily="@font/playfair_display_bold"
+        android:fontFamily="@font/playfair_display_black"
         android:gravity="center"
         android:textAlignment="center" />
 

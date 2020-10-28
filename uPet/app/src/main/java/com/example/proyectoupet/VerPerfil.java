@@ -30,7 +30,7 @@ public class VerPerfil extends AppCompatActivity {
         volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), HomePaseador.class));
+                finish();
             }
         });
     }

@@ -48,10 +48,8 @@ public class CustomSpinnerMascotasAdapter extends BaseAdapter {
         TextView names = (TextView) view.findViewById(R.id.nombreMascota);
         Resources resources = context.getResources();
         icon.setImageResource(R.drawable.perfil);
-        Typeface tf = Typeface.createFromAsset(context.getAssets(),"fonts/playfair_display_black");
         names.setText(nombresPerros[i]);
         names.setTextColor(Color.BLACK);
-        names.setTypeface(tf);
         return view;
     }
 }

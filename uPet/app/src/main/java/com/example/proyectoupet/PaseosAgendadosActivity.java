@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,9 +25,10 @@ import java.util.List;
 
 public class PaseosAgendadosActivity extends AppCompatActivity {
 
-    Button botonFiltroFecha;
+    private Button botonFiltroFecha;
+    private TextView textFecha;
 
-    String[] solicitantes;
+    private String[] solicitantes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_view);
         Button verSolButton = (Button) findViewById(R.id.buttonConfirmar);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        Spinner spinner = findViewById(R.id.spinner);
+        textFecha = findViewById(R.id.textoFechaPaseosAgendados);
         listView.setAdapter(adapter);
         setSupportActionBar(toolbar);
         verSolButton.setOnClickListener(new View.OnClickListener(){
@@ -47,6 +49,13 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
             }
         });
         botonFiltroFecha = findViewById(R.id.botonFiltroFecha);
+        botonFiltroFecha.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                selectDateSolicitantes(v);
+            }
+        });
     }
 
     public void selectDateSolicitantes(View v){
@@ -57,7 +66,7 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
         new DatePickerDialog(PaseosAgendadosActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int nYear, int nMonth, int nDay) {
-                botonFiltroFecha.setText(nDay+"/"+nMonth+"/"+nYear);
+                textFecha.setText(nDay+"/"+nMonth+"/"+nYear);
             }
         }, year,month,day).show();
     }
@@ -69,7 +78,7 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
     }
     private void initHoras()
     {
-        solicitantes = new String[20];
+        solicitantes = new String[5];
         for(int i= 0; i < solicitantes.length; i++)
         {
             if(i%2==0)

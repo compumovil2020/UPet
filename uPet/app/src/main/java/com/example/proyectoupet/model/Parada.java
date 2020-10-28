@@ -44,6 +44,14 @@ public class Parada implements Parcelable {
         this.title = in.readString();
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
     public static final Parcelable.Creator<Parada> CREATOR = new Parcelable.Creator<Parada>() {
         public Parada createFromParcel(Parcel source) {
             return new Parada(source);
