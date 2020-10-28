@@ -58,9 +58,10 @@
 
     <string name="home_profile">Perfil</string>
     <string name="home_manage_pet">Administrar Mascota</string>
-    <string name="home_manage_walk">Administrar Paseo</string>
+    <string name="home_ask_walk">Solicitar Paseos</string>
     <string name="home_place_interest">Sitios De Interes</string>
     <string name="home_schedule_walk">Agendar Paseo</string>
+    <string name="home_manage_walks_walker">Administrar paseos</string>
 
     <string name="ce_walk_date">Fecha</string>
     <string name="ce_walk_hbeg">Hora de inicio</string>

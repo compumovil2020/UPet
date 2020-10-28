@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -22,10 +23,12 @@ public class TaskParsePlaces extends AsyncTask<String, Void, JSONArray> {
 
     GoogleMap mMap;
     List<Marker> markers;
+    float color;
 
-    public TaskParsePlaces(GoogleMap map, List<Marker> markers){
+    public TaskParsePlaces(GoogleMap map, List<Marker> markers,float color){
         this.mMap = map;
         this.markers = markers;
+        this.color = color;
     }
 
     @Override
@@ -51,8 +54,10 @@ public class TaskParsePlaces extends AsyncTask<String, Void, JSONArray> {
                 Double lat = aux.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                 Double lng = aux.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
                 String name = aux.getString("name");
-                Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(name));
+                Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(name)
+                        .icon(BitmapDescriptorFactory.defaultMarker(this.color)));
                 markers.add(m);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
