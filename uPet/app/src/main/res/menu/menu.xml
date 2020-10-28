@@ -2,11 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="Perfil"
-        android:id="@+id/perfil"/>
-    <item
-        android:title="Mascotas"
-        android:id="@+id/mascotas"/>
+        android:title="Logout"
+        android:id="@+id/logout"/>
 
 
 </menu>
