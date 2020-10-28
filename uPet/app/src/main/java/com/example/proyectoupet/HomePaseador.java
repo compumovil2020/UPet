@@ -58,6 +58,10 @@ public class HomePaseador extends AppCompatActivity {
         startActivity(new Intent(getBaseContext(), PaseosAgendadosActivity.class));
     }
 
+    public void toPaseosSolicitados(View v){
+        startActivity(new Intent(getBaseContext(), UsuarioAdministrarPaseosActivity.class));
+    }
+
     public void toListarMascotas(View v){
         startActivity(new Intent(getBaseContext(), ListaMascotas.class));
         //SI ESPERO UN RESULTADO DE LA OTRA ACTIVIDAD, COLOCAR START ACTIVITY FOR RESULT

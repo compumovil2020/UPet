@@ -75,11 +75,8 @@ public class CustomListviewMascotasCheckboxAdapter extends BaseAdapter {
         }
         holder.check.setTag(i);
 
-        Typeface tf = Typeface.createFromAsset(context.getAssets(),"fonts/playfair_display_black");
-
         holder.nombreMascota.setText(nombresPerros[i]);
         holder.nombreMascota.setTextColor(Color.BLACK);
-        holder.nombreMascota.setTypeface(tf);
         holder.imagenMascota.setImageResource(R.drawable.perfil);
 
 

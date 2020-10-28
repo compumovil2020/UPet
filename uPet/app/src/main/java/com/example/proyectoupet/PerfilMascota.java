@@ -66,6 +66,7 @@ public class PerfilMascota extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.show();
+                finish();
             }
         });
     }

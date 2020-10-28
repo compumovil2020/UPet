@@ -84,7 +84,7 @@ public class UsuarioAdministrarPaseosActivity extends AppCompatActivity {
         btnVolver.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                finishActivity(0);
+                finish();
             }
         });
 

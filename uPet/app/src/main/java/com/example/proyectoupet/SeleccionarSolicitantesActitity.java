@@ -26,7 +26,7 @@ import java.util.List;
 public class SeleccionarSolicitantesActitity extends AppCompatActivity
 {
     String[] solicitantes;
-
+    private String[] nombresPerros={"Becquer","Elias","Lune","Paco","Laika"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +57,21 @@ public class SeleccionarSolicitantesActitity extends AppCompatActivity
     }
     private void initSolicitantes()
     {
-        solicitantes = new String[30];
-        for(int i= 0; i < solicitantes.length; i++)
-        {
-            if(i%2==0)
-            {
-                solicitantes[i]="Paco";
-            }
-            else
-            {
-                solicitantes[i]="Lola";
-            }
-        }
+        solicitantes = obtenerNombresPerros();
+    }
+
+    public String[] obtenerNombresPerros()
+    {
+        String[] nombresPerros = new String[3];
+        int random;
+        random = (int)(Math.random() * 5);
+        nombresPerros[0] = this.nombresPerros[random];
+        random = (int)(Math.random() * 5);
+        nombresPerros[1] = this.nombresPerros[random];
+        random = (int)(Math.random() * 5);
+        nombresPerros[2] = this.nombresPerros[random];
+
+        return nombresPerros;
     }
 
     public void confirmarSolicitantes(View v){

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/beigePet"
     tools:context=".PaseosAgendadosActivity">
 
     <include
@@ -31,7 +32,10 @@
         android:layout_width="183dp"
         android:layout_height="58dp"
         android:textStyle="bold"
-        android:text="Filtrar por fecha"
+        android:text="Filtrar por Fecha"
+        android:background="@drawable/roundedbutton"
+        android:fontFamily="@font/playfair_display_black"
+        android:textAllCaps="false"
         android:onClick="selectDateSolicitantes"
         app:layout_constraintBottom_toBottomOf="@id/toolbar2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
         app:layout_constraintEnd_toEndOf="@+id/toolbar2"
         app:layout_constraintHorizontal_bias="0.918"
-        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintStart_toEndOf="@+id/textoFechaPaseosAgendados"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.5" />
 
@@ -72,9 +76,23 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_corners_success"
         android:text="@string/ver_solicitantes"
+        android:fontFamily="@font/playfair_display_black"
+        android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textoFechaPaseosAgendados"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_button"
+        app:layout_constraintStart_toEndOf="@+id/botonFiltroFecha"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

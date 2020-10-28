@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEEAE3"
+    android:background="@color/beigePet"
     tools:context=".LugaresdeInteres">
 
     <include
@@ -36,7 +36,10 @@
         android:layout_height="48dp"
         android:onClick="toLugaresdeInteresMap"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/roundedbutton"
+        android:fontFamily="@font/playfair_display_black"
         android:text="@string/ver_mapa"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

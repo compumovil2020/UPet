@@ -13,7 +13,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -60,33 +62,29 @@ public class ActualizarUsuario extends AppCompatActivity {
         imgPerfil = findViewById(R.id.imageViewPerfil);
         imgEdit = findViewById(R.id.imageView5);
 
-        imgPerfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestPermission((Activity)v.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE,"Para ver galería",IMAGE_PICKER_REQUEST);
-                if(ContextCompat.checkSelfPermission(v.getContext(),Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
-                    //Toast.makeText(v.getContext(),"Negado, no se puede hacer nada",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Intent pickImage=new Intent(Intent.ACTION_PICK);
-                    pickImage.setType("image/");
-                    startActivityForResult(pickImage,IMAGE_PICKER_REQUEST);
-                }
-            }
-        });
 
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestPermission((Activity)v.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE,"Para ver galería",IMAGE_PICKER_REQUEST);
-                if(ContextCompat.checkSelfPermission(v.getContext(),Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
-                    //Toast.makeText(v.getContext(),"Negado, no se puede hacer nada",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Intent pickImage=new Intent(Intent.ACTION_PICK);
-                    pickImage.setType("image/");
-                    startActivityForResult(pickImage,IMAGE_PICKER_REQUEST);
-                }
+                PopupMenu popup = new PopupMenu(ActualizarUsuario.this, imgEdit);
+                popup.getMenuInflater().inflate(R.menu.menu_foto, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        if(id==R.id.seleccionar_galeria)
+                        {
+                            PermissionUtil.requestPermission(ActualizarUsuario.this, Manifest.permission.READ_EXTERNAL_STORAGE,"Es para el funcionamiento",IMAGE_PICKER_REQUEST);
+                            abrirGaleria();
+                        }
+                        else if(id==R.id.usar_camara)
+                        {
+                            PermissionUtil.requestPermission(ActualizarUsuario.this, Manifest.permission.CAMERA,"Es para el funcionamiento",REQUEST_IMAGE_CAPTURE);
+                            tomarFoto();
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
             }
         });
 
@@ -102,10 +100,30 @@ public class ActualizarUsuario extends AppCompatActivity {
         volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), VerPerfil.class));
+                finish();
             }
         });
 
+    }
+
+    private void tomarFoto() {
+        if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+        {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+            {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private void abrirGaleria() {
+        if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
+            Intent pickImage = new Intent(Intent.ACTION_PICK);
+            pickImage.setType("image/*");
+            startActivityForResult(pickImage, IMAGE_PICKER_REQUEST);
+        }
     }
 
     @Override
