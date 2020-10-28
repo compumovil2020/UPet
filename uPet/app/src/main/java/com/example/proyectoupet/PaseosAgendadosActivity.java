@@ -3,6 +3,7 @@ package com.example.proyectoupet;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,15 +12,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 public class PaseosAgendadosActivity extends AppCompatActivity {
+
+    Button botonFiltroFecha;
+
     String[] solicitantes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +37,6 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
         Button verSolButton = (Button) findViewById(R.id.buttonConfirmar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         Spinner spinner = findViewById(R.id.spinner);
-        List<String> arrayList = new ArrayList<>();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,                         android.R.layout.simple_spinner_item, arrayList);
-
         listView.setAdapter(adapter);
         setSupportActionBar(toolbar);
         verSolButton.setOnClickListener(new View.OnClickListener(){
@@ -43,23 +46,22 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
                 openSolicitantesActivity();
             }
         });
-        arrayList.add("Fecha");
-        arrayList.add("2 de Septiembre");
-        arrayList.add("3 de Septiembre");
-        arrayList.add("4 de Septiembre");
-        arrayList.add("5 de Septiembre");
-        arrayList.add("6  de Septiembre");
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-            @Override
-            public void onNothingSelected(AdapterView <?> parent) {
-            }
-        });
+        botonFiltroFecha = findViewById(R.id.botonFiltroFecha);
     }
+
+    public void selectDateSolicitantes(View v){
+        Calendar cr = Calendar.getInstance();
+        int day = cr.get(Calendar.DAY_OF_MONTH);
+        int month = cr.get(Calendar.MONTH);
+        int year = cr.get(Calendar.YEAR);
+        new DatePickerDialog(PaseosAgendadosActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int nYear, int nMonth, int nDay) {
+                botonFiltroFecha.setText(nDay+"/"+nMonth+"/"+nYear);
+            }
+        }, year,month,day).show();
+    }
+
     public void openSolicitantesActivity()
     {
         Intent intent = new Intent(this, SeleccionarSolicitantesActitity.class );
@@ -81,23 +83,4 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id==R.id.perfil)
-        {
-            Toast.makeText(getApplicationContext(),"Click Perfil",Toast.LENGTH_SHORT).show();
-        }
-        else if(id==R.id.mascotas)
-        {
-            Toast.makeText(getApplicationContext(),"Click Mascotas",Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
 }
