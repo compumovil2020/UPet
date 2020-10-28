@@ -9,9 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -32,6 +37,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,6 +56,10 @@ public class SeleccionRutaPaseo extends FragmentActivity implements OnMapReadyCa
     private MapService mapService;
     private PermissionService permissionService = new PermissionService();
     private Location currentLocation;
+    private SensorManager sensorManager;
+    private Sensor lightSensor;
+    private SensorEventListener lightSensorListener;
+
     private List<Marker> checkpoints;
     private EditText editText;
     ArrayList<Parada> stops = null;
@@ -60,6 +70,8 @@ public class SeleccionRutaPaseo extends FragmentActivity implements OnMapReadyCa
         setContentView(R.layout.activity_seleccion_ruta_paseo);
         this.checkpoints = new ArrayList<>();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         if(getIntent().getExtras() != null){
             stops = getIntent().getExtras().getParcelableArrayList("stops");
         }
@@ -91,6 +103,23 @@ public class SeleccionRutaPaseo extends FragmentActivity implements OnMapReadyCa
                     }
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(lightSensor != null){
+            sensorManager.registerListener(lightSensorListener, lightSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(lightSensor != null) {
+            sensorManager.unregisterListener(lightSensorListener);
         }
     }
 
@@ -247,6 +276,29 @@ public class SeleccionRutaPaseo extends FragmentActivity implements OnMapReadyCa
                 marker.setTitle(mapService.getLatLngName(SeleccionRutaPaseo.this,marker.getPosition()));
             }
         });
+
+        lightSensorListener = createLightSensorListener();
+        sensorManager.registerListener(lightSensorListener, lightSensor,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private SensorEventListener createLightSensorListener(){
+        return new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (mMap != null) {
+                    if (event.values[0] < 10) {
+                        Log.i("MAPS", "DARK MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(SeleccionRutaPaseo.this, R.raw.dark_map));
+                    } else {
+                        Log.i("MAPS", "LIGHT MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(SeleccionRutaPaseo.this, R.raw.light_map));
+                    }
+                }
+            }
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+        };
     }
 
     public void onSuccessClick(View v){
