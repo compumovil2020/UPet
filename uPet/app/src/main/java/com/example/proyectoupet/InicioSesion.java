@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +40,11 @@ public class InicioSesion extends AppCompatActivity {
         botLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptSignin();
+                if(validateForm()==true){
+                    if(isEmailValid(username.getText().toString())==true){
+                        attemptSignin();
+                    }
+                }
             }
         });
 
@@ -92,6 +97,33 @@ public class InicioSesion extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+        String email = username.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            username.setError("Required.");
+            valid = false;
+        } else {
+            username.setError(null);
+        }
+        String pass = password.getText().toString();
+        if (TextUtils.isEmpty(pass)) {
+            password.setError("Required.");
+            valid = false;
+        } else {
+            password.setError(null);
+        }
+        return valid;
+    }
+
+    private boolean isEmailValid(String email) {
+        if (!email.contains("@") ||
+                !email.contains(".") ||
+                email.length() < 5)
+            return false;
+        return true;
     }
 
 
