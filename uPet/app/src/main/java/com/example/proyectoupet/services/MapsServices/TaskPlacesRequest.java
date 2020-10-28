@@ -20,10 +20,11 @@ public class TaskPlacesRequest extends AsyncTask<String, Void, String> {
 
     protected GoogleMap mMap;
     List<Marker> markers;
-
-    public TaskPlacesRequest(GoogleMap map,  List<Marker> markers){
+    float color;
+    public TaskPlacesRequest(GoogleMap map,  List<Marker> markers,float color){
         this.mMap = map;
         this.markers = markers;
+        this.color = color;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class TaskPlacesRequest extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String responseString) {
         super.onPostExecute(responseString);
         System.out.println("si llega");
-        TaskParsePlaces parseResult = new TaskParsePlaces(mMap, markers);
+        TaskParsePlaces parseResult = new TaskParsePlaces(mMap, markers,this.color);
         parseResult.execute(responseString);
     }
 
