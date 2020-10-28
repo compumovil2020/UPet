@@ -3,13 +3,15 @@
     <string name="siguiente">Siguiente</string>
     <string name="cancelar">Cancelar</string>
     <string name="registro">Registrarse</string>
+    <string name="atras">Atrás</string>
+
 
     //Pantalla Inicial_
     <string name="titulo_ingresa">Ingresa</string>
-    <string name="nombre_usuario_ingreso">Nombre de Usuario</string>
+    <string name="nombre_usuario_ingreso">Usuario</string>
     <string name="contrasena_ingreso">Contraseña</string>
     <string name="login">Log in</string>
-    <string name="mensaje_registro">No tienes cuenta? Regístrate!</string>
+    <string name="mensaje_registro">Regístrate</string>
     <string name="olvidar_contrasena">Olvidó su contraseña?</string>
 
     //Pantalla de registro
@@ -60,6 +62,7 @@
     <string name="home_manage_walk2">Administrar Paseos\nAgendados</string>
     <string name="home_place_interest">Sitios De Interes</string>
     <string name="home_schedule_walk">Agendar Paseo</string>
+    <string name="home_manage_walks_walker">Administrar paseos</string>
 
     <string name="ce_walk_date">Fecha</string>
     <string name="ce_walk_hbeg">Hora de inicio</string>

@@ -152,6 +152,7 @@
         android:scaleType="fitCenter"
         android:background="@drawable/circle_button"
         android:onClick="toPaseosAgendados"
+        android:src="@drawable/admin_paseos"
         app:layout_constraintBottom_toBottomOf="@+id/boton_agPaseo"
         app:layout_constraintEnd_toEndOf="@+id/boton_sitInteres"
         app:layout_constraintStart_toStartOf="@+id/boton_sitInteres"

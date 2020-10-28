@@ -1,11 +1,14 @@
 package com.example.proyectoupet.services.MapsServices;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -119,8 +122,16 @@ public class MapService {
         this.routeService.makeRoute(activeActivity,this.mMap,startPoint,endingPoint,this.polylines, polylineKey);
     }
 
-    public void findPlaces(Activity activeActivity, LatLng origin,List<String> types, List<Marker> markers){
-        this.placesService.findPlaces(activeActivity,this.mMap,origin,types,markers);
+    public void findPlaces(Activity activeActivity, LatLng origin,List<String> types, List<Marker> markers,List<String> hexColor){
+        for(int i = 0 ; i < types.size() ; i++){
+            this.placesService.findPlaces(activeActivity,this.mMap,origin,types.get(i),markers,getMarkerIcon(hexColor.get(i)));
+        }
+    }
+
+    public float getMarkerIcon(String color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(Color.parseColor(color), hsv);
+        return hsv[0];
     }
 
     public Polyline getPolyline(LatLng startPoint, LatLng endingPoint){
