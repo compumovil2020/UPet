@@ -90,11 +90,11 @@ public class SeleccionarSolicitantesActitity extends AppCompatActivity
         int id = item.getItemId();
         if(id==R.id.signout)
         {
-            Toast.makeText(getApplicationContext(),"Click Perfil",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Click SignOut",Toast.LENGTH_SHORT).show();
         }
         else if(id==R.id.settings)
         {
-            Toast.makeText(getApplicationContext(),"Click Mascotas",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Click Settings",Toast.LENGTH_SHORT).show();
         }
         return true;
     }
