@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +23,11 @@ public class RegistroExt extends AppCompatActivity {
     public static final String TAG = "ProyectoUpet";
     Button botRegistro;
     Button botAtras;
+    EditText celular;
+    EditText direccion;
+    EditText ciudad;
+    EditText barrio;
+
     private FirebaseAuth mAuth;
 
     @Override
@@ -30,13 +37,19 @@ public class RegistroExt extends AppCompatActivity {
 
         botRegistro = findViewById(R.id.inf_boton_registro);
         botAtras = findViewById(R.id.inf_boton_atras);
+        celular = findViewById(R.id.registro_celular);
+        direccion = findViewById(R.id.registro_dir);
+        ciudad = findViewById(R.id.registro_ciudad);
+        barrio = findViewById(R.id.registro_barrio);
         mAuth = FirebaseAuth.getInstance();
 
 
         botRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signUpUser();
+                if(validateForm()==true){
+                    signUpUser();
+                }
             }
         });
 
@@ -55,10 +68,15 @@ public class RegistroExt extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user){
+        String spinItem = getIntent().getStringExtra("itemSpin");
         if(user != null){
-            startActivity(new Intent(this, InicioSesion.class));
+            if(spinItem.equals("Normal")==true){
+                startActivity(new Intent(this, HomeUsuarioActivity.class));
+            }else{
+                startActivity(new Intent(this, HomePaseador.class));
+            }
         }else{
-            startActivity(new Intent(this, Registro.class));
+
         }
     }
 
@@ -85,5 +103,38 @@ public class RegistroExt extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+        String cel = celular.getText().toString();
+        if (TextUtils.isEmpty(cel)) {
+            celular.setError("Required.");
+            valid = false;
+        } else {
+            celular.setError(null);
+        }
+        String dir = direccion.getText().toString();
+        if (TextUtils.isEmpty(dir)) {
+            direccion.setError("Required.");
+            valid = false;
+        } else {
+            direccion.setError(null);
+        }
+        String city = ciudad.getText().toString();
+        if (TextUtils.isEmpty(city)) {
+            ciudad.setError("Required.");
+            valid = false;
+        } else {
+            ciudad.setError(null);
+        }
+        String barr = barrio.getText().toString();
+        if (TextUtils.isEmpty(barr)) {
+            barrio.setError("Required.");
+            valid = false;
+        } else {
+            barrio.setError(null);
+        }
+        return valid;
     }
 }

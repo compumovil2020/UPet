@@ -75,7 +75,7 @@
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="@string/contrasena_registro"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/spinner2"
         app:layout_constraintEnd_toEndOf="parent"

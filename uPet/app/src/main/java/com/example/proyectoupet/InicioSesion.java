@@ -40,11 +40,7 @@ public class InicioSesion extends AppCompatActivity {
         botLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validateForm()==true){
-                    if(isEmailValid(username.getText().toString())==true){
-                        attemptSignin();
-                    }
-                }
+                attemptSignin();
             }
         });
 
@@ -77,26 +73,34 @@ public class InicioSesion extends AppCompatActivity {
         String email = username.getText().toString();
         String pass = password.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(InicioSesion.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
+        if(validateForm()==true){
+            if(isEmailValid(email)==true){
+                mAuth.signInWithEmailAndPassword(email, pass)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    updateUI(user);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    Toast.makeText(InicioSesion.this, "Por favor verifique la información",
+                                            Toast.LENGTH_SHORT).show();
+                                    updateUI(null);
+                                }
 
-                        // ...
-                    }
-                });
+                                // ...
+                            }
+                        });
+            }else{
+                Toast.makeText(InicioSesion.this, "Ingrese un correo válido por favor",Toast.LENGTH_LONG).show();
+            }
+        }
+
+
     }
 
     private boolean validateForm() {
