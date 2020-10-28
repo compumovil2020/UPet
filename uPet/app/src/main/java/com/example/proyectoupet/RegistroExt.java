@@ -10,27 +10,18 @@ import android.widget.Button;
 public class RegistroExt extends AppCompatActivity {
 
     Button botRegistro;
-    Button botAtras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_ext);
 
-        botRegistro = findViewById(R.id.inf_boton_registro);
-        botAtras = findViewById(R.id.inf_boton_atras);
+        botRegistro = findViewById(R.id.reg_botRegistrar);
 
         botRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getBaseContext(), InicioSesion.class));
-            }
-        });
-
-        botAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), Registro.class));
             }
         });
     }
