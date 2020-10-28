@@ -4,6 +4,8 @@
     <string name="cancelar">Cancelar</string>
     <string name="registro">Registrarse</string>
     <string name="atras">Atrás</string>
+    <string name="signout">Sign Out</string>
+    <string name="settings">Settings</string>
 
     //Pantalla Inicial_
     <string name="titulo_ingresa">Ingresa</string>

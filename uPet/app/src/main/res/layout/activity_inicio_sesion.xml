@@ -26,7 +26,7 @@
         android:layout_height="40dp"
         android:background="@drawable/roundcornersbutton"
         android:text="@string/login"
-        app:layout_constraintBottom_toTopOf="@+id/textView28"
+        app:layout_constraintBottom_toTopOf="@+id/textviewinicio1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -38,7 +38,7 @@
         android:text="@string/mensaje_registro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+        app:layout_constraintTop_toBottomOf="@+id/textviewinicio1" />
 
     <ImageView
         android:id="@+id/logo"
@@ -51,7 +51,7 @@
         app:srcCompat="@drawable/logoupet_nuevo" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textviewinicio2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -60,43 +60,43 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/registro_celular"
+        android:id="@+id/username"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:fontFamily="@font/playfair_display"
-        android:hint="@string/nombre_usuario_ingreso"
+        android:hint="@string/e_mail"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/textView15"
+        app:layout_constraintBottom_toTopOf="@+id/textviewinicio2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/registro_contra"
+        android:id="@+id/password"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="@string/contrasena_ingreso"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/textviewinicio2" />
 
     <TextView
-        android:id="@+id/textView28"
+        android:id="@+id/textviewinicio1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/textviewinicio2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
