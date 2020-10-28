@@ -27,14 +27,14 @@ public class HomeUsuarioActivity extends AppCompatActivity {
         btnPerfil.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
+                startActivity(new Intent(getBaseContext(), VerPerfil.class));
             }
         });
 
         btnSitiosInteres.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
+                startActivity(new Intent(getBaseContext(), LugaresdeInteres.class));
             }
         });
 
@@ -48,7 +48,7 @@ public class HomeUsuarioActivity extends AppCompatActivity {
         btnAdminMascotas.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
+                startActivity(new Intent(getBaseContext(), ListaMascotas.class));
             }
         });
 
