@@ -26,11 +26,13 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Spinner
-        android:id="@+id/spinner"
+    <Button
+        android:id="@+id/botonFiltroFecha"
         android:layout_width="183dp"
         android:layout_height="58dp"
         android:textStyle="bold"
+        android:text="Filtrar por fecha"
+        android:onClick="selectDateSolicitantes"
         app:layout_constraintBottom_toBottomOf="@id/toolbar2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -65,10 +67,10 @@
 
     <Button
         android:id="@+id/buttonConfirmar"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:background="@color/beigePet"
+        android:background="@drawable/rounded_corners_success"
         android:text="@string/ver_solicitantes"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
