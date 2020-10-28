@@ -47,14 +47,20 @@ public class Registro extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(validateForm()==true){
-                    if(isEmailValid(email.getText().toString())==true){
-                        Intent intent = new Intent(getBaseContext(), RegistroExt.class);
-                        intent.putExtra("email", email.getText().toString());
-                        intent.putExtra("pass",pass.getText().toString());
-                        intent.putExtra("itemSpin",spin.getSelectedItem().toString());
-                        startActivity(intent);
+                    if(isPasswordValid(pass.getText().toString()))
+                    {
+                        if(isEmailValid(email.getText().toString())==true){
+                            Intent intent = new Intent(getBaseContext(), RegistroExt.class);
+                            intent.putExtra("email", email.getText().toString());
+                            intent.putExtra("pass",pass.getText().toString());
+                            intent.putExtra("itemSpin",spin.getSelectedItem().toString());
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(Registro.this, "Ingrese un correo válido por favor",Toast.LENGTH_LONG).show();
+                        }
                     }else{
-                        Toast.makeText(Registro.this, "Ingrese un correo válido por favor",Toast.LENGTH_LONG).show();
+                        pass.setText("");
+                        Toast.makeText(Registro.this, "Ingrese una contraseña de más de 6 caracteres",Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -99,6 +105,15 @@ public class Registro extends AppCompatActivity {
             usuario.setError(null);
         }
         return valid;
+    }
+
+    private boolean isPasswordValid(String password)
+    {
+        if(password.length() < 6)
+        {
+            return false;
+        }
+        return true;
     }
 
     private boolean isEmailValid(String email) {
