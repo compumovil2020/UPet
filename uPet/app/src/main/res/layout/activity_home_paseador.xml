@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/beigePet"
+    android:background="#E04149"
     tools:context=".HomePaseador">
 
     <include
@@ -20,7 +20,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="100dp"
-        android:background="@color/greenPet"
+        android:background="#EEEAE3"
         android:text="@string/home_manage_walk"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boton_perfil" />
@@ -30,7 +30,7 @@
         android:layout_width="130dp"
         android:layout_height="100dp"
         android:layout_marginEnd="50dp"
-        android:background="@color/greenPet"
+        android:background="#EEEAE3"
         android:text="@string/home_manage_pet"
         app:layout_constraintBottom_toBottomOf="@+id/boton_perfil"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="80dp"
-        android:background="@color/greenPet"
+        android:background="#EEEAE3"
         android:text="@string/home_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
         android:layout_width="130dp"
         android:layout_height="100dp"
         android:layout_marginEnd="50dp"
-        android:background="@color/greenPet"
+        android:background="#EEEAE3"
         android:text="@string/home_place_interest"
         app:layout_constraintBottom_toBottomOf="@+id/boton_adminPaseo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,9 +108,8 @@
         android:layout_height="100dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="100dp"
-        android:background="@color/greenPet"
+        android:background="#EEEAE3"
         android:text="@string/home_schedule_walk"
-        android:onClick="toCrearPaseo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boton_adminPaseo" />
 
