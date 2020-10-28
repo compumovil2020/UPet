@@ -2,10 +2,8 @@
 <selector xmlns:android = "http://schemas.android.com/apk/res/android">
     <item android:state_pressed = "false">
         <shape android:shape = "oval">
-<<<<<<< HEAD
-=======
             <corners android:radius="50dp"></corners>
->>>>>>> master
+
             <solid android:color = "@color/greenPet"/>
         </shape>
     </item>
