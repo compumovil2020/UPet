@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.proyectoupet.paseos.CrearPaseo;
+
 public class HomePaseador extends AppCompatActivity {
 
     Button botAgendarPaseo;
@@ -22,47 +24,26 @@ public class HomePaseador extends AppCompatActivity {
         setContentView(R.layout.activity_home_paseador);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
 
-        botAgendarPaseo = findViewById(R.id.boton_agPaseo);
-        botSitiosInteres = findViewById(R.id.boton_sitInteres);
-        botPerfil = findViewById(R.id.boton_perfil);
-        botAdminMascota = findViewById(R.id.boton_adminMascota);
-        botAdminPaseo = findViewById(R.id.boton_adminPaseo);
+    public void toCrearPaseo(View v){
+        startActivity(new Intent(this, CrearPaseo.class));
+    }
 
-        botAgendarPaseo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), AgendarPaseo.class));
-            }
-        });
+    public void toPaseosAgendados(View v){
+        startActivity(new Intent(getBaseContext(), PaseosAgendadosActivity.class));
+    }
 
-        botSitiosInteres.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), LugaresdeInteres.class));
-            }
-        });
+    public void toListarMascotas(View v){
+        startActivity(new Intent(getBaseContext(), ListaMascotas.class));
+        //SI ESPERO UN RESULTADO DE LA OTRA ACTIVIDAD, COLOCAR START ACTIVITY FOR RESULT
+    }
 
-        botPerfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), VerPerfil.class));
-            }
-        });
+    public void toPerfil(View v){
+        startActivity(new Intent(getBaseContext(), VerPerfil.class));
+    }
 
-        botAdminMascota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), ListaMascotas.class));
-                //SI ESPERO UN RESULTADO DE LA OTRA ACTIVIDAD, COLOCAR START ACTIVITY FOR RESULT
-            }
-        });
-
-        botAdminPaseo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), PaseosAgendadosActivity.class));
-            }
-        });
+    public void toSitiosInteres(View v){
+        startActivity(new Intent(getBaseContext(), LugaresdeInteres.class));
     }
 }

@@ -41,14 +41,19 @@
     <string name="nombre_mascota">Nombre\nmascota</string>
     <string name="tipo_mascota">Tipo de\nmascota</string>
     <string name="dueno">Dueño</string>
+    <string name="detalles_titulo">Detalles solicitante</string>
     <string name="direccion">Dirección</string>
-    <string name="imagen_mapa">Imagen Mapa</string>
+    <string name="detalles_ver_mascotas">Ver mascotas</string>
 
     //Parte Randy
     <string name="general_create">Crear</string>
     <string name="general_guardar">Guardar</string>
+    <string name="general_volver">Volver</string>
     <string name="general_delete">Eliminar</string>
     <string name="general_cancel">Cancelar</string>
+    <string name="general_confirmar">Confirmar</string>
+    <string name="general_rechazar">Rechazar</string>
+
     <string name="home_profile">Perfil</string>
     <string name="home_manage_pet">Administrar Mascota</string>
     <string name="home_manage_walk">Administrar Paseo</string>
@@ -59,9 +64,13 @@
     <string name="ce_walk_hbeg">Hora de inicio</string>
     <string name="ce_walk_hend">Hora de fin</string>
     <string name="ce_walk_maxcap">Capacidad</string>
+    <string name="ce_walk_price">Precio</string>
+    <string name="ce_walk_genrute">Definir Ruta</string>
     <string name="ce_walk_pbeg">Inicio recorrido</string>
     <string name="ce_walk_pend">Final recorrido</string>
+    <string name="ce_walk_gr">Guardar ruta</string>
     <string name="ce_walk_desc">Descripcion</string>
+    <string name="ce_walk_creado">Paseo creado con exito</string>
 
     //Parte Steven
     <string name="perfil_usuario">Perfil usuario</string>
@@ -92,4 +101,16 @@
     <string name="direccion_del_paseador">Direccion del Paseador:</string>
     <string name="nombre_del_paseador">Nombre del Paseador:</string>
     <string name="solicitar_paseo">Solicitar Paseo</string>
+    <string name="seleccionar_galeria">Seleccionar de Galeria</string>
+    <string name="usar_camara">Usar la Camara</string>
+    <string name="title_activity_seleccion_ruta_paseo">Map</string>
+
+
+
+    //permisos
+    <string name="permissions_needed">Se necesita que de acceso a los permisos</string>
+    <string name="permission_denied">Permiso denegado</string>
+    <string name="permission_denied_explanation">Sin ese permiso no puede usar esta funcionalidad</string>
+    <string name="permission_sure">Estoy seguro</string>
+    <string name="permission_retry">Reintentar</string>
 </resources>

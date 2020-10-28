@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -13,20 +14,20 @@ import android.widget.Toast;
 public class ListaMascotas extends AppCompatActivity {
 
     Button editar_crear;
-    Button eliminar;
     String[] arreglo;
+    ListView listaMascotas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_mascotas);
         initArray();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, arreglo);
-        ListView listView = (ListView) findViewById(R.id.listaMascotas);
-        listView.setAdapter(adapter);
+                R.layout.item_list_fuente, arreglo);
+        listaMascotas = (ListView) findViewById(R.id.listaMascotas);
+        listaMascotas.setAdapter(adapter);
 
         editar_crear = findViewById(R.id.buttonEditarMascota);
-        eliminar = findViewById(R.id.buttonEliminarMascota);
 
         editar_crear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,20 +36,23 @@ public class ListaMascotas extends AppCompatActivity {
             }
         });
 
-        eliminar.setOnClickListener(new View.OnClickListener() {
+        listaMascotas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Eliminado",Toast. LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(getBaseContext(), PerfilMascota.class));
             }
         });
+
+
+
     }
     private void initArray() {
-        arreglo = new String[30];
+        arreglo = new String[2];
         for (int i = 0; i < arreglo.length; i++)
             if (i % 2 == 0)
-                arreglo[i] = "hola";
+                arreglo[i] = "Manchas";
             else
-                arreglo[i] = "mascotas";
+                arreglo[i] = "Pecas";
     }
 
 }

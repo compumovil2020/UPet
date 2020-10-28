@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEEAE3"
+    android:background="@color/beigePet"
     tools:context=".ListaMascotas">
 
     <include
@@ -18,38 +18,27 @@
         android:id="@+id/listaMascotas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#EEEAE3"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        android:layout_marginBottom="24dp"
+        android:background="@color/beigePet"
+        app:layout_constraintBottom_toTopOf="@+id/buttonEditarMascota"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </ListView>
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/buttonEditarMascota"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginBottom="24dp"
+        android:layout_weight="1"
+        android:background="@drawable/roundcorner"
+        android:fontFamily="@font/playfair_display_black"
+        android:text="Añadir Mascota"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/buttonEditarMascota"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="1"
-            android:text="Crear / Editar" />
-
-        <Button
-            android:id="@+id/buttonEliminarMascota"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Eliminar" />
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
