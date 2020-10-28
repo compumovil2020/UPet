@@ -12,12 +12,6 @@ import com.example.proyectoupet.paseos.CrearPaseo;
 
 public class HomePaseador extends AppCompatActivity {
 
-    Button botAgendarPaseo;
-    Button botSitiosInteres;
-    Button botPerfil;
-    Button botAdminMascota;
-    Button botAdminPaseo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

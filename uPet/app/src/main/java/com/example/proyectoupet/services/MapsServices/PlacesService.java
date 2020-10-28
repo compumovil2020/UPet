@@ -15,16 +15,16 @@ import java.util.stream.Collectors;
 
 public class PlacesService {
 
-    public void findPlaces(Activity activeActivity, GoogleMap mMap, LatLng origin, List<String> placeTypes, List<Marker> markers){
-        String uri = getRequestedUrl(activeActivity,origin,placeTypes);
-        new TaskPlacesRequest(mMap,markers).execute(uri);
+    public void findPlaces(Activity activeActivity, GoogleMap mMap, LatLng origin, String placeType, List<Marker> markers,float color){
+        String uri = getRequestedUrl(activeActivity,origin,placeType);
+        new TaskPlacesRequest(mMap,markers,color).execute(uri);
     }
 
-    private String getRequestedUrl(Activity activeActivity, LatLng origin, List<String> placeType) {
+    private String getRequestedUrl(Activity activeActivity, LatLng origin, String placeType) {
         String strOrigin = "location=" + origin.latitude + "," + origin.longitude;
         String radius = "radius=5000";
         String sensor = "sensor=true";
-        String types = "type="+placeType.stream().collect(Collectors.joining(","));
+        String types = "type="+placeType;
 
         String param = strOrigin + "&" + radius + "&" + sensor + "&" + types;
         String output = "json";

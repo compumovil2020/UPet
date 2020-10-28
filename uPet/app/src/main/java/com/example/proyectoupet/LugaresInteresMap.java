@@ -139,15 +139,19 @@ public class LugaresInteresMap  extends FragmentActivity implements OnMapReadyCa
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
         List<String> queryTypes = new ArrayList<>();
+        List<String> hexColors = new ArrayList<>();
         if(types.get(PlaceOfInteresType.PARK)){
             queryTypes.add("park");
+            hexColors.add("#2bb555");
         }
         if(types.get(PlaceOfInteresType.PETSTORE)){
             queryTypes.add("pet_store");
+            hexColors.add("#1abec9");
         }
         if(types.get(PlaceOfInteresType.VETERINAY)){
             queryTypes.add("veterinary_care");
+            hexColors.add("#8d0cc9");
         }
-        mapService.findPlaces(LugaresInteresMap.this,userPosition, queryTypes,markerList);
+        mapService.findPlaces(LugaresInteresMap.this,userPosition, queryTypes,markerList,hexColors);
     }
 }

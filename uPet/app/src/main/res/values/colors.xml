@@ -5,4 +5,7 @@
     <color name="blackPet">#000000</color>
     <color name="success">#22bb33</color>
     <color name="danger">#bb2124</color>
+    <color name="places_park">#2bb555</color>
+    <color name="places_petstore">#1abec9</color>
+    <color name="places_veterinary">#8d0cc9</color>
 </resources>
