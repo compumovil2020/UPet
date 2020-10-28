@@ -2,6 +2,7 @@ package com.example.proyectoupet.services;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,9 +75,12 @@ public class CustomListviewMascotasCheckboxAdapter extends BaseAdapter {
         }
         holder.check.setTag(i);
 
+        Typeface tf = Typeface.createFromAsset(context.getAssets(),"fonts/playfair_display_black");
+
         holder.nombreMascota.setText(nombresPerros[i]);
         holder.nombreMascota.setTextColor(Color.BLACK);
-        //holder.imagenMascota.setImageResource(perros[i]);
+        holder.nombreMascota.setTypeface(tf);
+        holder.imagenMascota.setImageResource(R.drawable.perfil);
 
 
         if(seleccionados[i] == true)

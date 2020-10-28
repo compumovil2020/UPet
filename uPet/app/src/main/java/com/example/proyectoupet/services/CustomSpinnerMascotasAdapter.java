@@ -3,6 +3,7 @@ package com.example.proyectoupet.services;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +47,11 @@ public class CustomSpinnerMascotasAdapter extends BaseAdapter {
         ImageView icon = (ImageView) view.findViewById(R.id.imagenMascota);
         TextView names = (TextView) view.findViewById(R.id.nombreMascota);
         Resources resources = context.getResources();
-        //icon.setImageResource(perros[i]);
+        icon.setImageResource(R.drawable.perfil);
+        Typeface tf = Typeface.createFromAsset(context.getAssets(),"fonts/playfair_display_black");
         names.setText(nombresPerros[i]);
         names.setTextColor(Color.BLACK);
+        names.setTypeface(tf);
         return view;
     }
 }
