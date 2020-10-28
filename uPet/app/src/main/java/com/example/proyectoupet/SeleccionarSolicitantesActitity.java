@@ -88,11 +88,11 @@ public class SeleccionarSolicitantesActitity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id==R.id.perfil)
+        if(id==R.id.signout)
         {
             Toast.makeText(getApplicationContext(),"Click Perfil",Toast.LENGTH_SHORT).show();
         }
-        else if(id==R.id.mascotas)
+        else if(id==R.id.settings)
         {
             Toast.makeText(getApplicationContext(),"Click Mascotas",Toast.LENGTH_SHORT).show();
         }

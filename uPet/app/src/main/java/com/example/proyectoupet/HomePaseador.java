@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.proyectoupet.paseos.CrearPaseo;
-
 public class HomePaseador extends AppCompatActivity {
 
     Button botAgendarPaseo;
@@ -30,6 +28,13 @@ public class HomePaseador extends AppCompatActivity {
         botPerfil = findViewById(R.id.boton_perfil);
         botAdminMascota = findViewById(R.id.boton_adminMascota);
         botAdminPaseo = findViewById(R.id.boton_adminPaseo);
+
+        botAgendarPaseo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getBaseContext(), AgendarPaseo.class));
+            }
+        });
 
         botSitiosInteres.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +64,5 @@ public class HomePaseador extends AppCompatActivity {
                 startActivity(new Intent(getBaseContext(), PaseosAgendadosActivity.class));
             }
         });
-    }
-
-    public void toCrearPaseo(View v){
-        startActivity(new Intent(this, CrearPaseo.class));
     }
 }

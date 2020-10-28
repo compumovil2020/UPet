@@ -3,18 +3,21 @@
     <string name="siguiente">Siguiente</string>
     <string name="cancelar">Cancelar</string>
     <string name="registro">Registrarse</string>
+    <string name="atras">Atrás</string>
+    <string name="signout">Sign Out</string>
+    <string name="settings">Settings</string>
 
     //Pantalla Inicial_
     <string name="titulo_ingresa">Ingresa</string>
-    <string name="nombre_usuario_ingreso">Nombre de Usuario</string>
-    <string name="contrasena_ingreso">Contraseña</string>
+    <string name="nombre_usuario_ingreso">usuario</string>
+    <string name="contrasena_ingreso">contraseña</string>
     <string name="login">Log in</string>
-    <string name="mensaje_registro">No tienes cuenta? Regístrate!</string>
+    <string name="mensaje_registro">Regístrate</string>
     <string name="olvidar_contrasena">Olvidó su contraseña?</string>
 
     //Pantalla de registro
     <string name="titulo_registro">Registro</string>
-    <string name="nombre_usuario_registro">Nombre de Usuario</string>
+    <string name="nombre_usuario_registro">Nombre Usuario</string>
     <string name="nombre_registro">Nombres</string>
     <string name="apellidos_registro">Apellidos</string>
     <string name="email_registro">E-mail</string>
@@ -49,7 +52,6 @@
     <string name="general_guardar">Guardar</string>
     <string name="general_delete">Eliminar</string>
     <string name="general_cancel">Cancelar</string>
-
     <string name="home_profile">Perfil</string>
     <string name="home_manage_pet">Administrar Mascota</string>
     <string name="home_manage_walk">Administrar Paseo</string>
@@ -60,8 +62,6 @@
     <string name="ce_walk_hbeg">Hora de inicio</string>
     <string name="ce_walk_hend">Hora de fin</string>
     <string name="ce_walk_maxcap">Capacidad</string>
-    <string name="ce_walk_price">Precio</string>
-    <string name="ce_walk_genrute">Definir Ruta</string>
     <string name="ce_walk_pbeg">Inicio recorrido</string>
     <string name="ce_walk_pend">Final recorrido</string>
     <string name="ce_walk_desc">Descripcion</string>
@@ -95,13 +95,4 @@
     <string name="direccion_del_paseador">Direccion del Paseador:</string>
     <string name="nombre_del_paseador">Nombre del Paseador:</string>
     <string name="solicitar_paseo">Solicitar Paseo</string>
-    <string name="title_activity_seleccion_ruta_paseo">Map</string>
-
-
-    //permisos
-    <string name="permissions_needed">Se necesita que de acceso a los permisos</string>
-    <string name="permission_denied">Permiso denegado</string>
-    <string name="permission_denied_explanation">Sin ese permiso no puede usar esta funcionalidad</string>
-    <string name="permission_sure">Estoy seguro</string>
-    <string name="permission_retry">Reintentar</string>
 </resources>
