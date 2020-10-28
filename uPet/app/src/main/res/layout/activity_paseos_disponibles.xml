@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEEAE3"
+    android:background="@color/beigePet"
     tools:context=".PaseosDisponibles">
 
     <include
@@ -21,6 +21,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="24dp"
         android:entries="@array/tiposdelugar"
+        android:background="@drawable/roundedbutton"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,6 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/roundedbutton"
+            android:fontFamily="@font/playfair_display_black"
+            android:textAllCaps="false"
             android:text="@string/ver_mapa" />
 
         <Button
@@ -80,6 +84,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/roundedbutton"
+            android:fontFamily="@font/playfair_display_black"
+            android:textAllCaps="false"
             android:text="@string/detalle_paseo" />
     </LinearLayout>
 

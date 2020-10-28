@@ -35,22 +35,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewPerfil">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageViewPerfil"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_gravity="center"
                     android:layout_marginTop="18dp"
-                    android:background="@drawable/img"
-                    android:contentDescription="TODO"
-                    android:scaleType="fitXY" />
+                    android:src="@drawable/perfil"
+                    app:civ_border_color="@color/greenPet"
+                    app:civ_border_width="2dp" />
 
                 <ImageView
                     android:id="@+id/imageView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="bottom|right"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
+                    android:background="@drawable/round"
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
             </FrameLayout>
 
             <LinearLayout
@@ -69,7 +69,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="@color/greenPet"
+                    android:background="@drawable/roundedbutton"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/playfair_display_bold"
                     android:text="Actualizar" />
 
@@ -83,7 +84,8 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:layout_weight="1"
-                    android:background="@color/greenPet"
+                    android:background="@drawable/roundedbutton"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/playfair_display_bold"
                     android:text="Volver" />
             </LinearLayout>

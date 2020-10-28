@@ -44,8 +44,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="@color/greenPet"
+                    android:background="@drawable/roundedbutton"
                     android:fontFamily="@font/playfair_display_bold"
+                    android:textAllCaps="false"
                     android:text="Editar" />
 
                 <Button
@@ -59,8 +60,9 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:layout_weight="1"
-                    android:background="@color/greenPet"
+                    android:background="@drawable/roundedbutton"
                     android:fontFamily="@font/playfair_display_bold"
+                    android:textAllCaps="false"
                     android:text="Volver" />
             </LinearLayout>
 
@@ -166,11 +168,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView4"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/img"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/perfil"
+                app:civ_border_color="@color/greenPet"
+                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ver_titulo" />

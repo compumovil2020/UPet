@@ -39,6 +39,7 @@
         android:text="#Nombre"
         android:gravity="center"
         android:textAlignment="center"
+        android:fontFamily="@font/playfair_display_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map" />
@@ -52,6 +53,7 @@
         android:layout_marginEnd="40dp"
         android:gravity="center"
         android:text="#Punto de recogida"
+        android:fontFamily="@font/playfair_display_black"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +76,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="5dp"
+            android:fontFamily="@font/playfair_display_black"
             android:layout_weight="1"
+            android:textAllCaps="false"
             android:onClick="openConfirmarSolicitante"
             android:text="@string/general_confirmar"
             android:background="@drawable/rounded_corners_success"/>
@@ -85,6 +89,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:fontFamily="@font/playfair_display_black"
+            android:textAllCaps="false"
             android:onClick="openCancelarSolicitante"
             android:text="@string/general_rechazar"
             android:background="@drawable/rounded_corners_danger"/>
@@ -106,6 +112,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="5dp"
+            android:background="@drawable/roundedbutton"
+            android:fontFamily="@font/playfair_display_black"
+            android:textAllCaps="false"
             android:layout_weight="1"
             android:text="@string/detalles_ver_mascotas" />
 
@@ -114,7 +123,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
+            android:background="@drawable/roundedbutton"
+            android:fontFamily="@font/playfair_display_black"
             android:layout_weight="1"
+            android:textAllCaps="false"
             android:text="@string/general_volver"
             android:onClick="volverDetalle"/>
     </LinearLayout>
