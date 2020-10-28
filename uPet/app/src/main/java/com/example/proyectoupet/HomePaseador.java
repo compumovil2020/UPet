@@ -14,13 +14,16 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.proyectoupet.paseos.CrearPaseo;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomePaseador extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private DrawerLayout sideBar;
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_paseador);
 
@@ -39,8 +42,10 @@ public class HomePaseador extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.logout){
-            System.out.println("salio");
-            ///aqui agregas tu logica
+            mAuth.signOut();
+            Intent intent = new Intent(HomePaseador.this, InicioSesion.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         return true;
     }

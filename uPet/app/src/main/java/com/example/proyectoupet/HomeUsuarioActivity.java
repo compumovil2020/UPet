@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class HomeUsuarioActivity extends AppCompatActivity {
 
     private ImageButton btnPerfil;
@@ -19,11 +21,13 @@ public class HomeUsuarioActivity extends AppCompatActivity {
     private ImageButton btnSitiosInteres;
     private ImageButton btnAdminMascotas;
     private Toolbar toolbar;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_usuario);
+        mAuth = FirebaseAuth.getInstance();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,8 +77,10 @@ public class HomeUsuarioActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.logout){
-            System.out.println("salio");
-            ///aqui agregas tu logica
+            mAuth.signOut();
+            Intent intent = new Intent(HomeUsuarioActivity.this, InicioSesion.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         return true;
     }
