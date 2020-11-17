@@ -21,21 +21,24 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Paseo implements Serializable {
 
-    Date inicioPaseo;
+    String fecha;
 
-    Date finPaseo;
+    String horaInicio;
+
+    String horaFin;
 
     int capacidad;
 
-    BigDecimal tarifa;
+    Double precio;
 
     List<Parada> paradas;
 
-    public Paseo(Date inicioPaseo, Date finPaseo, int capacidad, BigDecimal tarifa, List<Parada> paradas) {
-        this.inicioPaseo = inicioPaseo;
-        this.finPaseo = finPaseo;
+    public Paseo(String fecha, String horaInicio, String horaFin, int capacidad, Double precio, List<Parada> paradas) {
+        this.fecha = fecha;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
         this.capacidad = capacidad;
-        this.tarifa = tarifa;
+        this.precio = precio;
         this.paradas = paradas;
     }
 }

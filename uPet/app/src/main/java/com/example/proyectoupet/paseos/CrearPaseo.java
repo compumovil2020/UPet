@@ -1,5 +1,6 @@
 package com.example.proyectoupet.paseos;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -7,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,11 +18,17 @@ import android.widget.Toast;
 
 import com.example.proyectoupet.R;
 import com.example.proyectoupet.model.Parada;
+import com.example.proyectoupet.model.Paseo;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -31,6 +39,8 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
     static final int REQUEST_POINTS = 234;
 
     Calendar cr;
+
+    FirebaseFirestore db;
 
     @NotEmpty
     EditText crearPaseoDate;
@@ -47,10 +57,10 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
 
     @NotEmpty
     @Pattern(regex = "[0-9]+")
-    EditText crearPaseoTarifa;
+    EditText crearPaseoPrecio;
 
     Button createButton ;
-    ArrayList<Parada> stops;
+    ArrayList<Parada> paradas;
 
 
     private Validator validator;
@@ -62,6 +72,7 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.home_schedule_walk);
         setSupportActionBar(toolbar);
+        db = FirebaseFirestore.getInstance();
         init();
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -75,7 +86,7 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
         crearPaseoHora = findViewById(R.id.crearPaseoHora);
         crearPaseoHoraFin = findViewById(R.id.crearPaseoHoraFin);
         crearPaseoCapacidad = findViewById(R.id.crearPaseoCapacidad);
-        crearPaseoTarifa = findViewById(R.id.crearPaseoTarifa);
+        crearPaseoPrecio = findViewById(R.id.crearPaseoTarifa);
     }
 
     public void seleccionarFecha(View view) {
@@ -85,7 +96,8 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
         new DatePickerDialog(CrearPaseo.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int nYear, int nMonth, int nDay) {
-                crearPaseoDate.setText(nDay+"/"+nMonth+"/"+nYear);
+                nMonth ++;
+                crearPaseoDate.setText(nDay+"/"+(nMonth < 10 ? "0"+nMonth : nMonth)+"/"+nYear);
             }
         }, year,month,day).show();
     }
@@ -97,7 +109,7 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 EditText aux = (EditText) view;
-                aux.setText(i+":"+i1);
+                aux.setText((i < 10 ? "0"+i : i)+":"+(i1 < 10 ? "0"+i1 : i1));
             }
         },hour,minute,true).show();
     }
@@ -109,8 +121,8 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
     @Override
     public void onValidationSucceeded() {
         Intent i = new Intent(this,SeleccionRutaPaseo.class);
-        if(stops != null){
-            i.putParcelableArrayListExtra("stops",this.stops);
+        if(paradas != null){
+            i.putParcelableArrayListExtra("stops",this.paradas);
         }
         startActivityForResult(i,REQUEST_POINTS);
     }
@@ -134,18 +146,34 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
         super.onActivityResult(requestCode, resultCode, intent);
         Bundle extras = intent.getExtras();
         if(extras != null) {
-            stops = extras.getParcelableArrayList("stops");
-            stops.forEach(x-> {
+            paradas = extras.getParcelableArrayList("stops");
+            paradas.forEach(x-> {
                 System.out.println("!----- "+x.getLatitude()+"----"+x.getLongitude());
             });
+
             createButton.setVisibility(View.VISIBLE);
         }
     }
 
     public void createWalk(View v){
+        db.collection("paseosAgendados").add(
+                new Paseo(crearPaseoDate.getText().toString(),crearPaseoHora.getText().toString()
+                        ,crearPaseoHoraFin.getText().toString(),Integer.parseInt(crearPaseoCapacidad.getText().toString()),
+                        new Double(crearPaseoPrecio.getText().toString()),paradas)).
+                addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Paseo", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        Toast.makeText(CrearPaseo.this,R.string.ce_walk_creado,Toast.LENGTH_SHORT);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("Paseo", "Error adding document", e);
+            }
+        });
 
-        Toast.makeText(this,R.string.ce_walk_creado,Toast.LENGTH_SHORT);
-        finish();
     }
 
     public void toCancelar(View v)
