@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proyectoupet.model.Mascota;
+import com.example.proyectoupet.services.ImageService;
+import com.example.proyectoupet.services.ImageServiceFunction;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.io.IOException;
 
 public class PerfilMascota extends AppCompatActivity {
     public static final String IMAGE_ROUTE = "fotos_mascotas/";
@@ -67,20 +70,11 @@ public class PerfilMascota extends AppCompatActivity {
     private void cargarImagen(String key){
         try {
             File localFile = File.createTempFile(key, "jpg");
-            StorageReference imageRef = FirebaseStorage.getInstance().getReference(IMAGE_ROUTE).child(key);
-            imageRef.getFile(localFile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            imagen_mascota.setImageIcon(Icon.createWithFilePath(localFile.getPath()));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-
-                }
-            });
-        }catch (Exception e){
+            ImageServiceFunction function = (params) -> {
+                imagen_mascota.setImageIcon(Icon.createWithFilePath(localFile.getPath()));
+            };
+            ImageService.downloadImage(IMAGE_ROUTE+key,localFile,function);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
