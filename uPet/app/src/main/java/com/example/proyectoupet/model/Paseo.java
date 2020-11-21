@@ -1,13 +1,6 @@
 package com.example.proyectoupet.model;
 
-import android.widget.EditText;
-
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Pattern;
-
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
@@ -21,6 +14,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Paseo implements Serializable {
 
+    String userId;
+
     String fecha;
 
     String horaInicio;
@@ -33,7 +28,8 @@ public class Paseo implements Serializable {
 
     List<Parada> paradas;
 
-    public Paseo(String fecha, String horaInicio, String horaFin, int capacidad, Double precio, List<Parada> paradas) {
+    public Paseo(String userId, String fecha, String horaInicio, String horaFin, int capacidad, Double precio, List<Parada> paradas) {
+        this.userId = userId;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;

@@ -21,6 +21,7 @@ import com.example.proyectoupet.model.Parada;
 import com.example.proyectoupet.model.Paseo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -41,6 +42,7 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
     Calendar cr;
 
     FirebaseFirestore db;
+    FirebaseAuth firebaseAuth;
 
     @NotEmpty
     EditText crearPaseoDate;
@@ -73,6 +75,7 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
         toolbar.setTitle(R.string.home_schedule_walk);
         setSupportActionBar(toolbar);
         db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         init();
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -157,7 +160,7 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
 
     public void createWalk(View v){
         db.collection("paseosAgendados").add(
-                new Paseo(crearPaseoDate.getText().toString(),crearPaseoHora.getText().toString()
+                new Paseo(firebaseAuth.getCurrentUser().getUid(),crearPaseoDate.getText().toString(),crearPaseoHora.getText().toString()
                         ,crearPaseoHoraFin.getText().toString(),Integer.parseInt(crearPaseoCapacidad.getText().toString()),
                         new Double(crearPaseoPrecio.getText().toString()),paradas)).
                 addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

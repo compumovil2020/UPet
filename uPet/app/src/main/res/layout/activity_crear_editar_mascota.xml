@@ -137,6 +137,7 @@
         android:fontFamily="@font/playfair_display_black"
         android:textAllCaps="false"
         android:text="Guardar"
+        android:onClick="crearEditarMascotaSubmit"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
