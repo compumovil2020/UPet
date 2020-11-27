@@ -8,9 +8,11 @@
         <option name="disableWrapperSourceDistributionNotification" value="true" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="C:/../../Gradle/gradle-6.3" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../../../Gradle/gradle-6.3" />
         <option name="modules">
           <set>
+            <option value="$PROJECT_DIR$/../flutter_module" />
+            <option value="$PROJECT_DIR$/../flutter_module/.android/Flutter" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
           </set>

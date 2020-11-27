@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class  UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int MAP_PERMISSION = 11;
     private static final int REQUEST_CHECK_SETTINGS = 3;
