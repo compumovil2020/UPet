@@ -29,6 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".UserChat"></activity>
+        <activity android:name="io.flutter.embedding.android.FlutterActivity" />
         <activity android:name=".UsuarioVerDetallesPaseo" />
         <activity android:name=".UsuarioSeguimientoPaseadorActivity" />
         <activity android:name=".PerfilMascota" />

@@ -14,12 +14,16 @@ import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import io.flutter.embedding.android.FlutterActivity;
+
+
 public class HomeUsuarioActivity extends AppCompatActivity {
 
     private ImageButton btnPerfil;
     private ImageButton btnAdminPaseos;
     private ImageButton btnSitiosInteres;
     private ImageButton btnAdminMascotas;
+    private ImageButton btnChat;
     private Toolbar toolbar;
     private FirebaseAuth mAuth;
 
@@ -35,6 +39,7 @@ public class HomeUsuarioActivity extends AppCompatActivity {
         btnAdminPaseos = findViewById(R.id.btnAdminPaseosUsuario);
         btnSitiosInteres = findViewById(R.id.btnSitiosInteresUsuario);
         btnAdminMascotas = findViewById(R.id.btnAdminMascotasUsuario);
+        btnChat = findViewById(R.id.boton_chat);
 
         btnPerfil.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -61,6 +66,13 @@ public class HomeUsuarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 startActivity(new Intent(getBaseContext(), ListaMascotas.class));
+            }
+        });
+
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(FlutterActivity.createDefaultIntent(getBaseContext()));
             }
         });
 
