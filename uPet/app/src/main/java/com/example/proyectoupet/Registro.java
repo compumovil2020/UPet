@@ -71,7 +71,7 @@ public class Registro extends AppCompatActivity implements Validator.ValidationL
         Intent i = new Intent(this,RegistroExt.class);
         i.putExtra("nombreUsuario",usuario.getText().toString());
         i.putExtra("nombre",nombre.getText().toString());
-        i.putExtra("apellido",nombre.getText().toString());
+        i.putExtra("apellido",apellido.getText().toString());
         i.putExtra("tipoUsuario",String.valueOf(spin.getSelectedItem()));
         i.putExtra("email",email.getText().toString());
         i.putExtra("contrasena", pass.getText().toString());
