@@ -16,11 +16,15 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proyectoupet.model.Parada;
+import com.example.proyectoupet.model.Paseo;
+import com.example.proyectoupet.model.UserData;
 import com.example.proyectoupet.services.MapsServices.MapService;
 import com.example.proyectoupet.services.permissionService.PermissionService;
 import com.google.android.gms.common.api.ApiException;
@@ -45,6 +49,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +65,18 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
 
     private static final int MAP_PERMISSION = 11;
     private static final int REQUEST_CHECK_SETTINGS = 3;
+
+    private List<Paseo> paseosList;
+    private List<String> idPaseos;
+    private String idPaseo;
+    private List<UserData> paseadores;
+    private String fecha;
+    private int paseoActualPos;
+
+    private List<LatLng> puntosRuta;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
 
     private PermissionService permissionService;
 
@@ -67,34 +89,44 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
     private MapService mapService;
     LatLng UA;
     boolean actualizarRuta = false;
-    private int tipoRuta;
 
+
+    private TextView txtNombrePaseador;
+
+    private TextView txtFecha;
+
+    private TextView txtHora;
+
+    private TextView txtNumMascotas;
+
+    private TextView txtRanking;
+
+    private TextView txtCosto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_buscar_paseo);
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         permissionService = new PermissionService();
-        TextView txtNombrePaseador = findViewById(R.id.txtNombrePaseadorBuscarPaseo);
-        txtNombrePaseador.setText("Ricardo Arjona");
-        TextView txtFecha = findViewById(R.id.txtFechaBuscarPaseo);
-        txtFecha.setText("11 de Noviembre");
-        TextView txtHora = findViewById(R.id.txtHoraBuscarPaseo);
-        txtHora.setText("8:00AM");
-        TextView txtNumMascotas = findViewById(R.id.txtNumeroMascotasBuscarPaseo);
-        txtNumMascotas.setText("5 Mascotas");
-        TextView txtRanking = findViewById(R.id.txtRankingBuscarPaseo);
-        txtRanking.setText("Excelente");
-        TextView txtCosto = findViewById(R.id.txtCostoBuscarPaseo);
-        txtCosto.setText("10000$");
+        txtNombrePaseador = findViewById(R.id.txtNombrePaseadorBuscarPaseo);
+        txtFecha = findViewById(R.id.txtFechaBuscarPaseo);
+        txtHora = findViewById(R.id.txtHoraBuscarPaseo);
+        txtNumMascotas = findViewById(R.id.txtNumeroMascotasBuscarPaseo);
+        txtRanking = findViewById(R.id.txtRankingBuscarPaseo);
+        txtCosto = findViewById(R.id.txtCostoBuscarPaseo);
+        puntosRuta = new ArrayList<>();
         Intent intent = getIntent();
-        tipoRuta = Integer.parseInt(intent.getStringExtra("TIPO_RUTA"));
+        idPaseo = intent.getExtras().getString("idPaseo");
+        fecha  = intent.getExtras().getString("fecha");
+        initPaseo();
         Button btnSeleccionar = findViewById(R.id.btnSeleccionarBP);
         btnSeleccionar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent i = new Intent(getBaseContext(), UsuarioSeleccionarPuntoActivity.class);
-                i.putExtra("TIPO_RUTA", tipoRuta+"");
+                i.putExtra("idPaseo",idPaseos.get(paseoActualPos));
                 startActivity(i);
             }
         });
@@ -102,18 +134,19 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
         btnSiguiente.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                actualizarRuta = false;
-                if(tipoRuta == 2)
+                if(paseosList.size() != 1)
                 {
-                    tipoRuta = 5;
+                    actualizarRuta = false;
+                    if(paseoActualPos == paseosList.size()-1)
+                    {
+                        paseoActualPos = 0;
+                    }
+                    else{
+                        paseoActualPos++;
+                    }
+                    setPaseoActual(paseoActualPos);
                 }
-                else if(tipoRuta == 3){
-                    tipoRuta = 2;
-                }
-                else if(tipoRuta == 5)
-                {
-                    tipoRuta = 3;
-                }
+
             }
         });
         Button btnVolver = findViewById(R.id.btnVolverBP);
@@ -151,11 +184,11 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
                         mMap.clear();
                         mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionactual));
-                        List<LatLng> puntosRuta = obtenerRutas(tipoRuta);
+                        List<LatLng> puntosRuta  = getPuntosRuta();
                         for (LatLng puntoRuta: puntosRuta) {
                             mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta));
                         }
-                        mapService.makeRoute(UsuarioBuscarPaseoActivity.this, puntosRuta , MapService.Order.CLOSEST);
+                        mapService.makeRoute(UsuarioBuscarPaseoActivity.this, puntosRuta , MapService.Order.FIFO);
                         actualizarRuta = true;
                     }
                 }
@@ -166,6 +199,97 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
         permissionService.requestPermission(this, permisos);
         checkSettings();
 
+    }
+
+    public void initPaseo()
+    {
+        if(fecha.equals("No"))
+        {
+            db.collection("paseosAgendados").
+                    addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            paseosList = new ArrayList<>();
+                            idPaseos = new ArrayList<>();
+                            paseadores = new ArrayList<>();
+                            puntosRuta = new ArrayList<>();
+                            int posSet = 0;
+                            for(DocumentSnapshot document : value.getDocuments()){
+                                idPaseos.add(document.getId());
+                                Paseo p = document.toObject(Paseo.class);
+                                paseosList.add(p);
+                                db.collection("usuarios").document(p.getUserId()).get().addOnSuccessListener(
+                                        new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                paseadores.add(documentSnapshot.toObject(UserData.class));
+                                                int posSet = 0;
+                                                if(document.getId().equals(idPaseo))
+                                                {
+                                                    posSet = idPaseos.size()-1;
+                                                    setPaseoActual(posSet);
+                                                }
+                                            }
+                                        }
+                                );
+                            }
+
+                        }
+                    });
+        }
+        else {
+            db.collection("paseosAgendados")
+                    .whereEqualTo("fecha",fecha).
+                    addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            paseosList = new ArrayList<>();
+                            idPaseos = new ArrayList<>();
+                            paseadores = new ArrayList<>();
+                            puntosRuta = new ArrayList<>();
+                            for(DocumentSnapshot document : value.getDocuments()){
+                                idPaseos.add(document.getId());
+                                Paseo p = document.toObject(Paseo.class);
+                                paseosList.add(p);
+                                db.collection("usuarios").document(p.getUserId()).get().addOnSuccessListener(
+                                        new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                paseadores.add(documentSnapshot.toObject(UserData.class));
+                                                int posSet = 0;
+                                                if(document.getId().equals(idPaseo))
+                                                {
+                                                    posSet = idPaseos.size()-1;
+                                                    setPaseoActual(posSet);
+                                                }
+                                            }
+                                        }
+                                );
+                            }
+
+
+                        }
+                    });
+        }
+
+    }
+
+    public void setPaseoActual(int posicion)
+    {
+        UserData paseador = paseadores.get(posicion);
+        Paseo paseoActual = paseosList.get(posicion);
+        String nombre = paseador.getNombre() + " " + paseador.getApellido();
+        String precio = "$"+paseoActual.getPrecio();
+        String hora = paseoActual.getHoraInicio() + "-" + paseoActual.getHoraFin();
+        txtNombrePaseador.setText(nombre);
+        txtCosto.setText(precio);
+        txtFecha.setText(paseoActual.getFecha());
+        txtHora.setText(hora);
+        txtRanking.setText("Excelente");
+        txtNumMascotas.setText(paseoActual.getCapacidad()+"");
+        obtenerRutas(paseoActual);
+        actualizarRuta = false;
+        this.paseoActualPos = posicion;
     }
 
     protected LocationRequest createLocationRequest() {
@@ -231,6 +355,11 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
         }
     }
 
+    public List<LatLng> getPuntosRuta()
+    {
+        return this.puntosRuta;
+    }
+
     private void startLocationUpdates() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
@@ -276,23 +405,14 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
     }
 
 
-    public List<LatLng> obtenerRutas(int i)
+    public void obtenerRutas(Paseo paseo)
     {
         List<LatLng> ruta = new ArrayList<LatLng>();
-        ruta.add(new LatLng(4.675336, -74.058865));
-        ruta.add(new LatLng(4.682190, -74.060082));
-        if(i > 3)
+        for(Parada parada: paseo.getParadas())
         {
-            ruta.add(new LatLng(4.680294, -74.057813));
+            LatLng punto = new LatLng(parada.getLatitude(),parada.getLongitude());
+            ruta.add(punto);
         }
-        if(i > 4)
-        {
-            ruta.add(new LatLng(4.673896, -74.044640));
-        }
-        if(i > 5)
-        {
-            ruta.add(new LatLng(4.681056, -74.046577));
-        }
-        return ruta;
+        puntosRuta = ruta;
     }
 }

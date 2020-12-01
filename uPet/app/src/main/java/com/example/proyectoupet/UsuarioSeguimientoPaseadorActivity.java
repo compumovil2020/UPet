@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.proyectoupet.model.Mascota;
 import com.example.proyectoupet.services.CustomSpinnerMascotasAdapter;
 import com.example.proyectoupet.services.MapsServices.MapService;
 import com.example.proyectoupet.services.permissionService.PermissionService;
@@ -55,6 +57,11 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
 
     private PermissionService permissionService;
 
+    private List<String> idMascotas;
+    private List<String> nombreMascotas;
+    private List<Mascota> mascotas;
+    private List<Bitmap> imagenMascotas;
+
     private GoogleMap mMap;
     private Marker mMarkerPosActual;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -83,7 +90,8 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
         permissionService = new PermissionService();
         Spinner spinnerMascotas = findViewById(R.id.spinnerSeguimientoPaseador);
         spinnerMascotas.setOnItemSelectedListener(this);
-        CustomSpinnerMascotasAdapter customAdapter = new CustomSpinnerMascotasAdapter(getApplicationContext(),perros,nombresPerros);
+
+        CustomSpinnerMascotasAdapter customAdapter = new CustomSpinnerMascotasAdapter(getApplicationContext(),idMascotas,nombreMascotas,imagenMascotas);
         spinnerMascotas.setAdapter(customAdapter);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapSeguimientoPaseador);

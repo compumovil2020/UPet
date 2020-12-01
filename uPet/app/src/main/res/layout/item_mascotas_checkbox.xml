@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/item_mascotas_checkbox"
+    android:background="@color/beigePet"
     android:orientation="horizontal">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imagenMascotaCheck"
         android:layout_width="0dp"
         android:layout_height="39dp"
         android:layout_weight="1.5"
-        android:background="@drawable/circle_button"
+        android:src="@drawable/perfil"
         android:gravity="center"
-        android:scaleType="fitXY" />
+        app:civ_border_color="@color/greenPet"
+        app:civ_border_width="2dp"  />
 
     <TextView
         android:id="@+id/nombreMascotaCheck"

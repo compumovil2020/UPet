@@ -1,6 +1,7 @@
 package com.example.proyectoupet;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -15,11 +16,23 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
+import com.example.proyectoupet.model.Paseo;
+import com.example.proyectoupet.model.PaseoUsuario;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioAdministrarPaseosActivity extends AppCompatActivity {
 
+    public List<String> paseos;
+    public List<String> idPaseosAgendados;
 
     private Button btnVerDetalles;
     private Button btnBuscarPaseo;
@@ -29,22 +42,27 @@ public class UsuarioAdministrarPaseosActivity extends AppCompatActivity {
     private int positionPaseoSeleccionado;
     private Toolbar toolbar;
 
+    private ArrayAdapter<String> adapter;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_administrar_paseos);
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         btnVerDetalles = findViewById(R.id.btnVerDetallesAP);
         btnBuscarPaseo = findViewById(R.id.btnBuscarPaseoAP);
         btnVolver = findViewById(R.id.btnVolverAP);
         btnVerDetalles.setEnabled(false);
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        List<String> paseos = obtenerPaseos();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_single_choice,paseos);
         listaPaseos = findViewById(R.id.listaUPaseos);
         listaPaseos.setChoiceMode(listaPaseos.CHOICE_MODE_SINGLE);
-        listaPaseos.setAdapter(adapter);
+        setSupportActionBar(toolbar);
+        initPaseosUsuario();
         listaPaseos.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,16 +76,7 @@ public class UsuarioAdministrarPaseosActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getBaseContext(),UsuarioVerDetallesPaseo.class);
-                String tipoRuta = "2";
-                if(positionPaseoSeleccionado == 1)
-                {
-                    tipoRuta = "3";
-                }
-                else if(positionPaseoSeleccionado == 2)
-                {
-                    tipoRuta = "5";
-                }
-                intent.putExtra("TIPO_RUTA",tipoRuta);
+                intent.putExtra("idPaseo",idPaseosAgendados.get(positionPaseoSeleccionado));
                 startActivity(intent);
             }
         });
@@ -75,17 +84,7 @@ public class UsuarioAdministrarPaseosActivity extends AppCompatActivity {
         btnBuscarPaseo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getBaseContext(),UsuarioBuscarPaseoActivity.class);
-                String tipoRuta = "2";
-                if(positionPaseoSeleccionado == 1)
-                {
-                    tipoRuta = "3";
-                }
-                else if(positionPaseoSeleccionado == 2)
-                {
-                    tipoRuta = "5";
-                }
-                intent.putExtra("TIPO_RUTA",tipoRuta);
+                Intent intent = new Intent(getBaseContext(),PaseosDisponibles.class);
                 startActivity(intent);
             }
         });
@@ -113,6 +112,41 @@ public class UsuarioAdministrarPaseosActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return true;
+    }
+
+    public void initPaseosUsuario()
+    {
+        db.collection("paseosUsuario").whereEqualTo("idUsuario",firebaseAuth.getUid()).
+                addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        paseos = new ArrayList<>();
+                        idPaseosAgendados = new ArrayList<>();
+                        for(DocumentSnapshot document : value.getDocuments()){
+                            PaseoUsuario p = document.toObject(PaseoUsuario.class);
+                            for(String idPaseo: p.getPaseosAgendados())
+                            {
+                                idPaseosAgendados.add(idPaseo);
+                                db.collection("paseosAgendados").document(idPaseo).get().addOnSuccessListener(
+                                        new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                Paseo paseo = documentSnapshot.toObject(Paseo.class);
+                                                paseos.add("Paseo "+paseo.getFecha()+" "+paseo.getHoraInicio()+"-"+paseo.getHoraFin());
+                                                if(adapter != null)
+                                                {
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        }
+                                );
+
+                            }
+                        }
+                        adapter = new ArrayAdapter<String>(UsuarioAdministrarPaseosActivity.this,android.R.layout.simple_list_item_1,paseos);
+                        listaPaseos.setAdapter(adapter);
+                    }
+                });
     }
 
     public List<String> obtenerPaseos()

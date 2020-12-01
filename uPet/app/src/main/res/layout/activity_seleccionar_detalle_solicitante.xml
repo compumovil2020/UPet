@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
-        android:id="@+id/map"
+        android:id="@+id/mapSeleccionarDetalleSolicitante"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,7 +42,7 @@
         android:fontFamily="@font/playfair_display_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
+        app:layout_constraintTop_toBottomOf="@+id/mapSeleccionarDetalleSolicitante" />
 
     <TextView
         android:id="@+id/de_textView_2"
@@ -116,6 +116,7 @@
             android:fontFamily="@font/playfair_display_black"
             android:textAllCaps="false"
             android:layout_weight="1"
+            android:onClick="detalleMascotasRecoger"
             android:text="@string/detalles_ver_mascotas" />
 
         <Button

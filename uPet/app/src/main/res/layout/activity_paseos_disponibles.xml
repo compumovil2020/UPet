@@ -5,7 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beigePet"
+    android:descendantFocusability = "blocksDescendants"
     tools:context=".PaseosDisponibles">
+
+    <Button
+        android:id="@+id/boton_detallePaseoDisp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/roundedbutton"
+        android:fontFamily="@font/playfair_display_black"
+        android:text="@string/detalle_paseo"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         android:id="@+id/toolbar"
@@ -14,80 +30,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/spinnertiposlugar"
-        android:layout_width="197dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="24dp"
-        android:entries="@array/tiposdelugar"
-        android:background="@drawable/roundedbutton"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
-        app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.015" />
-
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="118dp"
-        android:layout_height="40dp"
-        android:text="@string/paseos_confirmados"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.866"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.015" />
-
     <ListView
-        android:id="@+id/listaTipoLugares"
+        android:id="@+id/listaPaseosDisp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        android:layout_marginBottom="20dp"
+        android:choiceMode="singleChoice"
+        app:layout_constraintBottom_toTopOf="@+id/boton_detallePaseoDisp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+        app:layout_constraintTop_toBottomOf="@+id/txtFechaFiltradasDisp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/btn_filtrarfechasDisp"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/roundedbutton"
+        android:fontFamily="@font/playfair_display_black"
+        android:text="Filtrar por Fecha"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:onClick="filtrarPorFecha"
+        app:layout_constraintEnd_toStartOf="@+id/txtFechaFiltradasDisp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/txtFechaFiltradasDisp"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/btn_pickCalendarDisp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_filtrarfechasDisp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageButton
+        android:id="@+id/btn_pickCalendarDisp"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="10dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/calendario"
+        android:src="@drawable/ic__calendar"
+        android:onClick="selectDateSolicitantes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/boton_verMapa"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/roundedbutton"
-            android:fontFamily="@font/playfair_display_black"
-            android:textAllCaps="false"
-            android:text="@string/ver_mapa" />
-
-        <Button
-            android:id="@+id/boton_detallePaseo"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/roundedbutton"
-            android:fontFamily="@font/playfair_display_black"
-            android:textAllCaps="false"
-            android:text="@string/detalle_paseo" />
-    </LinearLayout>
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txtFechaFiltradasDisp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

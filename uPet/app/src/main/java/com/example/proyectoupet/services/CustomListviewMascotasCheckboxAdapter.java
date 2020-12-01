@@ -1,6 +1,7 @@
 package com.example.proyectoupet.services;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -14,20 +15,26 @@ import android.widget.TextView;
 
 import com.example.proyectoupet.R;
 
+import java.util.List;
+
 public class CustomListviewMascotasCheckboxAdapter extends BaseAdapter {
     Context context;
-    int perros[];
-    String[] nombresPerros;
+    List<String> idMascotas;
+    List<String> nombreMascotas;
+    List<Bitmap> imagenesMascotas;
     boolean[] seleccionados;
     LayoutInflater inflater;
 
-    public CustomListviewMascotasCheckboxAdapter(Context applicationContext, int[] perros, String[] nombresPerros) {
-        this.context = applicationContext;
-        this.perros =  perros;
-        this.nombresPerros = nombresPerros;
-        this.seleccionados = new  boolean[nombresPerros.length];
-        inflater = (LayoutInflater.from(applicationContext));
+
+    public CustomListviewMascotasCheckboxAdapter(Context context, List<String> idMascotas, List<String> nombreMascotas, List<Bitmap> imagenesMascotas) {
+        this.context = context;
+        this.idMascotas = idMascotas;
+        this.nombreMascotas = nombreMascotas;
+        this.seleccionados = new  boolean[nombreMascotas.size()];
+        this.imagenesMascotas = imagenesMascotas;
+        inflater = (LayoutInflater.from(context));
     }
+
     static class ViewHolder {
         protected TextView nombreMascota;
         protected CheckBox check;
@@ -36,12 +43,17 @@ public class CustomListviewMascotasCheckboxAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return perros.length;
+        return idMascotas.size();
+    }
+
+    public boolean isSelected(int i)
+    {
+        return seleccionados[i];
     }
 
     @Override
     public Object getItem(int i) {
-        return nombresPerros[i];
+        return idMascotas.get(i);
     }
 
     @Override
@@ -75,10 +87,13 @@ public class CustomListviewMascotasCheckboxAdapter extends BaseAdapter {
         }
         holder.check.setTag(i);
 
-        holder.nombreMascota.setText(nombresPerros[i]);
+        holder.nombreMascota.setText(nombreMascotas.get(i));
         holder.nombreMascota.setTextColor(Color.BLACK);
-        holder.imagenMascota.setImageResource(R.drawable.perfil);
-
+        Bitmap imagen = imagenesMascotas.get(i);
+        if( imagen != null)
+            holder.imagenMascota.setImageBitmap(imagen);
+        else
+            holder.imagenMascota.setImageResource(R.drawable.profile);
 
         if(seleccionados[i] == true)
         {

@@ -28,7 +28,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserChat"></activity>
+        <activity android:name=".VerDetalleMascotaActivity"></activity>
+        <activity android:name=".ListarMascotasSolicitarActivity" />
+        <activity android:name=".UserChat" />
         <activity android:name=".UsuarioVerDetallesPaseo" />
         <activity android:name=".UsuarioSeguimientoPaseadorActivity" />
         <activity android:name=".PerfilMascota" />
@@ -53,7 +55,7 @@
         <activity android:name=".UsuarioSeleccionarMascotasActivity" />
         <activity android:name=".UsuarioBuscarPaseoActivity" />
         <activity android:name=".UsuarioAdministrarPaseosActivity" />
-        <activity android:name=".HomeUsuarioActivity"></activity>
+        <activity android:name=".HomeUsuarioActivity" />
         <activity android:name=".RegistroExt" />
         <activity android:name=".Registro" />
         <activity android:name=".InicioSesion">
