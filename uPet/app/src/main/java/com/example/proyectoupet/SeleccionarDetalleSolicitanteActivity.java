@@ -9,8 +9,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.proyectoupet.model.EstadoPaseo;
+import com.example.proyectoupet.model.MascotaPuntoRecogida;
+import com.example.proyectoupet.model.Parada;
+import com.example.proyectoupet.model.Paseo;
+import com.example.proyectoupet.model.PaseoSolicitar;
+import com.example.proyectoupet.model.PaseoUsuario;
+import com.example.proyectoupet.model.UserData;
 import com.example.proyectoupet.paseos.SeleccionRutaPaseo;
 import com.example.proyectoupet.services.MapsServices.MapService;
 import com.example.proyectoupet.services.permissionService.PermissionService;
@@ -31,9 +40,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +57,26 @@ import java.util.Random;
 
 public class SeleccionarDetalleSolicitanteActivity extends FragmentActivity implements OnMapReadyCallback
 {
+
+    private List<String> solicitantes;
+
+    private List<MascotaPuntoRecogida> listaMascotas;
+
+    private List<String> idPaseosSolicitantes;
+
+    private TextView textoNombreSolicitante;
+
+    private TextView puntoRecogidaSolicitante;
+
+    private FirebaseFirestore db;
+
+    private FirebaseAuth firebaseAuth;
+
+    private String idUsuario;
+
+    private Parada parada;
+
+    private String idPaseo;
 
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -53,6 +88,23 @@ public class SeleccionarDetalleSolicitanteActivity extends FragmentActivity impl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seleccionar_detalle_solicitante);
+        textoNombreSolicitante = findViewById(R.id.de_textView_1);
+        puntoRecogidaSolicitante = findViewById(R.id.de_textView_2);
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        idUsuario = getIntent().getExtras().getString("idUsuario");
+        parada = (Parada) getIntent().getExtras().get("parada");
+        idPaseo = getIntent().getExtras().getString("idPaseo");
+        db.collection("usuarios").document(idUsuario).get().addOnSuccessListener(
+                new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        UserData ud = documentSnapshot.toObject(UserData.class);
+                        textoNombreSolicitante.setText(ud.getNombre() +" "+ ud.getApellido());
+                    }
+                }
+        );
+        puntoRecogidaSolicitante.setText(parada.getTitle());
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
             this.permissionService.requestPermission(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION});
@@ -62,7 +114,7 @@ public class SeleccionarDetalleSolicitanteActivity extends FragmentActivity impl
     }
 
     private void start(){
-        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapSeleccionarDetalleSolicitante);
         supportMapFragment.getMapAsync(SeleccionarDetalleSolicitanteActivity.this);
     }
 
@@ -79,30 +131,138 @@ public class SeleccionarDetalleSolicitanteActivity extends FragmentActivity impl
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mapService = new MapService(mMap);
-        walkStops = new ArrayList<>();
-        walkStops.add(new LatLng(4.711930995014736, -74.22606725245716));
-        walkStops.add(new LatLng(4.714638216287915, -74.22221392393112));
-        walkStops.add(new LatLng(4.710979355113475, -74.2234155535698));
-        walkStops.add(new LatLng(4.70588665611004, -74.22185853123665));
-        walkStops.add(new LatLng(4.706317035894434, -74.2253990471363));
-        walkStops.add(new LatLng(4.708188917543524, -74.22723267227411));
-        walkStops.add(new LatLng(4.710117264471713, -74.2250020802021));
-        LatLng randomPoint = walkStops.get(new Random().nextInt(walkStops.size()));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(randomPoint));
+        db.collection("paseosAgendados").document(idPaseo).get().addOnSuccessListener(
+                new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        walkStops = new ArrayList<>();
+                        Paseo p = documentSnapshot.toObject(Paseo.class);
+                        for(Parada parada: p.getParadas())
+                        {
+                            walkStops.add(new  LatLng(parada.getLatitude(),parada.getLongitude()));
+                        }
+                        mapService.makeRoute(SeleccionarDetalleSolicitanteActivity.this, walkStops, MapService.Order.FIFO);
+                    }
+                }
+        );
+
+        LatLng puntoRecogida = new LatLng(parada.getLatitude(),parada.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(puntoRecogida));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
 
-        mapService.makeRoute(SeleccionarDetalleSolicitanteActivity.this, walkStops, MapService.Order.FIFO);
-        mapService.addMarker(randomPoint, mapService.getLatLngName(this, randomPoint));
+        mapService.addMarker(puntoRecogida, mapService.getLatLngName(this, puntoRecogida));
     }
 
     public void openConfirmarSolicitante(View v)
     {
+        db.collection("paseosSolicitados").whereEqualTo("idPaseo",idPaseo).get().addOnCompleteListener(
+                new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            PaseoSolicitar p = null;
+                            String idPaseoSolicitar = "";
+                            for( QueryDocumentSnapshot dsPaseoSolicitado : task.getResult()) {
+                                p = dsPaseoSolicitado.toObject(PaseoSolicitar.class);
+                                idPaseoSolicitar = dsPaseoSolicitado.getId();
+                                if (p != null)
+                                {
+                                    List<MascotaPuntoRecogida> nueva = new ArrayList<>();
+                                    MascotaPuntoRecogida agregar = null;
+                                    for(MascotaPuntoRecogida mpr2: p.getMascotasPuntoRecogida())
+                                    {
+                                        if(mpr2.getUsuarioId().equals(idUsuario))
+                                        {
+                                            mpr2.setEstado(EstadoPaseo.CONFIRMADO.toString());
+                                            nueva.add(mpr2);
+                                            db.collection("paseosUsuario").whereEqualTo("idUsuario",mpr2.getUsuarioId()).get().addOnSuccessListener(
+                                                    new OnSuccessListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                            if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                                                            {
+                                                                PaseoUsuario pu = queryDocumentSnapshots.getDocuments().get(0).toObject(PaseoUsuario.class);
+                                                                pu.getPaseosAgendados().add(idPaseo);
+                                                                db.collection("paseosUsuario").document(queryDocumentSnapshots.getDocuments().get(0).getId()).update("paseosAgendados",pu.getPaseosAgendados());
+                                                            }
+                                                            else{
+                                                                List<String> paseosA = new ArrayList<>();
+                                                                paseosA.add(idPaseo);
+                                                                PaseoUsuario pu = new PaseoUsuario(idUsuario,paseosA);
+                                                                db.collection("paseosUsuario").add(pu);
+                                                            }
+
+                                                        }
+                                                    }
+                                            ).addOnFailureListener(
+                                                    new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+
+                                                        }
+                                                    }
+                                            );
+
+                                        }
+                                        else
+                                        {
+                                            nueva.add(mpr2);
+                                        }
+                                    }
+                                    p.setMascotasPuntoRecogida(nueva);
+                                    db.collection("paseosSolicitados").document(idPaseoSolicitar).update("mascotasPuntoRecogida",nueva);
+
+
+
+                                }
+                            }
+
+                        }
+
+                    }
+                });
+
         finish();
     }
 
     public void openCancelarSolicitante(View v)
     {
+        db.collection("paseosSolicitados").whereEqualTo("idPaseo",idPaseo).get().addOnCompleteListener(
+                new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            PaseoSolicitar p = null;
+                            String idPaseoSolicitar = "";
+                            for( QueryDocumentSnapshot dsPaseoSolicitado : task.getResult()) {
+                                p = dsPaseoSolicitado.toObject(PaseoSolicitar.class);
+                                idPaseoSolicitar = dsPaseoSolicitado.getId();
+                                if (p != null)
+                                {
+                                    List<MascotaPuntoRecogida> nueva = new ArrayList<>();
+                                    for(MascotaPuntoRecogida mpr2: p.getMascotasPuntoRecogida())
+                                    {
+                                        if(mpr2.getUsuarioId().equals(idUsuario))
+                                        {
+                                            mpr2.setEstado(EstadoPaseo.CANCELADO.toString());
+                                            nueva.add(mpr2);
+                                        }
+                                    }
+                                    p.setMascotasPuntoRecogida(nueva);
+                                    db.collection("paseosSolicitados").document(idPaseoSolicitar).update("mascotasPuntoRecogida",nueva);
+                                }
+                            }
+
+                        }
+
+                    }
+                });
+
         finish();
+    }
+
+    public void detalleMascotasRecoger(View v){
+        startActivity(new Intent(getBaseContext(), ListarMascotasSolicitarActivity.class).putExtra("idUsuario",idUsuario).putExtra("idPaseo", idPaseo));
     }
 
     public void volverDetalle(View v){

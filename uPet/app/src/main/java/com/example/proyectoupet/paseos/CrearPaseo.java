@@ -17,8 +17,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.proyectoupet.R;
+import com.example.proyectoupet.model.MascotaPuntoRecogida;
 import com.example.proyectoupet.model.Parada;
 import com.example.proyectoupet.model.Paseo;
+import com.example.proyectoupet.model.PaseoSolicitar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -159,6 +161,7 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
     }
 
     public void createWalk(View v){
+        DocumentReference doc;
         db.collection("paseosAgendados").add(
                 new Paseo(firebaseAuth.getCurrentUser().getUid(),crearPaseoDate.getText().toString(),crearPaseoHora.getText().toString()
                         ,crearPaseoHoraFin.getText().toString(),Integer.parseInt(crearPaseoCapacidad.getText().toString()),
@@ -168,14 +171,17 @@ public class CrearPaseo extends AppCompatActivity implements Validator.Validatio
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Paseo", "DocumentSnapshot written with ID: " + documentReference.getId());
                         Toast.makeText(CrearPaseo.this,R.string.ce_walk_creado,Toast.LENGTH_SHORT);
+                        List<MascotaPuntoRecogida> nueva = new ArrayList<>();
+                        db.collection("paseosSolicitados").add(new PaseoSolicitar(documentReference.getId(),nueva));
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w("Paseo", "Error adding document", e);
-            }
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Paseo", "Error adding document", e);
+                    }
         });
+
 
     }
 

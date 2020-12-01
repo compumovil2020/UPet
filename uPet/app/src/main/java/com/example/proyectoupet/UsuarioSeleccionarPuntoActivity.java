@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proyectoupet.model.Parada;
+import com.example.proyectoupet.model.Paseo;
 import com.example.proyectoupet.services.MapsServices.MapService;
 import com.example.proyectoupet.services.permissionService.PermissionService;
 import com.google.android.gms.common.api.ApiException;
@@ -40,9 +42,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,17 +75,25 @@ public class UsuarioSeleccionarPuntoActivity extends AppCompatActivity implement
     private Button btnSolicitarPaseo;
     LatLng UA;
     boolean actualizarRuta = false;
-    private int tipoRuta;
+    private String idPaseo;
+    private LatLng puntoLatLng;
+    private String ubiText;
 
     private List<LatLng> ruta;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_seleccionar_punto);
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
-        tipoRuta = Integer.parseInt(intent.getStringExtra("TIPO_RUTA"));
-        ruta = obtenerRutas(tipoRuta);
+        idPaseo = intent.getExtras().getString("idPaseo");
         puntos = new ArrayList<Marker>();
+        initRuta();
         permissionService = new PermissionService();
         textoPunto = findViewById(R.id.textUSeleccionarPunto);
         btnSolicitarPaseo = findViewById(R.id.btnSolicitarPaseoSeleccionarPunto);
@@ -88,6 +102,7 @@ public class UsuarioSeleccionarPuntoActivity extends AppCompatActivity implement
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getBaseContext(), UsuarioSeleccionarMascotasActivity.class);
+                intent.putExtra("latlong",puntoLatLng).putExtra("idPaseo",idPaseo).putExtra("ubitext",ubiText);
                 startActivity(intent);
             }
         });
@@ -235,6 +250,8 @@ public class UsuarioSeleccionarPuntoActivity extends AppCompatActivity implement
                 btnSolicitarPaseo.setEnabled(true);
                 selectedMarker = marker.getPosition();
                 textoPunto.setText(marker.getTitle());
+                ubiText = marker.getTitle();
+                puntoLatLng = selectedMarker;
                 return false;
             }
         });
@@ -252,6 +269,27 @@ public class UsuarioSeleccionarPuntoActivity extends AppCompatActivity implement
             e.printStackTrace();
         }
         return address;
+    }
+
+    public void initRuta()
+    {
+        List<LatLng> puntos = new ArrayList<>();
+        ruta = new ArrayList<>();
+        db.collection("paseosAgendados").document(idPaseo).get().addOnSuccessListener(
+                new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Paseo paseo = documentSnapshot.toObject(Paseo.class);
+                        for(Parada parada: paseo.getParadas())
+                        {
+                            LatLng nuevo = new LatLng(parada.getLatitude(),parada.getLongitude());
+                            ruta.add(nuevo);
+                        }
+                        actualizarRuta = false;
+
+                    }
+                }
+        );
     }
     public List<LatLng> obtenerRutas(int i)
     {

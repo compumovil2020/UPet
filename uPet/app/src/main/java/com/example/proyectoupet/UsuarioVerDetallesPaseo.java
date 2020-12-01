@@ -9,6 +9,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -24,6 +26,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proyectoupet.model.EstadoPaseo;
+import com.example.proyectoupet.model.Mascota;
+import com.example.proyectoupet.model.MascotaPuntoRecogida;
+import com.example.proyectoupet.model.Parada;
+import com.example.proyectoupet.model.Paseo;
+import com.example.proyectoupet.model.PaseoSolicitar;
+import com.example.proyectoupet.model.PaseoUsuario;
+import com.example.proyectoupet.model.UserData;
 import com.example.proyectoupet.services.CustomSpinnerMascotasAdapter;
 import com.example.proyectoupet.services.MapsServices.MapService;
 import com.example.proyectoupet.services.permissionService.PermissionService;
@@ -47,10 +57,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +93,42 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
     Geocoder mGeocoder;
     LatLng UA;
     boolean actualizarRuta = false;
-    private int tipoRuta;
+    private String idPaseo;
+
+    private TextView txtNombrePaseador;
+
+    private TextView txtFecha;
+
+    private TextView txtHora;
+
+    private TextView txtNumMascotas;
+
+    private TextView txtRanking;
+
+    private TextView txtCosto;
+
+    private Spinner spinnerMascotas;
+
+    private CustomSpinnerMascotasAdapter adapter;
 
 
+    public List<String> paseos;
+    private List<Paseo> paseosList;
+    private List<String> idPaseos;
+    private List<UserData> paseadores;
+    private int paseoActualPos;
+    private List<LatLng> puntosRuta;
 
-    private String[] nombresPerros={"Becquer","Elias","Lune","Paco","Taika"};
-    private int perros[] = {R.drawable.perrito, R.drawable.perro_elias, R.drawable.perro_lune, R.drawable.pug, R.drawable.perfil};
+    private List<String> idMascotas;
+    private List<String> nombreMascotas;
+    private List<Mascota> mascotas;
+    private List<Bitmap> imagenMascotas;
+
+
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
+    private StorageReference mStorageRef;
+
 
     private MapService mapService;
 
@@ -83,29 +136,27 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_ver_detalles_paseo);
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         mapService = new MapService(mMap);
         permissionService = new PermissionService();
-        TextView txtNombrePaseador = findViewById(R.id.txtNombrePaseadorDetallesPaseo);
-        txtNombrePaseador.setText("Ricardo Arjona");
-        TextView txtFecha = findViewById(R.id.txtFechaDetallesPaseo);
-        txtFecha.setText("11 de Noviembre");
-        TextView txtHora = findViewById(R.id.txtHoraDetallesPaseo);
-        txtHora.setText("8:00AM");
-        TextView txtNumMascotas = findViewById(R.id.txtNumeroMascotasDetallesPaseo);
-        txtNumMascotas.setText("5 Mascotas");
-        TextView txtRanking = findViewById(R.id.txtRankingDetallesPaseo);
+        txtNombrePaseador = findViewById(R.id.txtNombrePaseadorDetallesPaseo);
+        txtFecha = findViewById(R.id.txtFechaDetallesPaseo);
+        txtHora = findViewById(R.id.txtHoraDetallesPaseo);
+        txtNumMascotas = findViewById(R.id.txtNumeroMascotasDetallesPaseo);
+        txtRanking = findViewById(R.id.txtRankingDetallesPaseo);
         txtRanking.setText("Excelente");
-        TextView txtCosto = findViewById(R.id.txtCostoDetallesPaseo);
-        txtCosto.setText("10000$");
+        txtCosto = findViewById(R.id.txtCostoDetallesPaseo);
         Intent intent = getIntent();
-        tipoRuta = Integer.parseInt(intent.getStringExtra("TIPO_RUTA"));
+        idPaseo = intent.getExtras().getString("idPaseo");
+
         Button btnRealizarSeguimiento = findViewById(R.id.btnRealizarSeguimientoDetallesPaseo);
         btnRealizarSeguimiento.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getBaseContext(),UsuarioSeguimientoPaseadorActivity.class);
-                String rutaNueva = tipoRuta+"";
-                intent.putExtra("TIPO_RUTA",rutaNueva);
+                intent.putExtra("idPaseo",idPaseo);
                 startActivity(intent);
             }
         });
@@ -114,35 +165,34 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
             @Override
             public void onClick(View view){
                 actualizarRuta = false;
-                if(tipoRuta == 5)
+                if(paseoActualPos == paseosList.size()-1)
                 {
-                    tipoRuta = 2;
+                    paseoActualPos = 0;
                 }
-                else if(tipoRuta == 2){
-                    tipoRuta = 3;
+                else{
+                    paseoActualPos++;
                 }
-                else if(tipoRuta == 3)
-                {
-                    tipoRuta = 5;
-                }
+                setPaseoActual(paseoActualPos);
             }
         });
         Button btnSiguiente = findViewById(R.id.btnSiguienteDetallesPaseo);
         btnSiguiente.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                actualizarRuta = false;
-                if(tipoRuta == 2)
+
+                if(paseosList.size() != 1)
                 {
-                    tipoRuta = 5;
+                    actualizarRuta = false;
+                    if(paseoActualPos == 0)
+                    {
+                        paseoActualPos = paseosList.size()-1;
+                    }
+                    else{
+                        paseoActualPos--;
+                    }
+                    setPaseoActual(paseoActualPos);
                 }
-                else if(tipoRuta == 3){
-                    tipoRuta = 2;
-                }
-                else if(tipoRuta == 5)
-                {
-                    tipoRuta = 3;
-                }
+
             }
         });
         Button btnVolver = findViewById(R.id.btnVolverDetallesPaseo);
@@ -153,14 +203,9 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
             }
         });
 
-        String[] nombrePerros = obtenerNombresPerros();
-        int perros[] = obtenerPerros();
-        Spinner spinnerMascotas = findViewById(R.id.spinnerUDetallesPaseo);
-        spinnerMascotas.setOnItemSelectedListener(this);
-        CustomSpinnerMascotasAdapter customAdapter = new CustomSpinnerMascotasAdapter(getApplicationContext(),perros,nombresPerros);
-        spinnerMascotas.setAdapter(customAdapter);
+        spinnerMascotas = findViewById(R.id.spinnerUDetallesPaseo);
 
-
+        initPaseo();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapUDetallesPaseo);
         mapFragment.getMapAsync(this);
@@ -186,7 +231,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                     if(!actualizarRuta) {
                         mMap.clear();
                         mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
-                        List<LatLng> puntosRuta = obtenerRutas(tipoRuta);
+                        List<LatLng> puntosRuta = getPuntosRuta();
                         for (LatLng puntoRuta: puntosRuta) {
                             mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta));
                         }
@@ -319,51 +364,175 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
 
     }
 
+    public void initPaseo()
+    {
 
-    public List<LatLng> obtenerRutas(int i)
+        db.collection("paseosUsuario").whereEqualTo("idUsuario",firebaseAuth.getUid()).
+                addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        paseosList = new ArrayList<>();
+                        idPaseos = new ArrayList<>();
+                        paseadores = new ArrayList<>();
+                        puntosRuta = new ArrayList<>();
+                        for(DocumentSnapshot document : value.getDocuments()){
+                            PaseoUsuario p = document.toObject(PaseoUsuario.class);
+                            for(String idP: p.getPaseosAgendados())
+                            {
+                                idPaseos.add(idP);
+                                db.collection("paseosAgendados").document(idP).get().addOnCompleteListener(
+                                        new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                Paseo paseo = task.getResult().toObject(Paseo.class);
+                                                paseosList.add(paseo);
+                                                db.collection("usuarios").document(paseo.getUserId()).get().addOnCompleteListener(
+                                                        new OnCompleteListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                paseadores.add(task.getResult().toObject(UserData.class));
+                                                                int posSet = 0;
+                                                                if(idP.equals(idPaseo))
+                                                                {
+                                                                    posSet = idPaseos.size()-1;
+                                                                }
+                                                                setPaseoActual(posSet);
+                                                            }
+                                                        }
+                                                );
+
+                                            }
+                                        }
+                                );
+
+
+                            }
+                        }
+
+
+                    }
+                });
+
+    }
+    public void obtenerRutas(Paseo paseo)
     {
         List<LatLng> ruta = new ArrayList<LatLng>();
-        ruta.add(new LatLng(4.675336, -74.058865));
-        ruta.add(new LatLng(4.682190, -74.060082));
-        if(i > 3)
+        for(Parada parada: paseo.getParadas())
         {
-            ruta.add(new LatLng(4.680294, -74.057813));
+            LatLng punto = new LatLng(parada.getLatitude(),parada.getLongitude());
+            ruta.add(punto);
         }
-        if(i > 4)
-        {
-            ruta.add(new LatLng(4.673896, -74.044640));
-        }
-        if(i > 5)
-        {
-            ruta.add(new LatLng(4.681056, -74.046577));
-        }
-        return ruta;
-    }
-    public String[] obtenerNombresPerros()
-    {
-        String[] nombresPerros = new String[3];
-        int random;
-        random = (int)(Math.random() * 5);
-        nombresPerros[0] = this.nombresPerros[random];
-        random = (int)(Math.random() * 5);
-        nombresPerros[1] = this.nombresPerros[random];
-        random = (int)(Math.random() * 5);
-        nombresPerros[2] = this.nombresPerros[random];
-
-        return nombresPerros;
+        puntosRuta = ruta;
+        actualizarRuta = false;
     }
 
-    public int[] obtenerPerros()
+    public List<LatLng> getPuntosRuta()
     {
-        int[] perros = new int[3];
-        int random;
-        random = (int)(Math.random() * 5);
-        perros[0] = this.perros[random];
-        random = (int)(Math.random() * 5);
-        perros[1] = this.perros[random];
-        random = (int)(Math.random() * 5);
-        perros[2] = this.perros[random];
+        return this.puntosRuta;
+    }
 
-        return perros;
+    public void setPaseoActual(int posicion)
+    {
+        UserData paseador = paseadores.get(posicion);
+        Paseo paseoActual = paseosList.get(posicion);
+        String nombre = paseador.getNombre() + " " + paseador.getApellido();
+        String precio = "$"+paseoActual.getPrecio();
+        String hora = paseoActual.getHoraInicio() + "-" + paseoActual.getHoraFin();
+        txtNombrePaseador.setText(nombre);
+        txtCosto.setText(precio);
+        txtFecha.setText(paseoActual.getFecha());
+        txtHora.setText(hora);
+        txtRanking.setText("Excelente");
+        txtNumMascotas.setText(paseoActual.getCapacidad()+"");
+        obtenerRutas(paseoActual);
+        initMascotasPaseo();
+        this.paseoActualPos = posicion;
+    }
+
+    public void initMascotasPaseo()
+    {
+        db.collection("paseosSolicitados").whereEqualTo("idPaseo",idPaseo).
+                addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        idMascotas = new ArrayList<>();
+                        nombreMascotas = new ArrayList<>();
+                        imagenMascotas = new ArrayList<>();
+                        mascotas = new ArrayList<>();
+                        for(DocumentSnapshot document : value.getDocuments()){
+                            PaseoSolicitar pr = document.toObject(PaseoSolicitar.class);
+                            pr.getMascotasPuntoRecogida();
+                            for(MascotaPuntoRecogida mpr:pr.getMascotasPuntoRecogida())
+                            {
+                                if(mpr.getUsuarioId().equals(firebaseAuth.getUid()) && mpr.getEstado().equals(EstadoPaseo.CONFIRMADO.toString()))
+                                {
+                                    idMascotas = mpr.getMascotasId();
+                                    for(String idMascota: idMascotas)
+                                    {
+                                        db.collection("mascotas").document(idMascota).get().addOnCompleteListener(
+                                                new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        Mascota mascota = task.getResult().toObject(Mascota.class);
+                                                        mascotas.add(mascota);
+                                                        nombreMascotas.add(mascota.getNombreMascota());
+                                                        for(int i = 0; i<nombreMascotas.size();i++)
+                                                        {
+                                                            imagenMascotas.add(null);
+                                                        }
+                                                        int i = 0;
+                                                        for(String idMascota: idMascotas)
+                                                        {
+                                                            try {
+                                                                downloadFile(idMascota,i);
+                                                            } catch (IOException e) {
+
+                                                            }
+                                                            i++;
+                                                        }
+                                                        spinnerMascotas.setOnItemSelectedListener(UsuarioVerDetallesPaseo.this);
+                                                        adapter = new CustomSpinnerMascotasAdapter(getApplicationContext(),idMascotas,nombreMascotas,imagenMascotas);
+                                                        spinnerMascotas.setAdapter(adapter);
+                                                    }
+                                                }
+                                        );
+                                    }
+
+
+                                }
+                            }
+
+                        }
+
+                    }
+                });
+    }
+    private void downloadFile(String id, int pos) throws IOException {
+
+        File localFile = File.createTempFile("images", "jpg");
+        StorageReference imageRef = mStorageRef.child("fotos_mascotas/"+id);
+        imageRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        try {
+                            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(localFile));
+                            imagenMascotas.set(pos,b);
+                            adapter.notifyDataSetChanged();
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        imageRef.getFile(localFile)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception)
+                    {
+                        imagenMascotas.add(pos,null);
+                    }
+                });
     }
 }

@@ -1,14 +1,14 @@
 package com.example.proyectoupet.services;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,19 +16,22 @@ import com.example.proyectoupet.R;
 
 import java.util.List;
 
-public class CustomSpinnerMascotasAdapter extends BaseAdapter {
+
+
+public class CustomListViewMascotasAdapter extends BaseAdapter {
+
     Context context;
     List<String> idMascotas;
     List<String> nombreMascotas;
     List<Bitmap> imagenesMascotas;
     LayoutInflater inflater;
 
-    public CustomSpinnerMascotasAdapter(Context context, List<String> idMascotas, List<String> nombreMascotas, List<Bitmap> imagenesMascotas) {
+    public CustomListViewMascotasAdapter(Context context, List<String> idMascotas, List<String> nombreMascotas, List<Bitmap> imagenesMascotas) {
         this.context = context;
         this.idMascotas = idMascotas;
         this.nombreMascotas = nombreMascotas;
         this.imagenesMascotas = imagenesMascotas;
-        inflater = (LayoutInflater.from(context));
+        this.inflater = (LayoutInflater.from(context));
     }
 
     @Override
@@ -47,7 +50,8 @@ public class CustomSpinnerMascotasAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int i, View view, ViewGroup viewGroup)
+    {
         view = inflater.inflate(R.layout.item_mascotas, null);
         ImageView icon = (ImageView) view.findViewById(R.id.imagenMascota);
         TextView names = (TextView) view.findViewById(R.id.nombreMascota);
@@ -59,5 +63,6 @@ public class CustomSpinnerMascotasAdapter extends BaseAdapter {
         names.setText(nombreMascotas.get(i));
         names.setTextColor(Color.BLACK);
         return view;
+
     }
 }
