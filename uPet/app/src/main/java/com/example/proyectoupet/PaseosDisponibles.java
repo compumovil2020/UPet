@@ -66,7 +66,9 @@ public class PaseosDisponibles extends AppCompatActivity {
 
                 if(pos != position)
                 {
-                    previousView.setBackgroundColor(getResources().getColor(R.color.beigePet,null));
+                    if(previousView != null){
+                        previousView.setBackgroundColor(getResources().getColor(R.color.beigePet,null));
+                    }
                 }
                 pos = position;
                 previousView = view;
