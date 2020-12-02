@@ -175,6 +175,7 @@
                         android:layout_marginTop="50dp"
                         android:background="@drawable/circle_button"
                         android:scaleType="fitCenter"
+                        android:src="@drawable/admin_paseos"
                         android:text="@string/home_schedule_walk" />
 
                     <TextView
@@ -200,6 +201,7 @@
                         android:layout_height="130dp"
                         android:layout_marginTop="50dp"
                         android:background="@drawable/circle_button"
+                        android:src="@drawable/chat_icon"
                         android:scaleType="fitCenter" />
 
                     <TextView

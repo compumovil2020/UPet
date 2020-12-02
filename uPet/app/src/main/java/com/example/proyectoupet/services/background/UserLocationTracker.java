@@ -32,17 +32,9 @@ public class UserLocationTracker extends Service {
 
     public UserLocationTracker() {
         super();
-        FirebaseApp.initializeApp(this);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         mapService = new MapService(null);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        onTaskRemoved(intent);
-
-        return START_STICKY;
     }
 
     @Override
@@ -96,11 +88,4 @@ public class UserLocationTracker extends Service {
         return null;
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Intent restartServiceIntent = new Intent(getApplicationContext(),this.getClass());
-        restartServiceIntent.setPackage(getPackageName());
-        startService(restartServiceIntent);
-        super.onTaskRemoved(rootIntent);
-    }
 }
