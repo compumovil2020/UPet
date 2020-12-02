@@ -73,6 +73,7 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
     private List<UserData> paseadores;
     private String fecha;
     private int paseoActualPos;
+    private String idActual;
 
     private List<LatLng> puntosRuta;
 
@@ -127,7 +128,7 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
             @Override
             public void onClick(View view){
                 Intent i = new Intent(getBaseContext(), UsuarioSeleccionarPuntoActivity.class);
-                i.putExtra("idPaseo",idPaseos.get(paseoActualPos));
+                i.putExtra("idPaseo",idActual);
                 startActivity(i);
             }
         });
@@ -229,6 +230,7 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
                                                 if(document.getId().equals(idPaseo))
                                                 {
                                                     posSet = idPaseos.size()-1;
+                                                    idActual = document.getId();
                                                     setPaseoActual(paseador, p);
                                                 }
                                             }
@@ -263,6 +265,7 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
                                                 if(document.getId().equals(idPaseo))
                                                 {
                                                     posSet = idPaseos.size()-1;
+                                                    idActual = document.getId();
                                                     setPaseoActual(paseador, p);
                                                 }
                                             }
