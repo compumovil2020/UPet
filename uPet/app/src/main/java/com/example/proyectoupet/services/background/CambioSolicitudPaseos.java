@@ -54,26 +54,28 @@ public class CambioSolicitudPaseos extends Service {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         System.out.println("!!!!!-----va la madre");
-                        PaseoUsuario paseoUsuario =value.getDocuments().get(0).toObject(PaseoUsuario.class);
-                        if(PublicDataNameSpace.primeraVezConsulta){
-                            for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
-                                PublicDataNameSpace.paseosAceptadosId.add(idPasAcep);
-                            }
-                            for(String idPasCan : paseoUsuario.getPaseosCancelados()){
-                                PublicDataNameSpace.paseosRechazadosId.add(idPasCan);
-                            }
-                            PublicDataNameSpace.primeraVezConsulta = false;
-                        }else{
-                            for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
-                                if(!PublicDataNameSpace.paseosAceptadosId.contains(idPasAcep)){
-                                    makeNotification(idPasAcep,"Solicitud de paseo aceptada!!!!","Uno de los paseos que solicitaste fue aceptado");
+                        if(!value.getDocuments().isEmpty()) {
+                            PaseoUsuario paseoUsuario = value.getDocuments().get(0).toObject(PaseoUsuario.class);
+                            if (PublicDataNameSpace.primeraVezConsulta) {
+                                for (String idPasAcep : paseoUsuario.getPaseosAgendados()) {
                                     PublicDataNameSpace.paseosAceptadosId.add(idPasAcep);
                                 }
-                            }
-                            for(String idPasCanc : paseoUsuario.getPaseosCancelados()){
-                                if(!PublicDataNameSpace.paseosRechazadosId.contains(idPasCanc)){
-                                    PublicDataNameSpace.paseosRechazadosId.add(idPasCanc);
-                                    makeNotification(idPasCanc,"Solicitud de paseo cancelada :(","Uno de los paseos que solicitaste fue cancelado");
+                                for (String idPasCan : paseoUsuario.getPaseosCancelados()) {
+                                    PublicDataNameSpace.paseosRechazadosId.add(idPasCan);
+                                }
+                                PublicDataNameSpace.primeraVezConsulta = false;
+                            } else {
+                                for (String idPasAcep : paseoUsuario.getPaseosAgendados()) {
+                                    if (!PublicDataNameSpace.paseosAceptadosId.contains(idPasAcep)) {
+                                        makeNotification(idPasAcep, "Solicitud de paseo aceptada!!!!", "Uno de los paseos que solicitaste fue aceptado");
+                                        PublicDataNameSpace.paseosAceptadosId.add(idPasAcep);
+                                    }
+                                }
+                                for (String idPasCanc : paseoUsuario.getPaseosCancelados()) {
+                                    if (!PublicDataNameSpace.paseosRechazadosId.contains(idPasCanc)) {
+                                        PublicDataNameSpace.paseosRechazadosId.add(idPasCanc);
+                                        makeNotification(idPasCanc, "Solicitud de paseo cancelada :(", "Uno de los paseos que solicitaste fue cancelado");
+                                    }
                                 }
                             }
                         }
