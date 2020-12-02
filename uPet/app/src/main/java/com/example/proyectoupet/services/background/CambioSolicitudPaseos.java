@@ -31,33 +31,21 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
 
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.Random;
 
 public class CambioSolicitudPaseos extends Service {
 
     public static final String CHANNEL_ID= "AVALIS";
     private boolean first = true;
     FirebaseFirestore firebaseFirestore;
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        onTaskRemoved(intent);
-        return START_STICKY;
-    }
-
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Intent restartServiceIntent = new Intent(getApplicationContext(),this.getClass());
-        restartServiceIntent.setPackage(getPackageName());
-        startService(restartServiceIntent);
-        super.onTaskRemoved(rootIntent);
-    }
-
+    Random random;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        FirebaseApp.initializeApp(this);
+        random = new Random();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore =FirebaseFirestore.getInstance();
         CollectionReference collectionReference = firebaseFirestore.collection("paseosUsuario");
@@ -65,6 +53,7 @@ public class CambioSolicitudPaseos extends Service {
                 new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        System.out.println("!!!!!-----va la madre");
                         PaseoUsuario paseoUsuario =value.getDocuments().get(0).toObject(PaseoUsuario.class);
                         if(PublicDataNameSpace.primeraVezConsulta){
                             for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
@@ -78,10 +67,12 @@ public class CambioSolicitudPaseos extends Service {
                             for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
                                 if(!PublicDataNameSpace.paseosAceptadosId.contains(idPasAcep)){
                                     makeNotification(idPasAcep,"Solicitud de paseo aceptada!!!!","Uno de los paseos que solicitaste fue aceptado");
+                                    PublicDataNameSpace.paseosAceptadosId.add(idPasAcep);
                                 }
                             }
                             for(String idPasCanc : paseoUsuario.getPaseosCancelados()){
                                 if(!PublicDataNameSpace.paseosRechazadosId.contains(idPasCanc)){
+                                    PublicDataNameSpace.paseosRechazadosId.add(idPasCanc);
                                     makeNotification(idPasCanc,"Solicitud de paseo cancelada :(","Uno de los paseos que solicitaste fue cancelado");
                                 }
                             }
@@ -107,7 +98,6 @@ public class CambioSolicitudPaseos extends Service {
         mBuilder.setSmallIcon(R.drawable.notico);
         mBuilder.setContentTitle(title);
         mBuilder.setContentText(text);
-        mBuilder.setGroup("upet");
         mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         Intent intent = new Intent(this, UsuarioAdministrarPaseosActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
@@ -116,7 +106,8 @@ public class CambioSolicitudPaseos extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setAutoCancel(true);
-        notificationManager.notify(1,mBuilder.build());
+        int m = random.nextInt(9999 - 1000) + 1000;
+        notificationManager.notify(m,mBuilder.build());
     }
 
 

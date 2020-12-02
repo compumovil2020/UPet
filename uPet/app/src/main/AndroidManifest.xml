@@ -31,11 +31,12 @@
         <service
             android:name=".services.background.UserLocationTracker"
             android:enabled="true"
-            android:process=":userTracker"></service>
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
         <service
             android:name=".services.background.CambioSolicitudPaseos"
             android:enabled="true"
-            android:process=":solicitudtracker"></service>
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
+
         <activity android:name=".VerDetalleMascotaActivity"></activity>
         <activity android:name=".ListarMascotasSolicitarActivity" />
         <activity android:name=".UserChat" />
