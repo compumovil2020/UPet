@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,7 +20,13 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.proyectoupet.model.EstadoPaseo;
 import com.example.proyectoupet.model.Mascota;
+import com.example.proyectoupet.model.MascotaPuntoRecogida;
+import com.example.proyectoupet.model.Parada;
+import com.example.proyectoupet.model.Paseo;
+import com.example.proyectoupet.model.PaseoSolicitar;
+import com.example.proyectoupet.model.UserData;
 import com.example.proyectoupet.services.CustomSpinnerMascotasAdapter;
 import com.example.proyectoupet.services.MapsServices.MapService;
 import com.example.proyectoupet.services.permissionService.PermissionService;
@@ -42,10 +49,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,38 +81,49 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
     private List<String> nombreMascotas;
     private List<Mascota> mascotas;
     private List<Bitmap> imagenMascotas;
+    private List<LatLng> puntosRuta;
+    private LatLng ubicacionPaseadorPrim;
+    private LatLng ubicacionPaseadorSeg;
 
     private GoogleMap mMap;
     private Marker mMarkerPosActual;
+    private Marker mMarkerPosPaseador;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
     Geocoder mGeocoder;
     LatLng UA;
     boolean actualizarRuta = false;
-    private int tipoRuta;
+    private String idPaseo;
+    private String idPaseador;
 
+    private Spinner spinnerMascotas;
 
-
-    private String[] nombresPerros={"Becquer","Elias","Lune","Paco","Laika"};
-    private int perros[] = {R.drawable.perrito, R.drawable.perro_elias, R.drawable.perro_lune, R.drawable.pug, R.drawable.pug};
+    private CustomSpinnerMascotasAdapter adapter;
 
     private MapService mapService;
+
+    private FirebaseFirestore db;
+
+    private FirebaseAuth firebaseAuth;
+
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_seguimiento_paseador);
-        String[] nombrePerros = obtenerNombresPerros();
-        int perros[] = obtenerPerros();
         Intent intent = getIntent();
-        tipoRuta = Integer.parseInt(intent.getStringExtra("TIPO_RUTA"));
+        idPaseo = intent.getExtras().getString("idPaseo");
+        idPaseador = intent.getExtras().getString("idPaseador");
+        puntosRuta = new ArrayList<>();
         permissionService = new PermissionService();
-        Spinner spinnerMascotas = findViewById(R.id.spinnerSeguimientoPaseador);
+        spinnerMascotas = findViewById(R.id.spinnerSeguimientoPaseador);
         spinnerMascotas.setOnItemSelectedListener(this);
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        CustomSpinnerMascotasAdapter customAdapter = new CustomSpinnerMascotasAdapter(getApplicationContext(),idMascotas,nombreMascotas,imagenMascotas);
-        spinnerMascotas.setAdapter(customAdapter);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapSeguimientoPaseador);
         mapFragment.getMapAsync(this);
@@ -109,16 +140,20 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
                     {
                         mMarkerPosActual.remove();
                     }
-                    mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
-                    if(!ubicacionactual.equals(UA))
+                    if(mMarkerPosPaseador != null)
                     {
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionactual));
+                        mMarkerPosActual.remove();
                     }
+                    mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
+                    if(!ubicacionPaseadorPrim.equals(ubicacionPaseadorSeg))
+                    {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionPaseadorPrim));
+                    }
+                    ubicacionPaseadorSeg = ubicacionPaseadorPrim;
                     UA = ubicacionactual;
                     if(!actualizarRuta) {
                         mMap.clear();
                         mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
-                        List<LatLng> puntosRuta = obtenerRutas(tipoRuta);
                         for (LatLng puntoRuta: puntosRuta) {
                             mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta));
                         }
@@ -211,6 +246,9 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mapService = new MapService(mMap);
+        initPaseo();
+        initRuta();
+        initMascotas();
     }
 
     @Override
@@ -252,51 +290,126 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
 
     }
 
-
-    public List<LatLng> obtenerRutas(int i)
+    public void initRuta()
     {
-        List<LatLng> ruta = new ArrayList<LatLng>();
-        ruta.add(new LatLng(4.675336, -74.058865));
-        ruta.add(new LatLng(4.682190, -74.060082));
-        if(i > 3)
-        {
-            ruta.add(new LatLng(4.680294, -74.057813));
-        }
-        if(i > 4)
-        {
-            ruta.add(new LatLng(4.673896, -74.044640));
-        }
-        if(i > 5)
-        {
-            ruta.add(new LatLng(4.681056, -74.046577));
-        }
-        return ruta;
-    }
-    public String[] obtenerNombresPerros()
-    {
-        String[] nombresPerros = new String[3];
-        int random;
-        random = (int)(Math.random() * 5);
-        nombresPerros[0] = this.nombresPerros[random];
-        random = (int)(Math.random() * 5);
-        nombresPerros[1] = this.nombresPerros[random];
-        random = (int)(Math.random() * 5);
-        nombresPerros[2] = this.nombresPerros[random];
+        db.collection("paseosAgendados").document(idPaseo).get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Paseo paseo = task.getResult().toObject(Paseo.class);
+                        for(Parada parada: paseo.getParadas())
+                        {
+                            puntosRuta.add(new LatLng(parada.getLatitude(), parada.getLongitude()));
+                        }
+                        actualizarRuta = false;
 
-        return nombresPerros;
+                    }
+                }
+        );
     }
 
-    public int[] obtenerPerros()
+    public void initMascotas()
     {
-        int[] perros = new int[3];
-        int random;
-        random = (int)(Math.random() * 5);
-        perros[0] = this.perros[random];
-        random = (int)(Math.random() * 5);
-        perros[1] = this.perros[random];
-        random = (int)(Math.random() * 5);
-        perros[2] = this.perros[random];
+        db.collection("paseosSolicitados").whereEqualTo("idPaseo",idPaseo).
+                addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        idMascotas = new ArrayList<>();
+                        nombreMascotas = new ArrayList<>();
+                        imagenMascotas = new ArrayList<>();
+                        mascotas = new ArrayList<>();
+                        for(DocumentSnapshot document : value.getDocuments()){
+                            PaseoSolicitar pr = document.toObject(PaseoSolicitar.class);
+                            pr.getMascotasPuntoRecogida();
+                            for(MascotaPuntoRecogida mpr:pr.getMascotasPuntoRecogida())
+                            {
+                                if(mpr.getUsuarioId().equals(firebaseAuth.getUid()) && mpr.getEstado().equals(EstadoPaseo.CONFIRMADO.toString()))
+                                {
+                                    idMascotas = mpr.getMascotasId();
+                                    for(String idMascota: idMascotas)
+                                    {
+                                        db.collection("mascotas").document(idMascota).get().addOnCompleteListener(
+                                                new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        Mascota mascota = task.getResult().toObject(Mascota.class);
+                                                        mascotas.add(mascota);
+                                                        nombreMascotas.add(mascota.getNombreMascota());
+                                                        for(int i = 0; i<nombreMascotas.size();i++)
+                                                        {
+                                                            imagenMascotas.add(null);
+                                                        }
+                                                        int i = 0;
+                                                        for(String idMascota: idMascotas)
+                                                        {
+                                                            try {
+                                                                downloadFileMascotas(idMascota,i);
+                                                            } catch (IOException e) {
 
-        return perros;
+                                                            }
+                                                            i++;
+                                                        }
+                                                        spinnerMascotas.setOnItemSelectedListener(UsuarioSeguimientoPaseadorActivity.this);
+                                                        adapter = new CustomSpinnerMascotasAdapter(getApplicationContext(),idMascotas,nombreMascotas,imagenMascotas);
+                                                        spinnerMascotas.setAdapter(adapter);
+                                                    }
+                                                }
+                                        );
+                                    }
+
+
+                                }
+                            }
+
+                        }
+
+                    }
+                });
     }
+
+    private void downloadFileMascotas(String id, int pos) throws IOException {
+
+        File localFile = File.createTempFile("images", "jpg");
+        StorageReference imageRef = mStorageRef.child("fotos_mascotas/"+id);
+        imageRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        try {
+                            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(localFile));
+                            imagenMascotas.set(pos,b);
+                            adapter.notifyDataSetChanged();
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        imageRef.getFile(localFile)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception)
+                    {
+                        imagenMascotas.add(pos,null);
+                    }
+                });
+    }
+
+    public void initPaseo()
+    {
+        db.collection("ubicacion").document(idPaseador).addSnapshotListener(
+                new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        Parada parada = value.toObject(Parada.class);
+                        LatLng lat = new LatLng(parada.getLatitude(),parada.getLongitude());
+                        ubicacionPaseadorPrim = lat;
+                        mMarkerPosPaseador = mapService.addMarker(lat,"Paseador");
+                        actualizarRuta = false;
+                    }
+                }
+        );
+    }
+
 }
