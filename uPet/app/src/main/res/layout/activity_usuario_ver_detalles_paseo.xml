@@ -43,7 +43,7 @@
             <Spinner
                 android:id="@+id/spinnerUDetallesPaseo"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="35dp"
                 android:background="@drawable/roundedbutton"
@@ -54,72 +54,92 @@
                 android:textColorHint="@color/beigePet"
                 android:textStyle="bold" />
         </FrameLayout>
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagenPaseadorDetallesPaseo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/perfil"
+                android:gravity="center"
+                app:civ_border_color="@color/greenPet"
+                app:civ_border_width="2dp"
+                />
 
-                <TextView
-                    android:id="@+id/txtNombrePaseadorDetallesPaseo"
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/playfair_display_bold"
-                    android:gravity="center"
-                    android:text="TextView"
-                    android:textColor="@color/blackPet" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txtFechaDetallesPaseo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/playfair_display_bold"
-                    android:gravity="center"
-                    android:text="TextView"
-                    android:textColor="@color/blackPet" />
+                    <TextView
+                        android:id="@+id/txtNombrePaseadorDetallesPaseo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_bold"
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textColor="@color/blackPet" />
 
-                <TextView
-                    android:id="@+id/txtHoraDetallesPaseo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/playfair_display_bold"
-                    android:gravity="center"
-                    android:text="TextView"
-                    android:textColor="@color/blackPet" />
+                    <TextView
+                        android:id="@+id/txtFechaDetallesPaseo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_bold"
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textColor="@color/blackPet" />
 
-                <TextView
-                    android:id="@+id/txtNumeroMascotasDetallesPaseo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/playfair_display_bold"
-                    android:gravity="center"
-                    android:text="TextView"
-                    android:textColor="@color/blackPet" />
+                    <TextView
+                        android:id="@+id/txtHoraDetallesPaseo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_bold"
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textColor="@color/blackPet" />
 
-                <TextView
-                    android:id="@+id/txtRankingDetallesPaseo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/playfair_display_bold"
-                    android:gravity="center"
-                    android:text="TextView"
-                    android:textColor="@color/blackPet" />
+                    <TextView
+                        android:id="@+id/txtNumeroMascotasDetallesPaseo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_bold"
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textColor="@color/blackPet" />
 
-                <TextView
-                    android:id="@+id/txtCostoDetallesPaseo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/playfair_display_bold"
-                    android:gravity="center"
-                    android:text="TextView"
-                    android:textColor="@color/blackPet" />
-            </LinearLayout>
-        </ScrollView>
+                    <TextView
+                        android:id="@+id/txtRankingDetallesPaseo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_bold"
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textColor="@color/blackPet" />
+
+                    <TextView
+                        android:id="@+id/txtCostoDetallesPaseo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_bold"
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textColor="@color/blackPet" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

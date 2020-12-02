@@ -10,8 +10,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imagenMascota"
         android:layout_width="0dp"
-        android:layout_height="39dp"
-        android:layout_weight="1"
+        android:layout_height="60dp"
+        android:layout_weight="3"
         android:src="@drawable/perfil"
         android:gravity="center"
         app:civ_border_color="@color/greenPet"
@@ -20,7 +20,7 @@
     <TextView
         android:id="@+id/nombreMascota"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:layout_weight="8"
         android:fontFamily="@font/playfair_display_black"
         android:gravity="center"

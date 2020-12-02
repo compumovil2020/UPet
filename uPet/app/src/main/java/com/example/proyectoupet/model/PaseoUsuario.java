@@ -18,9 +18,20 @@ public class PaseoUsuario implements Serializable {
 
     private List<String> paseosAgendados;
 
-    public PaseoUsuario(String idUsuario, List<String> paseosAgendados) {
+    private List<String> paseosCancelados;
+
+    public PaseoUsuario(String idUsuario, List<String> paseosAgendados, List<String> paseosCancelados) {
         this.idUsuario = idUsuario;
         this.paseosAgendados = paseosAgendados;
+        this.paseosCancelados = paseosCancelados;
+    }
+
+    public List<String> getPaseosCancelados() {
+        return paseosCancelados;
+    }
+
+    public void setPaseosCancelados(List<String> paseosCancelados) {
+        this.paseosCancelados = paseosCancelados;
     }
 
     public String getIdUsuario() {
