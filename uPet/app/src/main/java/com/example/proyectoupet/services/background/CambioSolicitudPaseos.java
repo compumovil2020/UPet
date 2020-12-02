@@ -70,9 +70,9 @@ public class CambioSolicitudPaseos extends Service {
                             for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
                                 PublicDataNameSpace.paseosAceptadosId.add(idPasAcep);
                             }
-//                            for(String idPasCan : paseoUsuario.getPaseosAgendados()){
-//                                PublicDataNameSpace.paseosRechazadosId.add(idPasCan);
-//                            }
+                            for(String idPasCan : paseoUsuario.getPaseosCancelados()){
+                                PublicDataNameSpace.paseosRechazadosId.add(idPasCan);
+                            }
                             PublicDataNameSpace.primeraVezConsulta = false;
                         }else{
                             for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
@@ -80,11 +80,11 @@ public class CambioSolicitudPaseos extends Service {
                                     makeNotification(idPasAcep,"Solicitud de paseo aceptada!!!!","Uno de los paseos que solicitaste fue aceptado");
                                 }
                             }
-//                            for(String idPasCanc : paseoUsuario.getPaseosAgendados()){
-//                                if(!PublicDataNameSpace.paseosAceptadosId.contains(idPasCanc)){
-//                                    makeNotification(idPasCanc,"Solicitud de paseo cancelada :(","Uno de los paseos que solicitaste fue cancelado");
-//                                }
-//                            }
+                            for(String idPasCanc : paseoUsuario.getPaseosCancelados()){
+                                if(!PublicDataNameSpace.paseosRechazadosId.contains(idPasCanc)){
+                                    makeNotification(idPasCanc,"Solicitud de paseo cancelada :(","Uno de los paseos que solicitaste fue cancelado");
+                                }
+                            }
                         }
                     }
                 }
