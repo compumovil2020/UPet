@@ -182,29 +182,12 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                 if(!paseosList.isEmpty())
                 {
                     Paseo paseo = paseoActual;
-                    try {
-                        Date horaActual = new SimpleDateFormat("HH:mm").parse(dateformatted);
-                        Date horaIni = new SimpleDateFormat("HH:mm").parse(paseo.getHoraInicio());
-                        Date horaFin = new SimpleDateFormat("HH:mm").parse(paseo.getHoraFin());
-                        if(paseo.getFecha().equals(fechaActual))
-                        {
-                            if(horaIni.compareTo(horaActual) * horaActual.compareTo(horaFin) >= 0)
-                            {
-                                Intent intent = new Intent(getBaseContext(),UsuarioSeguimientoPaseadorActivity.class);
-                                intent.putExtra("idPaseo",idActual);
-                                if(!idPaseadores.isEmpty())
-                                {
-                                    intent.putExtra("idPaseador",paseadorActual);
-                                    startActivity(intent);
-                                }
-                            }
-
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(),"Paseo aun no en curso",Toast.LENGTH_LONG);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    Intent intent = new Intent(getBaseContext(),UsuarioSeguimientoPaseadorActivity.class);
+                    intent.putExtra("idPaseo",idActual);
+                    if(!idPaseadores.isEmpty())
+                    {
+                        intent.putExtra("idPaseador",paseadorActual);
+                        startActivity(intent);
                     }
 
                 }
