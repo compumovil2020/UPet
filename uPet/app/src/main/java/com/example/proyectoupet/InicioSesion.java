@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.proyectoupet.model.UserData;
+import com.example.proyectoupet.services.background.CambioSolicitudPaseos;
+import com.example.proyectoupet.services.background.UserLocationTracker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -74,6 +76,9 @@ public class InicioSesion extends AppCompatActivity implements Validator.Validat
                 startActivity(new Intent(getBaseContext(), Registro.class));
             }
         });
+
+        startService(new Intent(getApplicationContext(), UserLocationTracker.class));
+        startService(new Intent(getApplicationContext(), CambioSolicitudPaseos.class));
     }
 
     @Override

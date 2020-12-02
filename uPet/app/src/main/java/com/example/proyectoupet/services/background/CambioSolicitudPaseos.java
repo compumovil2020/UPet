@@ -17,83 +17,87 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.example.proyectoupet.R;
+import com.example.proyectoupet.UsuarioAdministrarPaseosActivity;
+import com.example.proyectoupet.model.MascotaPuntoRecogida;
+import com.example.proyectoupet.model.PaseoUsuario;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
 
 import java.util.HashSet;
 
-public class AvalibilityChecker extends Service {
+public class CambioSolicitudPaseos extends Service {
 
-
-    public static final String PATH_USER = "users/";
     public static final String CHANNEL_ID= "AVALIS";
     private boolean first = true;
     FirebaseFirestore firebaseFirestore;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received start id " + startId + ": " + intent);
-        // We want this service to continue running until it is explicitly
-        // stopped, so return sticky.
+        onTaskRemoved(intent);
         return START_STICKY;
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        // TODO Auto-generated method stub
-        Intent restartService = new Intent(getApplicationContext(),
-                this.getClass());
-        restartService.setPackage(getPackageName());
-        PendingIntent restartServicePI = PendingIntent.getService(
-                getApplicationContext(), 1, restartService,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        //Restart the service once it has been killed android
-
-
-        AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +100, restartServicePI);
-
+        Intent restartServiceIntent = new Intent(getApplicationContext(),this.getClass());
+        restartServiceIntent.setPackage(getPackageName());
+        startService(restartServiceIntent);
+        super.onTaskRemoved(rootIntent);
     }
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        databaseReference.orderByChild("avalible").equalTo(true).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot single : snapshot.getChildren()){
-                    UserData userData = single.getValue(UserData.class);
-                    if(!PublicDataNameSpace.firstTimeFetchingUsers && !PublicDataNameSpace.activeUsers.contains(single.getKey())){
-                        makeNotification(new String(single.getKey()),userData.getName());
+        FirebaseApp.initializeApp(this);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore =FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = firebaseFirestore.collection("paseosUsuario");
+        collectionReference.whereEqualTo("idUsuario",firebaseAuth.getUid()).addSnapshotListener(
+                new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        PaseoUsuario paseoUsuario =value.getDocuments().get(0).toObject(PaseoUsuario.class);
+                        if(PublicDataNameSpace.primeraVezConsulta){
+                            for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
+                                PublicDataNameSpace.paseosAceptadosId.add(idPasAcep);
+                            }
+//                            for(String idPasCan : paseoUsuario.getPaseosAgendados()){
+//                                PublicDataNameSpace.paseosRechazadosId.add(idPasCan);
+//                            }
+                            PublicDataNameSpace.primeraVezConsulta = false;
+                        }else{
+                            for(String idPasAcep : paseoUsuario.getPaseosAgendados()){
+                                if(!PublicDataNameSpace.paseosAceptadosId.contains(idPasAcep)){
+                                    makeNotification(idPasAcep,"Solicitud de paseo aceptada!!!!","Uno de los paseos que solicitaste fue aceptado");
+                                }
+                            }
+//                            for(String idPasCanc : paseoUsuario.getPaseosAgendados()){
+//                                if(!PublicDataNameSpace.paseosAceptadosId.contains(idPasCanc)){
+//                                    makeNotification(idPasCanc,"Solicitud de paseo cancelada :(","Uno de los paseos que solicitaste fue cancelado");
+//                                }
+//                            }
+                        }
                     }
-                    PublicDataNameSpace.activeUsers.add(single.getKey());
                 }
-                PublicDataNameSpace.firstTimeFetchingUsers = false;
-                PublicDataNameSpace.activeUsers = new HashSet<>();
-                for(DataSnapshot single : snapshot.getChildren()){
-                    PublicDataNameSpace.activeUsers.add(single.getKey());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        );
     }
 
-    public AvalibilityChecker(){
-        databaseReference = FirebaseDatabase.getInstance().getReference(PATH_USER);
-
-    }
-
-    private void makeNotification(String key, String userName){
+    private void makeNotification(String key, String title, String text){
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.deleteNotificationChannel(CHANNEL_ID);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Taller3NCH";
-            String description = "Canal para notificaciones del taller 3";
+            CharSequence name = "Upet";
+            String description = "Canal para notificaciones del upet";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
@@ -101,13 +105,14 @@ public class AvalibilityChecker extends Service {
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
         mBuilder.setSmallIcon(R.drawable.notico);
-        mBuilder.setContentTitle("Nuevo usuario disponible");
-        mBuilder.setContentText("El usuario "+ userName+ " acabo de cambiar su estado a disponible");
+        mBuilder.setContentTitle(title);
+        mBuilder.setContentText(text);
+        mBuilder.setGroup("upet");
         mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        Intent intent = new Intent(this, TrackingMapScreen.class);
+        Intent intent = new Intent(this, UsuarioAdministrarPaseosActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
         Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("userId",key);
+        intent.putExtra("putExtra",key);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setAutoCancel(true);

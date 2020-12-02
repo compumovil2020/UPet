@@ -29,35 +29,4 @@ public class MascotaPuntoRecogida implements Serializable{
         this.estado = estado;
     }
 
-    public List<String> getMascotasId() {
-        return mascotasId;
-    }
-
-    public void setMascotasId(List<String> mascotasId) {
-        this.mascotasId = mascotasId;
-    }
-
-    public Parada getPuntoRecogida() {
-        return puntoRecogida;
-    }
-
-    public void setPuntoRecogida(Parada puntoRecogida) {
-        this.puntoRecogida = puntoRecogida;
-    }
-
-    public String getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(String usuarioId) {
-        this.usuarioId = usuarioId;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 }

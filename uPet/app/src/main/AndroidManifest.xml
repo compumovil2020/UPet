@@ -28,6 +28,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".services.background.UserLocationTracker"
+            android:enabled="true"
+            android:process=":userTracker"></service>
+        <service
+            android:name=".services.background.CambioSolicitudPaseos"
+            android:enabled="true"
+            android:process=":solicitudtracker"></service>
         <activity android:name=".VerDetalleMascotaActivity"></activity>
         <activity android:name=".ListarMascotasSolicitarActivity" />
         <activity android:name=".UserChat" />
@@ -61,7 +69,6 @@
         <activity android:name=".InicioSesion">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
