@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.proyectoupet.paseos.CrearPaseo;
+import com.example.proyectoupet.services.background.CambioSolicitudPaseos;
+import com.example.proyectoupet.services.background.UserLocationTracker;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomePaseador extends AppCompatActivity {
@@ -29,6 +31,8 @@ public class HomePaseador extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        startService(new Intent(getApplicationContext(), UserLocationTracker.class));
+        startService(new Intent(getApplicationContext(), CambioSolicitudPaseos.class));
 
     }
 

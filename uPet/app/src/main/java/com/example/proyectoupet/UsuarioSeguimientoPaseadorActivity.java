@@ -43,6 +43,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -144,17 +145,7 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
                     {
                         mMarkerPosActual.remove();
                     }
-                    if(mMarkerPosPaseador != null)
-                    {
-                        mMarkerPosPaseador.remove();
-                    }
                     mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
-                    mMarkerPosPaseador = mapService.addMarker(ubicacionPaseadorPrim,"Paseador");
-                    if(!ubicacionPaseadorPrim.equals(ubicacionPaseadorSeg))
-                    {
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionPaseadorPrim));
-                    }
-                    ubicacionPaseadorSeg = ubicacionPaseadorPrim;
                     UA = ubicacionactual;
                     if(!actualizarRuta) {
                         mMap.clear();
@@ -410,9 +401,12 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
                         Double paradaLat = (Double) value.get("latitud");
                         Double paradaLong = (Double) value.get("longitud");
                         LatLng lat = new LatLng(paradaLat,paradaLong);
+                        if(mMarkerPosPaseador !=null){
+                            mMarkerPosPaseador.remove();
+                        }
                         ubicacionPaseadorPrim = lat;
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionPaseadorPrim));
                         mMarkerPosPaseador = mapService.addMarker(lat,"Paseador");
-                        actualizarRuta = false;
                     }
                 }
         );

@@ -105,29 +105,26 @@ public class SeleccionarSolicitantesActitity extends AppCompatActivity
                         listaMascotas = new ArrayList<>();
                         PaseoSolicitar p = null;
 
-                        for(DocumentSnapshot document : value.getDocuments()){
+                        for(DocumentSnapshot document : value.getDocuments()) {
                             p = document.toObject(PaseoSolicitar.class);
-                        }
-                        if (p != null)
-                        {
-                            for(MascotaPuntoRecogida mpr: p.getMascotasPuntoRecogida())
-                            {
-                                if(mpr.getEstado().equals(EstadoPaseo.SOLICITADO.toString()))
-                                {
-                                    db.collection("usuarios").document(mpr.getUsuarioId()).get().addOnCompleteListener(
-                                            new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    UserData ud = task.getResult().toObject(UserData.class);
-                                                    solicitantes.add(ud.getNombre()+" "+ud.getApellido());
-                                                    listaMascotas.add(mpr);
-                                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(SeleccionarSolicitantesActitity.this,android.R.layout.simple_list_item_1,solicitantes);
-                                                    listaSolicitantes.setAdapter(adapter);
-                                                }
-                                            });
+                            if (p != null) {
+                                for (MascotaPuntoRecogida mpr : p.getMascotasPuntoRecogida()) {
+                                    if (mpr.getEstado().equals(EstadoPaseo.SOLICITADO.toString())) {
+                                        db.collection("usuarios").document(mpr.getUsuarioId()).get().addOnCompleteListener(
+                                                new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        UserData ud = task.getResult().toObject(UserData.class);
+                                                        solicitantes.add(ud.getNombre() + " " + ud.getApellido());
+                                                        listaMascotas.add(mpr);
+                                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SeleccionarSolicitantesActitity.this, android.R.layout.simple_list_item_1, solicitantes);
+                                                        listaSolicitantes.setAdapter(adapter);
+                                                    }
+                                                });
+                                    }
+
+
                                 }
-
-
                             }
                         }
                     }

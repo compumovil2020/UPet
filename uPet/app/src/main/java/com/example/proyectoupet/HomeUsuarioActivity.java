@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.proyectoupet.services.background.CambioSolicitudPaseos;
+import com.example.proyectoupet.services.background.UserLocationTracker;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeUsuarioActivity extends AppCompatActivity {
@@ -64,7 +66,8 @@ public class HomeUsuarioActivity extends AppCompatActivity {
             }
         });
 
-
+        startService(new Intent(getApplicationContext(), UserLocationTracker.class));
+        startService(new Intent(getApplicationContext(), CambioSolicitudPaseos.class));
     }
 
     @Override

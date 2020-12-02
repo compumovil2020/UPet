@@ -33,7 +33,6 @@ public class UserLocationTracker extends Service {
     public UserLocationTracker() {
         super();
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
         mapService = new MapService(null);
     }
 

@@ -77,8 +77,7 @@ public class InicioSesion extends AppCompatActivity implements Validator.Validat
             }
         });
 
-        startService(new Intent(getApplicationContext(), UserLocationTracker.class));
-        startService(new Intent(getApplicationContext(), CambioSolicitudPaseos.class));
+
     }
 
     @Override
