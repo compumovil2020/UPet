@@ -55,6 +55,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -144,7 +145,7 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
                     else{
                         paseoActualPos++;
                     }
-                    setPaseoActual(paseoActualPos);
+                    //setPaseoActual(paseoActualPos);
                 }
 
             }
@@ -215,19 +216,20 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
                             puntosRuta = new ArrayList<>();
                             int posSet = 0;
                             for(DocumentSnapshot document : value.getDocuments()){
-                                idPaseos.add(document.getId());
                                 Paseo p = document.toObject(Paseo.class);
-                                paseosList.add(p);
                                 db.collection("usuarios").document(p.getUserId()).get().addOnSuccessListener(
                                         new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                paseadores.add(documentSnapshot.toObject(UserData.class));
+                                                idPaseos.add(document.getId());
+                                                paseosList.add(p);
+                                                UserData paseador = documentSnapshot.toObject(UserData.class);
+                                                paseadores.add(paseador);
                                                 int posSet = 0;
                                                 if(document.getId().equals(idPaseo))
                                                 {
                                                     posSet = idPaseos.size()-1;
-                                                    setPaseoActual(posSet);
+                                                    setPaseoActual(paseador, p);
                                                 }
                                             }
                                         }
@@ -248,19 +250,20 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
                             paseadores = new ArrayList<>();
                             puntosRuta = new ArrayList<>();
                             for(DocumentSnapshot document : value.getDocuments()){
-                                idPaseos.add(document.getId());
                                 Paseo p = document.toObject(Paseo.class);
-                                paseosList.add(p);
                                 db.collection("usuarios").document(p.getUserId()).get().addOnSuccessListener(
                                         new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                paseadores.add(documentSnapshot.toObject(UserData.class));
+                                                idPaseos.add(document.getId());
+                                                paseosList.add(p);
+                                                UserData paseador = documentSnapshot.toObject(UserData.class);
+                                                paseadores.add(paseador);
                                                 int posSet = 0;
                                                 if(document.getId().equals(idPaseo))
                                                 {
                                                     posSet = idPaseos.size()-1;
-                                                    setPaseoActual(posSet);
+                                                    setPaseoActual(paseador, p);
                                                 }
                                             }
                                         }
@@ -274,10 +277,10 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
 
     }
 
-    public void setPaseoActual(int posicion)
+    public void setPaseoActual(UserData paseadorV, Paseo paseoV)
     {
-        UserData paseador = paseadores.get(posicion);
-        Paseo paseoActual = paseosList.get(posicion);
+        UserData paseador = paseadorV;
+        Paseo paseoActual = paseoV;
         String nombre = paseador.getNombre() + " " + paseador.getApellido();
         String precio = "$"+paseoActual.getPrecio();
         String hora = paseoActual.getHoraInicio() + "-" + paseoActual.getHoraFin();
@@ -289,7 +292,6 @@ public class UsuarioBuscarPaseoActivity extends AppCompatActivity implements OnM
         txtNumMascotas.setText(paseoActual.getCapacidad()+"");
         obtenerRutas(paseoActual);
         actualizarRuta = false;
-        this.paseoActualPos = posicion;
     }
 
     protected LocationRequest createLocationRequest() {
