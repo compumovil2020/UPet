@@ -1,6 +1,7 @@
 package com.example.proyectoupet.services.MapsServices;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -41,7 +42,7 @@ public class MapService {
         return this.mMap.addMarker(new MarkerOptions().position(latLng).title(title));
     }
 
-    public String getLatLngName(Activity context , LatLng latLng){
+    public String getLatLngName(Context context , LatLng latLng){
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(context, Locale.getDefault());
