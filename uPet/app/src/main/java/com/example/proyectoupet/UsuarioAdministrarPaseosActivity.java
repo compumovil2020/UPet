@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,10 @@ import android.widget.ListView;
 
 import com.example.proyectoupet.model.Paseo;
 import com.example.proyectoupet.model.PaseoUsuario;
+import com.example.proyectoupet.model.UserData;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -92,6 +96,22 @@ public class UsuarioAdministrarPaseosActivity extends AppCompatActivity {
         btnVolver.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                db.collection("usuarios").document(firebaseAuth.getUid()).
+                        get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            UserData userData = task.getResult().toObject(UserData.class);
+                            if(userData.getTipoUsuario().equals("Paseador")){
+                                startActivity(new Intent(UsuarioAdministrarPaseosActivity.this,HomePaseador.class));
+                            }else{
+                                startActivity(new Intent(UsuarioAdministrarPaseosActivity.this,HomeUsuarioActivity.class));
+                            }
+                        } else {
+                            Log.w("Error", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
                 finish();
             }
         });

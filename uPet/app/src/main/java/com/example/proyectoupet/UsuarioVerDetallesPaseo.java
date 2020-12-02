@@ -11,6 +11,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,8 @@ import com.example.proyectoupet.model.PaseoSolicitar;
 import com.example.proyectoupet.model.PaseoUsuario;
 import com.example.proyectoupet.model.UserData;
 import com.example.proyectoupet.services.CustomSpinnerMascotasAdapter;
+import com.example.proyectoupet.services.ImageService;
+import com.example.proyectoupet.services.ImageServiceFunction;
 import com.example.proyectoupet.services.MapsServices.MapService;
 import com.example.proyectoupet.services.permissionService.PermissionService;
 import com.google.android.gms.common.api.ApiException;
@@ -111,10 +115,13 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
 
     private CustomSpinnerMascotasAdapter adapter;
 
+    private ImageView imagenPaseador;
+
 
     public List<String> paseos;
     private List<Paseo> paseosList;
     private List<String> idPaseos;
+    private List<String> idPaseadores;
     private List<UserData> paseadores;
     private int paseoActualPos;
     private List<LatLng> puntosRuta;
@@ -148,6 +155,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
         txtRanking = findViewById(R.id.txtRankingDetallesPaseo);
         txtRanking.setText("Excelente");
         txtCosto = findViewById(R.id.txtCostoDetallesPaseo);
+        imagenPaseador = findViewById(R.id.imagenPaseadorDetallesPaseo);
         Intent intent = getIntent();
         idPaseo = intent.getExtras().getString("idPaseo");
 
@@ -375,6 +383,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                         idPaseos = new ArrayList<>();
                         paseadores = new ArrayList<>();
                         puntosRuta = new ArrayList<>();
+                        idPaseadores = new ArrayList<>();
                         for(DocumentSnapshot document : value.getDocuments()){
                             PaseoUsuario p = document.toObject(PaseoUsuario.class);
                             for(String idP: p.getPaseosAgendados())
@@ -385,18 +394,19 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 Paseo paseo = task.getResult().toObject(Paseo.class);
-                                                paseosList.add(paseo);
                                                 db.collection("usuarios").document(paseo.getUserId()).get().addOnCompleteListener(
                                                         new OnCompleteListener<DocumentSnapshot>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                                 paseadores.add(task.getResult().toObject(UserData.class));
+                                                                idPaseadores.add(paseo.getUserId());
+                                                                paseosList.add(paseo);
                                                                 int posSet = 0;
                                                                 if(idP.equals(idPaseo))
                                                                 {
                                                                     posSet = idPaseos.size()-1;
+                                                                    setPaseoActual(posSet);
                                                                 }
-                                                                setPaseoActual(posSet);
                                                             }
                                                         }
                                                 );
@@ -444,6 +454,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
         txtHora.setText(hora);
         txtRanking.setText("Excelente");
         txtNumMascotas.setText(paseoActual.getCapacidad()+"");
+        cargarImagenPaseador(idPaseadores.get(posicion));
         obtenerRutas(paseoActual);
         initMascotasPaseo();
         this.paseoActualPos = posicion;
@@ -484,7 +495,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                                                         for(String idMascota: idMascotas)
                                                         {
                                                             try {
-                                                                downloadFile(idMascota,i);
+                                                                downloadFileMascotas(idMascota,i);
                                                             } catch (IOException e) {
 
                                                             }
@@ -507,7 +518,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                     }
                 });
     }
-    private void downloadFile(String id, int pos) throws IOException {
+    private void downloadFileMascotas(String id, int pos) throws IOException {
 
         File localFile = File.createTempFile("images", "jpg");
         StorageReference imageRef = mStorageRef.child("fotos_mascotas/"+id);
@@ -534,5 +545,18 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                         imagenMascotas.add(pos,null);
                     }
                 });
+    }
+
+    private void cargarImagenPaseador(String key){
+        try {
+            File localFile = File.createTempFile(key, "jpg");
+            ImageServiceFunction function = (params) -> {
+                imagenPaseador.setImageIcon(Icon.createWithFilePath(localFile.getPath()));
+            };
+            ImageService.downloadImage("fotos_perfil"+key,localFile,function);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -175,7 +175,8 @@ public class SeleccionarSolicitantesActitity extends AppCompatActivity
                                                                     else{
                                                                         List<String> paseosA = new ArrayList<>();
                                                                         paseosA.add(idPaseo);
-                                                                        PaseoUsuario pu = new PaseoUsuario(mpr.getUsuarioId(),paseosA);
+                                                                        List<String> paseosC = new ArrayList<>();
+                                                                        PaseoUsuario pu = new PaseoUsuario(mpr.getUsuarioId(),paseosA,paseosC);
                                                                         db.collection("paseosUsuario").add(pu);
                                                                     }
 
@@ -237,6 +238,34 @@ public class SeleccionarSolicitantesActitity extends AppCompatActivity
                                                 {
                                                     mpr.setEstado(EstadoPaseo.CANCELADO.toString());
                                                     nueva.add(mpr);
+                                                    db.collection("paseosUsuario").whereEqualTo("idUsuario",mpr.getUsuarioId()).get().addOnSuccessListener(
+                                                            new OnSuccessListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                    if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                                                                    {
+                                                                        PaseoUsuario pu = queryDocumentSnapshots.getDocuments().get(0).toObject(PaseoUsuario.class);
+                                                                        pu.getPaseosCancelados().add(idPaseo);
+                                                                        db.collection("paseosUsuario").document(queryDocumentSnapshots.getDocuments().get(0).getId()).update("paseosAgendados",pu.getPaseosCancelados());
+                                                                    }
+                                                                    else{
+                                                                        List<String> paseosA = new ArrayList<>();
+                                                                        List<String> paseosC = new ArrayList<>();
+                                                                        paseosC.add(idPaseo);
+                                                                        PaseoUsuario pu = new PaseoUsuario(mpr.getUsuarioId(),paseosA,paseosC);
+                                                                        db.collection("paseosUsuario").add(pu);
+                                                                    }
+
+                                                                }
+                                                            }
+                                                    ).addOnFailureListener(
+                                                            new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+
+                                                                }
+                                                            }
+                                                    );
                                                 }
                                                 else
                                                 {
@@ -245,6 +274,7 @@ public class SeleccionarSolicitantesActitity extends AppCompatActivity
                                             }
                                             p.setMascotasPuntoRecogida(nueva);
                                             db.collection("paseosSolicitados").document(idPaseoSolicitar).set(p);
+
                                         }
                                     }
 
