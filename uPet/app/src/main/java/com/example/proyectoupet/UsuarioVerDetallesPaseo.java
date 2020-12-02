@@ -221,7 +221,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                 else{
                     paseoActualPos++;
                 }
-                setPaseoActual(paseoActualPos);
+                //setPaseoActual(paseoActualPos);
             }
         });
         Button btnSiguiente = findViewById(R.id.btnSiguienteDetallesPaseo);
@@ -239,7 +239,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                     else{
                         paseoActualPos--;
                     }
-                    setPaseoActual(paseoActualPos);
+                    //setPaseoActual(paseoActualPos);
                 }
 
             }
@@ -448,7 +448,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                                                                 if(idP.equals(idPaseo))
                                                                 {
                                                                     posSet = idPaseos.size()-1;
-                                                                    setPaseoActual(posSet);
+                                                                    setPaseoActual(task.getResult().toObject(UserData.class),paseo);
                                                                 }
                                                             }
                                                         }
@@ -484,10 +484,11 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
         return this.puntosRuta;
     }
 
-    public void setPaseoActual(int posicion)
+
+    public void setPaseoActual(UserData paseadorV, Paseo paseoV)
     {
-        UserData paseador = paseadores.get(posicion);
-        Paseo paseoActual = paseosList.get(posicion);
+        UserData paseador = paseadorV;
+        Paseo paseoActual = paseoV;
         String nombre = paseador.getNombre() + " " + paseador.getApellido();
         String precio = "$"+paseoActual.getPrecio();
         String hora = paseoActual.getHoraInicio() + "-" + paseoActual.getHoraFin();
@@ -497,10 +498,9 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
         txtHora.setText(hora);
         txtRanking.setText("Excelente");
         txtNumMascotas.setText(paseoActual.getCapacidad()+"");
-        cargarImagenPaseador(idPaseadores.get(posicion));
         obtenerRutas(paseoActual);
         initMascotasPaseo();
-        this.paseoActualPos = posicion;
+        actualizarRuta = false;
     }
 
     public void initMascotasPaseo()
