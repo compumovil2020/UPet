@@ -79,7 +79,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -163,9 +168,45 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
         btnRealizarSeguimiento.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getBaseContext(),UsuarioSeguimientoPaseadorActivity.class);
-                intent.putExtra("idPaseo",idPaseo);
-                startActivity(intent);
+                Calendar rightNow = Calendar.getInstance();
+                DateFormat dateFormatF = new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat dateFormatH = new SimpleDateFormat("HH:mm");
+                Date date = new Date();
+                String dateformatted = dateFormatH.format(date);
+                String fechaActual = dateFormatF.format(date);
+
+                System.out.println(dateformatted);
+                if(!paseosList.isEmpty())
+                {
+                    Paseo paseo = paseosList.get(paseoActualPos);
+                    try {
+                        Date horaActual = new SimpleDateFormat("HH:mm").parse(dateformatted);
+                        Date horaIni = new SimpleDateFormat("HH:mm").parse(paseo.getHoraInicio());
+                        Date horaFin = new SimpleDateFormat("HH:mm").parse(paseo.getHoraFin());
+                        if(paseo.getFecha().equals(fechaActual))
+                        {
+                            if(horaIni.compareTo(horaActual) * horaActual.compareTo(horaFin) >= 0)
+                            {
+                                Intent intent = new Intent(getBaseContext(),UsuarioSeguimientoPaseadorActivity.class);
+                                intent.putExtra("idPaseo",idPaseo);
+                                if(!idPaseadores.isEmpty())
+                                {
+                                    intent.putExtra("idPaseador",idPaseadores.get(paseoActualPos));
+                                    startActivity(intent);
+                                }
+                            }
+
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(),"Paseo aun no en curso",Toast.LENGTH_LONG);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
             }
         });
         Button btnAnterior = findViewById(R.id.btnAnteriorDetallesPaseo);
@@ -231,16 +272,18 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                         mMarkerPosActual.remove();
                     }
                     mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
-                    if(!ubicacionactual.equals(UA))
-                    {
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionactual));
-                    }
                     UA = ubicacionactual;
                     if(!actualizarRuta) {
                         mMap.clear();
                         mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
                         List<LatLng> puntosRuta = getPuntosRuta();
+                        int i = 0;
                         for (LatLng puntoRuta: puntosRuta) {
+                            if(i == 0)
+                            {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(puntoRuta));
+                                i++;
+                            }
                             mapService.addMarker(puntoRuta, geoCoderSearch(puntoRuta));
                         }
                         mapService.makeRoute(UsuarioVerDetallesPaseo.this, puntosRuta , MapService.Order.CLOSEST);

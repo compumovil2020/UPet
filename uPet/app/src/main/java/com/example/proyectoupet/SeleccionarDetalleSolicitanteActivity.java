@@ -113,6 +113,7 @@ public class SeleccionarDetalleSolicitanteActivity extends FragmentActivity impl
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         UserData ud = documentSnapshot.toObject(UserData.class);
                         textoNombreSolicitante.setText(ud.getNombre() +" "+ ud.getApellido());
+                        numeroSolicitante.setText(ud.getCelular()+"");
                         cargarImagenPaseador(idUsuario);
                     }
                 }
