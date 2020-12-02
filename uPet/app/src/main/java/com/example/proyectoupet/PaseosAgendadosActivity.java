@@ -67,7 +67,7 @@ public class PaseosAgendadosActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View view, int position,
                                     long arg3) {
                 view.setBackgroundColor(getResources().getColor(R.color.greenPet,null));
-                if(pos == position)
+                if(pos != position)
                 {
                     previousView.setBackgroundColor(getResources().getColor(R.color.beigePet,null));
                 }

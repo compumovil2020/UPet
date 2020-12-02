@@ -31,33 +31,48 @@
 
     <TextView
         android:id="@+id/de_textView_1"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="40dp"
-        android:text="#Nombre"
-        android:gravity="center"
-        android:textAlignment="center"
         android:fontFamily="@font/playfair_display_black"
+        android:gravity="center"
+        android:text="#Nombre"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imagenUsuarioDetalleSolicitante"
         app:layout_constraintTop_toBottomOf="@+id/mapSeleccionarDetalleSolicitante" />
 
     <TextView
-        android:id="@+id/de_textView_2"
-        android:layout_width="0dp"
+        android:id="@+id/de_textView_Numero"
+        android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
-        android:gravity="center"
-        android:text="#Punto de recogida"
         android:fontFamily="@font/playfair_display_black"
+        android:gravity="center"
+        android:text="#Num"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imagenUsuarioDetalleSolicitante"
         app:layout_constraintTop_toBottomOf="@+id/de_textView_1" />
+
+    <TextView
+        android:id="@+id/de_textView_2"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/playfair_display_black"
+        android:gravity="center"
+        android:text="#Punto de recogida"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imagenUsuarioDetalleSolicitante"
+        app:layout_constraintTop_toBottomOf="@+id/de_textView_Numero" />
 
     <LinearLayout
         android:id="@+id/linearLayout6"
@@ -131,5 +146,17 @@
             android:text="@string/general_volver"
             android:onClick="volverDetalle"/>
     </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagenUsuarioDetalleSolicitante"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/perfil"
+        app:civ_border_color="@color/greenPet"
+        app:civ_border_width="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapSeleccionarDetalleSolicitante" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
