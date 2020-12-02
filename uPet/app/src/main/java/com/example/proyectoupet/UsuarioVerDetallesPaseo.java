@@ -103,6 +103,9 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
     LatLng UA;
     boolean actualizarRuta = false;
     private String idPaseo;
+    private String idActual;
+    private String paseadorActual;
+    private Paseo paseoActual;
 
     private TextView txtNombrePaseador;
 
@@ -178,7 +181,7 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                 System.out.println(dateformatted);
                 if(!paseosList.isEmpty())
                 {
-                    Paseo paseo = paseosList.get(paseoActualPos);
+                    Paseo paseo = paseoActual;
                     try {
                         Date horaActual = new SimpleDateFormat("HH:mm").parse(dateformatted);
                         Date horaIni = new SimpleDateFormat("HH:mm").parse(paseo.getHoraInicio());
@@ -188,10 +191,10 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                             if(horaIni.compareTo(horaActual) * horaActual.compareTo(horaFin) >= 0)
                             {
                                 Intent intent = new Intent(getBaseContext(),UsuarioSeguimientoPaseadorActivity.class);
-                                intent.putExtra("idPaseo",idPaseo);
+                                intent.putExtra("idPaseo",idActual);
                                 if(!idPaseadores.isEmpty())
                                 {
-                                    intent.putExtra("idPaseador",idPaseadores.get(paseoActualPos));
+                                    intent.putExtra("idPaseador",paseadorActual);
                                     startActivity(intent);
                                 }
                             }
@@ -448,6 +451,9 @@ public class UsuarioVerDetallesPaseo extends AppCompatActivity implements Adapte
                                                                 if(idP.equals(idPaseo))
                                                                 {
                                                                     posSet = idPaseos.size()-1;
+                                                                    idActual = idP;
+                                                                    paseadorActual = paseo.getUserId();
+                                                                    paseoActual = paseo;
                                                                     setPaseoActual(task.getResult().toObject(UserData.class),paseo);
                                                                 }
                                                             }

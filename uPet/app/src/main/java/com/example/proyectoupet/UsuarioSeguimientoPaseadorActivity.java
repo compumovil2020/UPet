@@ -15,6 +15,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -68,6 +69,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,16 +115,18 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_seguimiento_paseador);
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         Intent intent = getIntent();
         idPaseo = intent.getExtras().getString("idPaseo");
         idPaseador = intent.getExtras().getString("idPaseador");
+        initRuta();
+        initMascotas();
         puntosRuta = new ArrayList<>();
         permissionService = new PermissionService();
         spinnerMascotas = findViewById(R.id.spinnerSeguimientoPaseador);
         spinnerMascotas.setOnItemSelectedListener(this);
-        db = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapSeguimientoPaseador);
@@ -142,9 +146,10 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
                     }
                     if(mMarkerPosPaseador != null)
                     {
-                        mMarkerPosActual.remove();
+                        mMarkerPosPaseador.remove();
                     }
                     mMarkerPosActual = mapService.addMarker(ubicacionactual,"Ubicacion Actual");
+                    mMarkerPosPaseador = mapService.addMarker(ubicacionPaseadorPrim,"Paseador");
                     if(!ubicacionPaseadorPrim.equals(ubicacionPaseadorSeg))
                     {
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionPaseadorPrim));
@@ -247,8 +252,7 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mapService = new MapService(mMap);
         initPaseo();
-        initRuta();
-        initMascotas();
+
     }
 
     @Override
@@ -398,12 +402,14 @@ public class UsuarioSeguimientoPaseadorActivity extends AppCompatActivity implem
 
     public void initPaseo()
     {
+        Log.w("IdPaseador",idPaseador);
         db.collection("ubicacion").document(idPaseador).addSnapshotListener(
                 new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        Parada parada = value.toObject(Parada.class);
-                        LatLng lat = new LatLng(parada.getLatitude(),parada.getLongitude());
+                        Double paradaLat = (Double) value.get("latitud");
+                        Double paradaLong = (Double) value.get("longitud");
+                        LatLng lat = new LatLng(paradaLat,paradaLong);
                         ubicacionPaseadorPrim = lat;
                         mMarkerPosPaseador = mapService.addMarker(lat,"Paseador");
                         actualizarRuta = false;
